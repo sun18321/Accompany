@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.OrderActivity"
+    android:background="@color/recycler_default"
+    android:fitsSystemWindows="true"
+    >
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <include layout="@layout/toolbar_title"/>
+
+    <LinearLayout
+        android:padding="10dp"
+        android:layout_marginTop="1dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_white"
+        >
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/img_head"
+            app:riv_corner_radius="5dp"
+            android:src="@mipmap/head_default"
+            android:layout_width="60dp"
+            android:layout_height="60dp" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_marginLeft="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:textColor="@color/color_black"
+                android:textSize="16sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/tv_price"
+                android:textColor="@color/color_price_red"
+                android:layout_marginTop="6dp"
+                android:textSize="16sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_type"
+            android:padding="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/color_white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:text="@string/buy_type"
+                android:textSize="16sp"
+                android:textColor="@color/color_order_gray"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <ImageView
+                android:src="@drawable/right_arrow"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/tv_type"
+                android:layout_centerVertical="true"
+                android:textSize="16sp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="30dp"
+                android:textColor="@color/color_black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+
+        <View
+            android:background="@color/color_order_gray"
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"/>
+
+        <RelativeLayout
+            android:id="@+id/rl_time"
+            android:padding="10dp"
+            android:background="@color/color_white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:text="@string/order_time"
+                android:textSize="16sp"
+                android:textColor="@color/color_order_gray"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <ImageView
+                android:src="@drawable/right_arrow"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/tv_time"
+                android:layout_centerVertical="true"
+                android:textSize="16sp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="30dp"
+                android:textColor="@color/color_black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+        <View
+            android:background="@color/color_order_gray"
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"/>
+
+        <RelativeLayout
+            android:id="@+id/rl_amount"
+            android:padding="10dp"
+            android:background="@color/color_white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:text="@string/order_amount"
+                android:textSize="16sp"
+                android:textColor="@color/color_order_gray"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                android:gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/img_reduce"
+                    android:src="@drawable/reduce"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/tv_amount"
+                    android:text="1"
+                    android:textSize="16sp"
+                    android:layout_marginLeft="5dp"
+                    android:textColor="@color/color_black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <ImageView
+                    android:id="@+id/img_add"
+                    android:src="@drawable/add"
+                    android:layout_marginLeft="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+        </RelativeLayout>
+        <View
+            android:background="@color/color_order_gray"
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"/>
+
+        <!--<RelativeLayout-->
+            <!--android:padding="15dp"-->
+            <!--android:background="@color/color_white"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content">-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/tv_all_money"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:layout_alignParentRight="true"-->
+                <!--android:textSize="16sp"-->
+                <!--android:textColor="@color/color_black"-->
+                <!--android:text="小计:15币"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content" />-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/tv_all_amount"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:layout_toLeftOf="@id/tv_all_money"-->
+                <!--android:layout_marginRight="20dp"-->
+                <!--android:textSize="16sp"-->
+                <!--android:textColor="@color/color_black"-->
+                <!--android:text="数量:15"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content" />-->
+
+            <!--</RelativeLayout>-->
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:padding="10dp"
+            android:background="@color/color_white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:textColor="@color/color_order_gray"
+                android:text="@string/marks"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/edit_marks"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:maxLines="1"
+                android:background="@null"
+                android:hint="@string/edit_hint"
+                android:gravity="right"
+                />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:padding="15dp"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:background="@color/color_white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        >
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:text="@string/all_money"
+                android:textColor="@color/color_order_gray"
+                android:textSize="16sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/tv_all"
+                android:layout_marginLeft="5dp"
+                android:textColor="@color/color_price_red"
+                android:textSize="24sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:text="@string/money"
+                android:textColor="@color/color_order_gray"
+                android:textSize="16sp"
+                android:layout_marginLeft="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_submit"
+            android:textColor="@color/color_white"
+            android:text="@string/submit"
+            android:background="@drawable/btn_order_bg"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</RelativeLayout>

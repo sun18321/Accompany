@@ -1,0 +1,61 @@
+package com.play.accompany.base;
+
+import android.content.Context;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import com.umeng.analytics.MobclickAgent;
+
+public abstract class BaseFragment extends Fragment {
+    protected AppCompatActivity mActivity;
+    protected Context mContext;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        mActivity = (AppCompatActivity) context;
+        mContext = context;
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(getLayout(), container, false);
+        initViews(view);
+        return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart(getFragmentName());
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd(getFragmentName());
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        mActivity = null;
+        mContext = null;
+    }
+
+    protected abstract int getLayout();
+
+    protected abstract void initViews(View view);
+
+    protected abstract String getFragmentName();
+
+}

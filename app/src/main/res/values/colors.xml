@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#29A1F7</color>
+    <color name="colorPrimaryDark">#29A1F7</color>
+    <color name="colorAccent">#29A1F7</color>
+
+    <color name="color_white">#ffffff</color>
+    <color name="color_main">#29A1F7</color>
+    <color name="color_black">#000000</color>
+
+    <color name="color_price_red">#F84048</color>
+    <color name="color_title_orange">#FE7126</color>
+    <color name="color_gray">#A1A1A1</color>
+    <color name="color_bg_blue">#4F67CD</color>
+    <color name="recycler_default">#FAFAFA</color>
+    <color name="female_pink">#FF86B9</color>
+    <color name="male_blue">#0071CF</color>
+    <color name="color_transparent">#00000000</color>
+    <color name="color_order_gray">#9B9C9D</color>
+
+    <color name="splash_bg">#5DB9FC</color>
+    <color name="color_pick_gray">#F3F3F3</color>
+    <color name="color_pick_text">#9B9B9B</color>
+
+</resources>

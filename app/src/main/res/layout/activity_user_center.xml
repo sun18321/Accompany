@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".view.UserCenterActivity"
+    >
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        >
+
+        <ImageView
+            tools:src="@mipmap/head_default"
+            android:id="@+id/img_head"
+            android:scaleType="fitXY"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="-30dp"
+            />
+
+        <RelativeLayout
+            android:id="@+id/rl_back"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/back_backgroud"
+            android:layout_marginLeft="20dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp">
+
+            <ImageView
+                android:src="@drawable/back"
+                android:layout_centerInParent="true"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_edit"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/back_backgroud"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp">
+
+            <ImageView
+                android:src="@drawable/edit"
+                android:layout_centerInParent="true"
+                android:layout_width="20dp"
+                android:layout_height="20dp" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_sign"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/color_white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:id="@+id/lin_gender"
+            android:layout_above="@id/tv_sign"
+            android:layout_marginLeft="10dp"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:gravity="center_vertical"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            >
+            <ImageView
+                android:id="@+id/img_gender"
+                tools:src="@drawable/male"
+                android:layout_width="10dp"
+                android:layout_height="10dp" />
+            <TextView
+                android:id="@+id/tv_age"
+                tools:text="99"
+                android:textSize="12sp"
+                android:gravity="center"
+                android:layout_marginLeft="5dp"
+                android:textColor="@color/color_white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:textSize="26sp"
+            android:textColor="@color/color_white"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_above="@id/lin_gender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/btn_attention"
+            android:text="@string/attention"
+            android:textColor="@color/color_white"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/btn_bg"
+            android:layout_width="80dp"
+            android:layout_height="30dp" />
+
+            <TextView
+                android:id="@+id/place_fans"
+                android:text="@string/fans"
+                android:textColor="@color/color_white"
+                android:textSize="16sp"
+                android:layout_above="@id/btn_attention"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="70dp"
+                android:layout_marginBottom="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/tv_fans"
+                android:textSize="16sp"
+                tools:text="999"
+                android:layout_above="@id/btn_attention"
+                android:layout_marginRight="30dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="10dp"
+                android:textColor="@color/color_white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+    <android.support.v7.widget.CardView
+        android:layout_marginTop="20dp"
+        app:cardElevation="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_marginTop="10dp"
+            android:background="@color/color_white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            >
+
+
+            <TextView
+                android:text="@string/data"
+                android:textSize="16sp"
+                android:textColor="@color/color_black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                />
+
+            <View
+                android:background="@color/color_gray"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
+
+            <LinearLayout
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="10dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:textSize="14sp"
+                    android:text="@string/nick_name"
+                    android:textColor="@color/color_gray"
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/tv_bottom_name"
+                    android:layout_marginLeft="20dp"
+                    android:textColor="@color/color_black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="10dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:textSize="14sp"
+                    android:text="@string/id"
+                    android:textColor="@color/color_gray"
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/tv_id"
+                    android:layout_marginLeft="20dp"
+                    android:textColor="@color/color_black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="10dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:textSize="14sp"
+                    android:text="@string/interest"
+                    android:textColor="@color/color_gray"
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/tv_interest"
+                    android:layout_marginLeft="20dp"
+                    android:textColor="@color/color_black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/lin_operation"
+        android:padding="10dp"
+        android:orientation="horizontal"
+        android:background="@color/color_white"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        >
+
+        <Button
+            android:id="@+id/btn_chat"
+            android:text="@string/chat"
+            android:textColor="@color/colorPrimary"
+            android:background="@drawable/btn_chat_bg"
+            android:layout_marginLeft="10dp"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/btn_order"
+            android:textColor="@color/color_white"
+            android:text="@string/order"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_order_bg"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            />
+
+
+    </LinearLayout>
+
+</RelativeLayout>
