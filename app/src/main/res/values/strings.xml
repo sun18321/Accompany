@@ -19,11 +19,11 @@
     <string name="phone_beyond">手机号位数超出限制!</string>
     <string name="attention">关注</string>
     <string name="fans">粉丝</string>
-    <string name="member">会员</string>
     <string name="service">在线客服</string>
     <string name="master">申请大神</string>
     <string name="setting">设置</string>
-    <string name="my_order">订单</string>
+    <string name="my_order">我的订单</string>
+    <string name="wallet">我的钱包</string>
     <string name="data">资料</string>
     <string name="nick_name">昵称</string>
     <string name="id">ID</string>
@@ -86,6 +86,32 @@
     <string name="birthday_first">请先选择生日</string>
     <string name="head_image_first">请先上传头像</string>
     <string name="user_update">个人信息已更新</string>
+    <string name="order_no_pay">待支付</string>
+    <string name="order_pay_complete">已支付</string>
+    <string name="order_quit">已退款</string>
+    <string name="order_service">正在服务</string>
+    <string name="order_complete">已完成</string>
+    <string name="order_to_comment">待评价</string>
+    <string name="order_comment">已评价</string>
+    <string name="order_error">订单异常</string>
+    <string name="app_copy_right">Copyright©2019</string>
+    <string name="company_name">上海羽迹网络科技有限公司 版权所有</string>
+    <string name="setting_sound">音效设置</string>
+    <string name="setting_privacy">隐私设置</string>
+    <string name="setting_notice">消息提醒</string>
+    <string name="privacy_default">默认</string>
+    <string name="privacy_open">对他人显示距离</string>
+    <string name="privacy_close">关闭</string>
+    <string name="privacy_close_detail">对他人不显示距离</string>
+    <string name="constellation">星座</string>
+    <string name="game">游戏</string>
+    <string name="invite_code">邀请码</string>
+    <string name="invite_tips">推荐朋友填写您的邀请码可参与运营活动领取礼品</string>
+    <string name="invite_copy">复制邀请码</string>
+    <string name="input_invite">填写邀请码</string>
+    <string name="invite_submit">提交</string>
+    <string name="invite_limit">每位用户只能填写一次邀请码，并且不能填写自己的哦^_^!</string>
+
 
     <string name="developing">开发中…</string>
 

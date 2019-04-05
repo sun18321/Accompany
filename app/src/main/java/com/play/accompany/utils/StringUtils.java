@@ -27,6 +27,7 @@ public class StringUtils {
         for (int i =0;i<list.size();i++) {
             String s = integer2String(list.get(i));
             if (i == 2) {
+                sb.append(AccompanyApplication.getContext().getResources().getString(R.string.vertical));
                 sb.append("...");
                 break;
             }

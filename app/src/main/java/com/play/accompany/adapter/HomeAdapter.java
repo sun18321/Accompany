@@ -148,7 +148,7 @@ public class HomeAdapter extends RecyclerView.Adapter {
             mBanner.setBannerAnimation(Transformer.DepthPage);
             mBanner.isAutoPlay(true);
             mBanner.setDelayTime(5000);
-            mBanner.setIndicatorGravity(BannerConfig.CENTER);
+            mBanner.setIndicatorGravity(BannerConfig.RIGHT);
             mBanner.setOnBannerListener(new OnBannerListener() {
                 @Override
                 public void OnBannerClick(int position) {

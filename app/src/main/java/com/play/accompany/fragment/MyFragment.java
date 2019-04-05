@@ -1,16 +1,11 @@
 package com.play.accompany.fragment;
 
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -20,22 +15,19 @@ import com.play.accompany.bean.UserInfo;
 import com.play.accompany.constant.IntentConstant;
 import com.play.accompany.constant.SpConstant;
 import com.play.accompany.db.AccompanyDatabase;
-import com.play.accompany.utils.GsonUtils;
 import com.play.accompany.utils.SPUtils;
 import com.play.accompany.view.AllOrderActivity;
-import com.play.accompany.view.MainActivity;
+import com.play.accompany.view.InviteCodeActivity;
+import com.play.accompany.view.SettingActivity;
 import com.play.accompany.view.UserCenterActivity;
-import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
 import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import jp.wasabeef.glide.transformations.BlurTransformation;
@@ -150,7 +142,10 @@ public class MyFragment extends BaseFragment {
         if (!TextUtils.isEmpty(url)) {
             glideFuzzy(url);
         }
-
+        String name = mUserInfo.getName();
+        String userId = mUserInfo.getUserId();
+        mTvName.setText(getResources().getString(R.string.nick_name) + ":" + name);
+        mTvId.setText(getResources().getString(R.string.id) + ":" + userId);
     }
 
     private void glideFuzzy(String url) {
@@ -162,7 +157,7 @@ public class MyFragment extends BaseFragment {
     }
 
     private void initItems() {
-//        QMUICommonListItemView item_member = mGroupListView.createItemView(ContextCompat.getDrawable(mContext, R.drawable.member), getResources().getString(R.string.member), "",
+//        QMUICommonListItemView item_member = mGroupListView.createItemView(ContextCompat.getDrawable(mContext, R.drawable.invite), getResources().getString(R.string.invite), "",
 //                QMUICommonListItemView.HORIZONTAL, QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
 //        QMUICommonListItemView item_service = mGroupListView.createItemView(ContextCompat.getDrawable(mContext, R.drawable.service), getResources().getString(R.string.service), "",
 //                QMUICommonListItemView.HORIZONTAL, QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
@@ -171,13 +166,16 @@ public class MyFragment extends BaseFragment {
 //        QMUICommonListItemView item_setting = mGroupListView.createItemView(ContextCompat.getDrawable(mContext, R.drawable.setting), getResources().getString(R.string.setting), "",
 //                QMUICommonListItemView.HORIZONTAL, QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
 
+        QMUICommonListItemView itemWallet = mGroupListView.createItemView(getResources().getString(R.string.wallet));
+        itemWallet.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.money));
+        itemWallet.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
+        itemWallet.setDetailText("12,345币");
+
         QMUICommonListItemView itemOrder = mGroupListView.createItemView(getResources().getString(R.string.my_order));
         itemOrder.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.order));
         itemOrder.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
-
-        QMUICommonListItemView itemMember = mGroupListView.createItemView(getResources().getString(R.string.member));
-        itemMember.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.member));
-        itemMember.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
+        itemOrder.setRedDotPosition(QMUICommonListItemView.REDDOT_POSITION_RIGHT);
+        itemOrder.showRedDot(true);
 
         QMUICommonListItemView itemServices = mGroupListView.createItemView(getResources().getString(R.string.service));
         itemServices.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.service));
@@ -187,19 +185,23 @@ public class MyFragment extends BaseFragment {
         itemMaster.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.master));
         itemMaster.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
 
+        QMUICommonListItemView itemAdvice = mGroupListView.createItemView(getResources().getString(R.string.invite_code));
+        itemAdvice.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.invite));
+        itemAdvice.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
+
         QMUICommonListItemView itemSetting = mGroupListView.createItemView(getResources().getString(R.string.setting));
         itemSetting.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.setting));
         itemSetting.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
 
-        QMUIGroupListView.newSection(mContext).addItemView(itemOrder, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(mContext, AllOrderActivity.class));
-            }
-        }).addItemView(itemMember, new View.OnClickListener() {
+        QMUIGroupListView.newSection(mContext).addItemView(itemWallet, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+            }
+        }).addItemView(itemOrder, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(mContext, AllOrderActivity.class));
             }
         }).addItemView(itemServices, new View.OnClickListener() {
             @Override
@@ -211,10 +213,16 @@ public class MyFragment extends BaseFragment {
             public void onClick(View v) {
 
             }
+        }).addItemView(itemAdvice, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(mContext, InviteCodeActivity.class
+                ));
+            }
         }).addItemView(itemSetting, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                startActivity(new Intent(mContext, SettingActivity.class));
             }
         }).addTo(mGroupListView);
     }

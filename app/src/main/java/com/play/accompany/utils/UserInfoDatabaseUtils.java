@@ -12,7 +12,7 @@ public class UserInfoDatabaseUtils {
         if (userInfo == null) {
             return;
         }
-        //存入数据库的同时，将token，gold,userid存入sp，使用更方便
+        //存入数据库的同时，将token，gold,userid,邀请码，存入sp，使用更方便
         String token = userInfo.getToken();
         if (!TextUtils.isEmpty(token)) {
             SPUtils.getInstance().put(SpConstant.APP_TOKEN, token);
@@ -26,6 +26,11 @@ public class UserInfoDatabaseUtils {
         final String userId = userInfo.getUserId();
         if (!TextUtils.isEmpty(userId)) {
             SPUtils.getInstance().put(SpConstant.MY_USER_ID, userId);
+        }
+
+        String inviteCode = userInfo.getInviteCode();
+        if (!TextUtils.isEmpty(inviteCode)) {
+            SPUtils.getInstance().put(SpConstant.MY_INVITE_CODE, inviteCode);
         }
 
         ThreadPool.newInstance().add(new Runnable() {

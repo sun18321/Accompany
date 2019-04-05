@@ -8,4 +8,6 @@ public class SpConstant {
     public static String MY_GOLDEN = "my_golden";
 
     public static String IS_USER_EDIT = "is_user_edit";
+
+    public static String MY_INVITE_CODE = "my_invite_code";
 }
