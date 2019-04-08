@@ -3,6 +3,7 @@ package com.play.accompany.utils;
 import android.text.TextUtils;
 
 import com.play.accompany.bean.UserInfo;
+import com.play.accompany.constant.OtherConstant;
 import com.play.accompany.constant.SpConstant;
 import com.play.accompany.db.AccompanyDatabase;
 import com.play.accompany.view.AccompanyApplication;
@@ -31,6 +32,24 @@ public class UserInfoDatabaseUtils {
         String inviteCode = userInfo.getInviteCode();
         if (!TextUtils.isEmpty(inviteCode)) {
             SPUtils.getInstance().put(SpConstant.MY_INVITE_CODE, inviteCode);
+        }
+
+        Integer inviteFlag = userInfo.getInviteFlag();
+        if (inviteFlag != null) {
+            int flag = inviteFlag;
+            boolean invited;
+            if (flag == OtherConstant.INVITE_SUBMITED) {
+                invited = true;
+            } else {
+                invited = false;
+            }
+            SPUtils.getInstance().put(SpConstant.INVITE_FLAG, invited);
+        }
+
+        Integer inviteNum = userInfo.getInviteNum();
+        if (inviteNum != null) {
+            int num = inviteNum;
+            SPUtils.getInstance().put(SpConstant.INVITE_NUMBER, num);
         }
 
         ThreadPool.newInstance().add(new Runnable() {

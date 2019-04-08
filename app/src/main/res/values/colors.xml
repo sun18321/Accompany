@@ -18,6 +18,9 @@
     <color name="color_transparent">#00000000</color>
     <color name="color_order_gray">#9B9C9D</color>
     <color name="color_invite_gray">#A17568</color>
+    <color name="color_order_pay">#199513</color>
+    <color name="color_order_complete">#838383</color>
+    <color name="color_order_tip">#E6843A</color>
 
     <color name="splash_bg">#5DB9FC</color>
     <color name="color_pick_gray">#F3F3F3</color>

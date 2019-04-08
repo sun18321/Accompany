@@ -10,4 +10,8 @@ public class SpConstant {
     public static String IS_USER_EDIT = "is_user_edit";
 
     public static String MY_INVITE_CODE = "my_invite_code";
+
+    public static String INVITE_FLAG = "invite_flag";
+
+    public static String INVITE_NUMBER = "invite_number";
 }

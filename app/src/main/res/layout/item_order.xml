@@ -24,8 +24,8 @@
     <com.makeramen.roundedimageview.RoundedImageView
         android:layout_centerVertical="true"
         android:id="@+id/img_head"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
         app:riv_corner_radius="5dp"
         android:src="@mipmap/head_default"
         />
@@ -40,9 +40,9 @@
 
         <TextView
             android:id="@+id/tv_name"
-            android:textSize="18sp"
+            android:textSize="14sp"
             tools:text="就是名字啊"
-            android:textColor="@color/color_black"
+            android:textColor="@color/color_title_orange"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -50,7 +50,7 @@
             android:id="@+id/tv_type"
             tools:text="魔兽争霸"
             android:layout_marginTop="2dp"
-            android:textSize="14sp"
+            android:textSize="12sp"
             android:textColor="@color/color_black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -59,7 +59,7 @@
             android:id="@+id/tv_time"
             tools:text="魔兽争霸"
             android:layout_marginTop="2dp"
-            android:textSize="14sp"
+            android:textSize="12sp"
             android:textColor="@color/color_black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -68,22 +68,46 @@
             android:id="@+id/tv_price"
             tools:text="魔兽争霸"
             android:layout_marginTop="2dp"
-            android:textSize="14sp"
+            android:textSize="12sp"
             android:textColor="@color/color_price_red"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/tv_state"
+
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:textSize="20sp"
-        tools:text="已支付"
-        android:textColor="@color/color_price_red"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginRight="14dp"
+        android:gravity="center"
+        >
 
+        <TextView
+            android:id="@+id/tv_state"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
+            android:paddingLeft="14dp"
+            android:paddingRight="14dp"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textSize="14sp"
+            tools:text="12344"
+            tools:background="@drawable/btn_order_bg"
+            android:textColor="@color/color_white"/>
+
+        <TextView
+            android:id="@+id/tv_tips"
+            android:textColor="@color/color_order_tip"
+            android:textSize="8sp"
+            android:layout_marginTop="2dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+
+    </LinearLayout>
 </RelativeLayout>
 </android.support.v7.widget.CardView>

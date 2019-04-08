@@ -107,7 +107,7 @@
             >
 
             <ImageView
-                android:src="@mipmap/star_blue"
+                android:src="@mipmap/star_full"
                 android:layout_width="16dp"
                 android:layout_height="16dp"/>
 

@@ -12,7 +12,7 @@ import retrofit2.http.POST;
 public interface NetService {
 
 
-//    @POST("register")
+    //    @POST("register")
 //    Observable<BaseResponse> register(@Body RequestBody body);
 //
     @POST("getUserList")
@@ -45,4 +45,9 @@ public interface NetService {
     @POST("uploadIcon")
     Observable<BaseResponse> upLoadImage(@Body RequestBody body);
 
+    @POST("orderEvaluable")
+    Observable<BaseResponse> sendComment(@Body RequestBody body);
+
+    @POST("order")
+    Observable<BaseResponse> acceptOrder(@Body RequestBody body);
 }

@@ -92,6 +92,49 @@ public class AccompanyRequest{
         observable.subscribeOn(Schedulers.io()).subscribe();
     }
 
+    public void requestDealToast(Observable<BaseResponse> observable, String success, String failed) {
+        if (!NetUtils.isNetworkConnected(AccompanyApplication.getContext())) {
+            Toast.makeText(AccompanyApplication.getContext(), AccompanyApplication.getContext().getResources().getString(R.string.no_net), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<BaseResponse>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                mDisposable = d;
+            }
+
+            @Override
+            public void onNext(BaseResponse baseResponse) {
+                String recEncode = baseResponse.getRecEncode();
+                try {
+                    String desDecrypt = CipherUtil.desDecrypt(recEncode);
+                    OnlyCodeBean bean = GsonUtils.fromJson(desDecrypt, OnlyCodeBean.class);
+                    if (bean != null) {
+                        if (bean.getCode() == AppConstant.RESPONSE_SUCCESS) {
+                            Toast.makeText(AccompanyApplication.getContext(), AccompanyApplication.getContext().getResources().getString(R.string.comment_success), Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(AccompanyApplication.getContext(), AccompanyApplication.getContext().getResources().getString(R.string.comment_failed), Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(AccompanyApplication.getContext(), AccompanyApplication.getContext().getResources().getString(R.string.comment_failed), Toast.LENGTH_SHORT).show();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Toast.makeText(AccompanyApplication.getContext(), AccompanyApplication.getContext().getResources().getString(R.string.service_failed), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
+    }
+
 
     public void requestBackString(Observable<BaseResponse> observable, StringListener listener) {
         mStringListener = listener;

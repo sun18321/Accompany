@@ -17,6 +17,7 @@ import com.makeramen.roundedimageview.RoundedImageView;
 import com.play.accompany.R;
 import com.play.accompany.base.BaseActivity;
 import com.play.accompany.bean.BaseDecodeBean;
+import com.play.accompany.bean.IntentPayInfo;
 import com.play.accompany.bean.OrderBean;
 import com.play.accompany.bean.ResponseCreateOrder;
 import com.play.accompany.bean.UserInfo;
@@ -64,6 +65,7 @@ public class OrderActivity extends BaseActivity implements View.OnClickListener 
     private long mServiceTime = 0;
     private String mTargetId;
     private int mTypeGame = 0;
+    private String mGameName = null;
 
 
     @Override
@@ -190,8 +192,8 @@ public class OrderActivity extends BaseActivity implements View.OnClickListener 
                     if (listGame.size() == 1 && index == 1) {
                         index = 0;
                     }
-                    String game = listGame.get(index);
-                    mTvType.setText(game);
+                    mGameName = listGame.get(index);
+                    mTvType.setText(mGameName);
                     mTypeGame = gameType.get(index);
                     mTypeDialog.dismiss();
                 }
@@ -287,10 +289,12 @@ public class OrderActivity extends BaseActivity implements View.OnClickListener 
                 dismissDialog();
                 ResponseCreateOrder order = list.get(0);
                 String orderId = order.getOrderId();
+                String detail = mPrice + getResources().getString(R.string.price) + "*" + mCount;
+                int all = mPrice * mCount;
                 Intent intent = new Intent(OrderActivity.this, OrderPayActivity.class);
-                intent.putExtra(IntentConstant.INTENT_PAY_ID, orderId);
-                intent.putExtra(IntentConstant.INTENT_USER, mHome);
-                intent.putExtra(IntentConstant.INTENT_ORDER, bean);
+                IntentPayInfo info = new IntentPayInfo(mHome.getUrl(), mHome.getName(), mGameName, detail,
+                        all, orderId);
+                intent.putExtra(IntentConstant.INTENT_PAY_INFO, info);
                 startActivity(intent);
                 OrderActivity.this.finish();
             }

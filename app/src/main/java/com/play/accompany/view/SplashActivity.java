@@ -39,6 +39,7 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import okhttp3.RequestBody;
+import okhttp3.internal.http2.ErrorCode;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
 import permissions.dispatcher.OnPermissionDenied;
@@ -160,7 +161,7 @@ public class SplashActivity extends BaseActivity {
 
             @Override
             public void onFailed(int errCode) {
-                if (errCode == AppConstant.ERROR_TOKEN) {
+                if (errCode == AppConstant.ERROR_TOKEN || errCode == AppConstant.ERROR_NO_USER) {
                     startActivity(new Intent(SplashActivity.this, AccountActivity.class));
                     SplashActivity.this.finish();
                 }

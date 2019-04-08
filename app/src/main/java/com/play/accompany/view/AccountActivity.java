@@ -37,6 +37,7 @@ import com.play.accompany.utils.EncodeUtils;
 import com.play.accompany.utils.GsonUtils;
 import com.play.accompany.utils.LogUtils;
 import com.play.accompany.utils.SPUtils;
+import com.play.accompany.utils.ToastUtils;
 import com.play.accompany.utils.UserInfoDatabaseUtils;
 
 import java.util.List;
@@ -156,7 +157,7 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
         if (AppUtils.isMobileNumber(phone)) {
             requestCode(phone);
         } else {
-            Toast.makeText(AccountActivity.this, getResources().getString(R.string.phone_error), Toast.LENGTH_SHORT).show();
+            ToastUtils.showCenterToast(getResources().getString(R.string.phone_error));
         }
     }
 

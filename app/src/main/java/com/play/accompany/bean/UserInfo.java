@@ -77,6 +77,27 @@ public class UserInfo implements Serializable {
     @ColumnInfo(name = "user_token")
     private String token;
 
+    @Ignore
+    private Integer inviteFlag;
+
+    @Ignore
+    private Integer inviteNum;
+
+    public Integer getInviteFlag() {
+        return inviteFlag;
+    }
+
+    public void setInviteFlag(Integer inviteFlag) {
+        this.inviteFlag = inviteFlag;
+    }
+
+    public Integer getInviteNum() {
+        return inviteNum;
+    }
+
+    public void setInviteNum(Integer inviteNum) {
+        this.inviteNum = inviteNum;
+    }
 
     public Integer getDatabaseId() {
         return databaseId;
@@ -122,7 +143,7 @@ public class UserInfo implements Serializable {
         return type;
     }
 
-    public void setType(int type) {
+    public void setType(Integer type) {
         this.type = type;
     }
 
@@ -130,7 +151,7 @@ public class UserInfo implements Serializable {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(Integer price) {
         this.price = price;
     }
 
@@ -138,7 +159,7 @@ public class UserInfo implements Serializable {
         return gold;
     }
 
-    public void setGold(int gold) {
+    public void setGold(Integer gold) {
         this.gold = gold;
     }
 
@@ -162,7 +183,7 @@ public class UserInfo implements Serializable {
         return lbs;
     }
 
-    public void setLbs(int lbs) {
+    public void setLbs(Integer lbs) {
         this.lbs = lbs;
     }
 

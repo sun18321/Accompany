@@ -1,18 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".view.AccountActivity"
-    android:fitsSystemWindows="true"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              tools:context=".view.AccountActivity"
+              android:orientation="vertical"
+              android:fitsSystemWindows="true"
     >
 
     <include layout="@layout/toolbar_title"/>
 
+    <RelativeLayout
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/round_background"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:src="@mipmap/splash_log"
+            android:layout_width="80dp"
+            android:layout_height="80dp"/>
+    </RelativeLayout>
+
+
     <android.support.design.widget.TextInputLayout
-        android:layout_marginTop="120dp"
         android:id="@+id/input_account"
+        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:counterEnabled="true"
@@ -33,7 +48,6 @@
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
-        android:layout_below="@id/input_account"
         android:layout_marginTop="20dp"
         android:id="@+id/input_code"
         android:layout_width="match_parent"
@@ -57,7 +71,6 @@
 
     <LinearLayout
         android:layout_marginTop="20dp"
-        android:layout_below="@id/input_code"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -88,4 +101,4 @@
     </LinearLayout>
 
 
-</RelativeLayout>
+</LinearLayout>

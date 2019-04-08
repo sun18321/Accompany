@@ -14,6 +14,7 @@ import com.makeramen.roundedimageview.RoundedImageView;
 import com.play.accompany.R;
 import com.play.accompany.base.BaseActivity;
 import com.play.accompany.bean.BaseDecodeBean;
+import com.play.accompany.bean.IntentPayInfo;
 import com.play.accompany.bean.OnlyCodeBean;
 import com.play.accompany.bean.OrderBean;
 import com.play.accompany.bean.PayBean;
@@ -43,11 +44,10 @@ public class OrderPayActivity extends BaseActivity implements View.OnClickListen
     private ImageView mImgAppCheck;
     private ImageView mImgWechatCheck;
     private ImageView mImgAlipayCheck;
-    private String mId;
-    private UserInfo mUserInfo;
-    private OrderBean mOrderBean;
     private int mAll;
     private Button mBtnPay;
+    private IntentPayInfo mInfo;
+    private String mOrderId;
 
     @Override
     protected int getLayout() {
@@ -75,7 +75,7 @@ public class OrderPayActivity extends BaseActivity implements View.OnClickListen
         findViewById(R.id.rl_alipay).setOnClickListener(this);
         findViewById(R.id.rl_wechat).setOnClickListener(this);
 
-        if (mUserInfo == null || mOrderBean == null || mId == null) {
+        if (mInfo == null) {
             Toast.makeText(this, getResources().getString(R.string.data_error), Toast.LENGTH_SHORT).show();
             this.finish();
         } else {
@@ -87,9 +87,7 @@ public class OrderPayActivity extends BaseActivity implements View.OnClickListen
     protected void parseIntent() {
         Intent intent = getIntent();
         if (intent != null) {
-            mUserInfo = (UserInfo) intent.getSerializableExtra(IntentConstant.INTENT_USER);
-            mOrderBean = (OrderBean) intent.getSerializableExtra(IntentConstant.INTENT_ORDER);
-            mId = intent.getStringExtra(IntentConstant.INTENT_PAY_ID);
+            mInfo = (IntentPayInfo) intent.getSerializableExtra(IntentConstant.INTENT_PAY_INFO);
         } else {
             Toast.makeText(this, getResources().getString(R.string.data_error), Toast.LENGTH_SHORT).show();
             this.finish();
@@ -97,18 +95,17 @@ public class OrderPayActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void setViews() {
-        String url = mUserInfo.getUrl();
+        String url = mInfo.getUrl();
         if (!TextUtils.isEmpty(url)) {
             Glide.with(this).load(url).into(mImgHead);
         }
-        mTvName.setText(mUserInfo.getName());
-        int typeGame = mOrderBean.getTypeGame();
-        String game = StringUtils.getGameString(typeGame);
+        mTvName.setText(mInfo.getName());
+        String game = mInfo.getGame();
         mTvType.setText(game);
-        int price = mOrderBean.getPrice();
-        int count = mOrderBean.getNum();
-        mTvDetail.setText(price + getResources().getString(R.string.price) + " * " + count);
-        mAll = price * count;
+        String detail = mInfo.getDetail();
+        mTvDetail.setText(detail);
+        mOrderId = mInfo.getId();
+        mAll = mInfo.getAll();
         mBtnPay.setText(getResources().getString(R.string.button_pay) + mAll + getResources().getString(R.string.money));
     }
 
@@ -116,7 +113,7 @@ public class OrderPayActivity extends BaseActivity implements View.OnClickListen
         showDialog();
         PayBean bean = new PayBean();
         bean.setToken(SPUtils.getInstance().getString(SpConstant.APP_TOKEN));
-        bean.setId(mId);
+        bean.setId(mOrderId);
         String json = GsonUtils.toJson(bean);
         RequestBody body = EncodeUtils.encodeInBody(json);
         AccompanyRequest request = new AccompanyRequest();
