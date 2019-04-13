@@ -3,12 +3,18 @@ package com.play.accompany.view;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.nfc.Tag;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextPaint;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -107,6 +113,26 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
                 }
             }
         });
+
+        TextView tvRule = findViewById(R.id.tv_rule);
+        ClickableSpan clickableSpan = new ClickableSpan() {
+            @Override
+            public void onClick(@NonNull View widget) {
+                startActivity(new Intent(AccountActivity.this, RuleActivity.class));
+            }
+
+            @Override
+            public void updateDrawState(@NonNull TextPaint ds) {
+                super.updateDrawState(ds);
+
+                ds.setColor(getResources().getColor(R.color.colorPrimary));
+            }
+        };
+
+        SpannableString spannableString = new SpannableString(getResources().getString(R.string.login_rule));
+        spannableString.setSpan(clickableSpan,7,11, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        tvRule.setText(spannableString);
+        tvRule.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     private void requestCode(String num) {

@@ -88,6 +88,8 @@ public class EditUserActivity extends BaseActivity implements View.OnClickListen
     private int mGender = -1;
     private String mBirthday = null;
     private String mUrl;
+    private TextView mTvConstellation;
+    private String mConstellation;
 
     @Override
     protected int getLayout() {
@@ -115,6 +117,7 @@ public class EditUserActivity extends BaseActivity implements View.OnClickListen
         mLinBirthday = findViewById(R.id.lin_birthday);
         mTvBirthday = findViewById(R.id.tv_birthday);
         mEditSign = findViewById(R.id.edit_sign);
+        mTvConstellation = findViewById(R.id.tv_constellation);
         mHeadImg.setOnClickListener(this);
         mLinBirthday.setOnClickListener(this);
         findViewById(R.id.btn_save).setOnClickListener(this);
@@ -136,7 +139,8 @@ public class EditUserActivity extends BaseActivity implements View.OnClickListen
         mBirthday = mInfo.getDate();
         mTvBirthday.setText(mBirthday);
         mEditSign.setText(mInfo.getSign());
-
+        mConstellation = StringUtils.getConstellationByString(mBirthday);
+        mTvConstellation.setText(mConstellation);
     }
 
     private void saveUser() {
@@ -421,6 +425,9 @@ public class EditUserActivity extends BaseActivity implements View.OnClickListen
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 mBirthday = year + "-" + (month + 1) + "-" + dayOfMonth;
                 mTvBirthday.setText(mBirthday);
+                mConstellation = StringUtils.getConstellation(month + 1, dayOfMonth);
+                mTvConstellation.setText(mConstellation);
+
             }
         }, ymd[0], ymd[1] -1, ymd[2]).show();
     }

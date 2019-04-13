@@ -136,7 +136,7 @@ public class AllOrderActivity extends BaseActivity implements OrderAdapter.Order
         request.requestDealToast(NetFactory.getNetRequest().getNetService().sendComment(body), getResources().getString(R.string.comment_success), getResources().getString(R.string.comment_failed));
     }
 
-    private void acceptOrder(String id, final String success, final String failed) {
+    private void orderNext(String id, final String success, final String failed) {
         AcceptOrderBean bean = new AcceptOrderBean();
         bean.setId(id);
         bean.setToken(SPUtils.getInstance().getString(SpConstant.APP_TOKEN));
@@ -184,6 +184,6 @@ public class AllOrderActivity extends BaseActivity implements OrderAdapter.Order
 
     @Override
     public void onOrderNext(String id,String success,String failed) {
-        acceptOrder(id,success,failed);
+        orderNext(id,success,failed);
     }
 }

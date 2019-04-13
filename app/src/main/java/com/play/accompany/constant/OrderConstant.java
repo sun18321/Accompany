@@ -4,8 +4,6 @@ import com.play.accompany.R;
 import com.play.accompany.bean.OrderState;
 import com.play.accompany.view.AccompanyApplication;
 
-import static com.umeng.analytics.pro.k.a.s;
-
 public class OrderConstant {
 
     private static final int NO_PAY = 1;
@@ -34,19 +32,19 @@ public class OrderConstant {
         switch (orderCode) {
             case NO_PAY:
                 orderState.setStateText(AccompanyApplication.getContext().getResources().getString(R.string.order_state_no_pay));
-                orderState.setStateBackground(R.drawable.btn_pay);
+                orderState.setStateBackground(R.drawable.green_background);
                 orderState.setStateAction(CLICK_JUMP_PAY);
                 orderState.setTip(AccompanyApplication.getContext().getResources().getString(R.string.order_tip_pay));
                 break;
             case PAY:
                 if (isHost) {
                     orderState.setStateText(AccompanyApplication.getContext().getResources().getString(R.string.order_state_start_click));
-                    orderState.setStateBackground(R.drawable.btn_order_bg);
+                    orderState.setStateBackground(R.drawable.blue_background);
                     orderState.setStateAction(CLICK_JUMP_ACCEPT);
                     orderState.setTip(AccompanyApplication.getContext().getResources().getString(R.string.order_tip_wait));
                 } else {
                     orderState.setStateText(AccompanyApplication.getContext().getResources().getString(R.string.order_state_pay));
-                    orderState.setStateBackground(R.drawable.btn_pay);
+                    orderState.setStateBackground(R.drawable.green_background);
                     orderState.setStateAction(CLICK_JUMP_WAIT);
                     orderState.setTip(AccompanyApplication.getContext().getResources().getString(R.string.order_tip_wait));
                 }
@@ -58,30 +56,30 @@ public class OrderConstant {
                 if (isHost) {
                     if (currentTime > endTime) {
                         orderState.setStateText(AccompanyApplication.getContext().getResources().getString(R.string.order_state_click_complete));
-                        orderState.setStateBackground(R.drawable.btn_order_bg);
+                        orderState.setStateBackground(R.drawable.blue_background);
                         orderState.setStateAction(CLICK_JUMP_SUBMIT);
                     } else if (currentTime > startTime) {
                         orderState.setStateText(AccompanyApplication.getContext().getResources().getString(R.string.order_state_service));
-                        orderState.setStateBackground(R.drawable.btn_pay);
+                        orderState.setStateBackground(R.drawable.green_background);
                     } else {
                         orderState.setStateText(AccompanyApplication.getContext().getResources().getString(R.string.order_state_click));
-                        orderState.setStateBackground(R.drawable.btn_pay);
+                        orderState.setStateBackground(R.drawable.green_background);
                     }
 
                 }else {
                     orderState.setStateText(AccompanyApplication.getContext().getResources().getString(R.string.order_state_service));
-                    orderState.setStateBackground(R.drawable.btn_pay);
+                    orderState.setStateBackground(R.drawable.green_background);
                     orderState.setStateAction(CLICK_JUMP_SERVICE);
                 }
                 break;
             case QUIT_NO_PAY:
                 orderState.setStateText(AccompanyApplication.getContext().getResources().getString(R.string.order_state_cancel));
-                orderState.setStateBackground(R.drawable.btn_complete);
+                orderState.setStateBackground(R.drawable.gray_background);
                 orderState.setTip(AccompanyApplication.getContext().getResources().getString(R.string.order_tip_no_pay));
                 break;
             case QUIT_PAY:
                 orderState.setStateText(AccompanyApplication.getContext().getResources().getString(R.string.order_state_cancel));
-                orderState.setStateBackground(R.drawable.btn_complete);
+                orderState.setStateBackground(R.drawable.gray_background);
                 orderState.setTip(AccompanyApplication.getContext().getResources().getString(R.string.order_tip_no_wait));
                 break;
             case COMMENT_COMPLETE:
@@ -90,20 +88,20 @@ public class OrderConstant {
             case SERVICE_COMPLETE:
                 orderState.setStateText(AccompanyApplication.getContext().getResources().getString(R.string.order_state_comment));
                 if (!isHost) {
-                    orderState.setStateBackground(R.drawable.btn_order_bg);
+                    orderState.setStateBackground(R.drawable.blue_background);
                     orderState.setStateAction(CLICK_JUMP_COMMENT);
                 } else {
-                    orderState.setStateBackground(R.drawable.btn_pay);
+                    orderState.setStateBackground(R.drawable.green_background);
                 }
                 break;
             case CONFIRM_COMPLETE:
                 orderState.setStateText(AccompanyApplication.getContext().getResources().getString(R.string.order_state_complete));
-                orderState.setStateBackground(R.drawable.btn_complete);
+                orderState.setStateBackground(R.drawable.gray_background);
                 orderState.setStateAction(CLICK_JUMP_COMPLETE);
                 break;
             default:
                 orderState.setStateText(AccompanyApplication.getContext().getResources().getString(R.string.order_state_error));
-                orderState.setStateBackground(R.drawable.btn_complete);
+                orderState.setStateBackground(R.drawable.gray_background);
                 orderState.setStateAction(CLICK_JUMP_ERROR);
         }
         return orderState;

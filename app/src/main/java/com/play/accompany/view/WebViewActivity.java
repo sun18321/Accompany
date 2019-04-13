@@ -32,11 +32,17 @@ public class WebViewActivity extends BaseActivity {
     @Override
     protected void initViews() {
         initToolbar("活动");
+
+//        setStatusColor(R.color.color_red);
+
         WebView webView = findViewById(R.id.webview);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebViewClient(new WebViewClient());
         if (!TextUtils.isEmpty(mUrl)) {
             webView.loadUrl(mUrl);
+
+
+
         }
     }
 

@@ -50,4 +50,10 @@ public interface NetService {
 
     @POST("order")
     Observable<BaseResponse> acceptOrder(@Body RequestBody body);
+
+    @POST("invite")
+    Observable<BaseResponse> inviteCode(@Body RequestBody body);
+
+    @POST("getCfgService")
+    Observable<BaseResponse> getService(@Body RequestBody body);
 }

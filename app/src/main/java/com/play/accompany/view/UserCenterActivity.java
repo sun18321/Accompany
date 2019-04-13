@@ -45,7 +45,6 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     private TextView mTvInterest;
     private Button mBtnChat;
     private Button mBtnOrder;
-    private RelativeLayout mRlEdit;
     private LinearLayout mLinOperation;
     private UserInfo mUserInfo;
     private Disposable mDisposable;
@@ -96,7 +95,6 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         mTvInterest = findViewById(R.id.tv_interest);
         mBtnChat = findViewById(R.id.btn_chat);
         mBtnOrder = findViewById(R.id.btn_order);
-        mRlEdit = findViewById(R.id.rl_edit);
         mLinOperation = findViewById(R.id.lin_operation);
 
         findViewById(R.id.rl_back).setOnClickListener(new View.OnClickListener() {
@@ -110,13 +108,11 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
             mBtnAttention.setVisibility(View.INVISIBLE);
             mLinOperation.setVisibility(View.INVISIBLE);
         } else {
-            mRlEdit.setVisibility(View.INVISIBLE);
         }
 
         mBtnOrder.setOnClickListener(this);
         mBtnAttention.setOnClickListener(this);
         mBtnChat.setOnClickListener(this);
-        mRlEdit.setOnClickListener(this);
 
         if (mUserInfo != null) {
             setViews();
@@ -206,12 +202,6 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
             case R.id.btn_attention:
                 break;
             case R.id.btn_chat:
-                break;
-            case R.id.rl_edit:
-                Intent intent = new Intent(this, EditUserActivity.class);
-                intent.putExtra(IntentConstant.INTENT_CODE, EditUserActivity.INTENT_EDIT);
-                intent.putExtra(IntentConstant.INTENT_USER, mUserInfo);
-                startActivity(intent);
                 break;
         }
     }

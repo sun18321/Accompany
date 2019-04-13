@@ -14,7 +14,7 @@
         android:layout_height="match_parent"
         >
 
-        <include layout="@layout/toolbar_title" />
+        <include layout="@layout/blue_toolbar" />
         <com.scwang.smartrefresh.layout.SmartRefreshLayout
             android:id="@+id/refresh_layout"
             android:layout_width="match_parent"

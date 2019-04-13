@@ -10,7 +10,7 @@
     android:fitsSystemWindows="true"
     >
 
-    <include layout="@layout/toolbar_title"/>
+    <include layout="@layout/blue_toolbar"/>
 
     <LinearLayout
         android:padding="20dp"

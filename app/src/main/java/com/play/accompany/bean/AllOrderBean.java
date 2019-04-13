@@ -33,6 +33,24 @@ public class AllOrderBean {
     private String name;
     private String showId;
     private String url;
+    private int evaluateGrade;
+    private String evaluate;
+
+    public int getEvaluateGrade() {
+        return evaluateGrade;
+    }
+
+    public void setEvaluateGrade(int evaluateGrade) {
+        this.evaluateGrade = evaluateGrade;
+    }
+
+    public String getEvaluate() {
+        return evaluate;
+    }
+
+    public void setEvaluate(String evaluate) {
+        this.evaluate = evaluate;
+    }
 
     public String getId() {
         return id;

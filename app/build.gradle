@@ -61,5 +61,6 @@ dependencies {
         exclude group: "com.android.support"
     }
     annotationProcessor 'android.arch.persistence.room:compiler:1.1.1'
+    implementation 'com.hyman:flowlayout-lib:1.1.2'
 
 }

@@ -9,6 +9,7 @@ import com.play.accompany.view.AccompanyApplication;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -234,5 +235,25 @@ public class StringUtils {
 
         }
         return result;
+    }
+
+    public static String moneyExchange(int money) {
+        DecimalFormat df = new DecimalFormat("#,###");
+        return df.format(money);
+    }
+
+    private final static int[] dayArr = new int[] { 20, 19, 21, 20, 21, 22, 23, 23, 23, 24, 23, 22 };
+    private final static String[] constellationArr = new String[] { "摩羯座", "水瓶座", "双鱼座", "白羊座", "金牛座", "双子座", "巨蟹座", "狮子座", "处女座", "天秤座", "天蝎座", "射手座", "摩羯座" };
+
+    public static String getConstellation(int month, int day) {
+        return day < dayArr[month - 1] ? constellationArr[month - 1] : constellationArr[month];
+    }
+
+    public static String getConstellationByString(String birthday) {
+        String[] split = birthday.split("-");
+        if (split.length > 2) {
+           return getConstellation(Integer.parseInt(split[1]), Integer.parseInt(split[2]));
+        }
+        return "";
     }
 }

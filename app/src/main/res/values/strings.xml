@@ -65,6 +65,7 @@
     <string name="user_name">昵称</string>
     <string name="gender">性别</string>
     <string name="age">年龄</string>
+    <string name="birthday">生日</string>
     <string name="sign">签名</string>
     <string name="interesting">兴趣</string>
     <string name="profession">专业</string>
@@ -97,7 +98,7 @@
     <string name="privacy_close_detail">对他人不显示距离</string>
     <string name="constellation">星座</string>
     <string name="game">游戏</string>
-    <string name="invite_code">邀请码</string>
+    <string name="invite_code">我的邀请码</string>
     <string name="invite_tips">推荐朋友填写您的邀请码可参与运营活动领取礼品</string>
     <string name="invite_copy">复制邀请码</string>
     <string name="input_invite">填写邀请码</string>
@@ -125,12 +126,26 @@
     <string name="accept_failed">接单失败</string>
     <string name="submit_success">提交成功</string>
     <string name="submit_failed">提交失败</string>
-
-
+    <string name="location_open">已开启对其他用户显示距离</string>
+    <string name="location_close">已关闭对其他用户显示距离</string>
+    <string name="copy_invite_success">邀请码已复制到剪切板</string>
+    <string name="not_null_invite">邀请码不可为空</string>
+    <string name="invite_is_me">不能填写自己的邀请码</string>
+    <string name="invite_inputed">已填写过邀请码</string>
+    <string name="invite_success">成功提交邀请码</string>
+    <string name="login_rule">登录既表示同意应用条款</string>
     <string name="comment_hint">说说哪里好，其他用户也想知道</string>
     <string name="code_success">验证码已发送</string>
     <string name="code_failed">发送失败，请稍后重试</string>
-    <string name="price_detail_place"><font color="#000000"><small>%1$s</small></font></string>
+    <string name="master_tip">提交大神申请,头像必须是本人,否则会审核不通过!</string>
+    <string name="rule">应用条款</string>
+    <string name="real_name">真实姓名:</string>
+    <string name="id_card">身份证号:</string>
+    <string name="wechat_id">微信提现账号:</string>
+    <string name="accompany_type">陪玩类型:</string>
+
+
+    <string name="price_detail_place"><![CDATA[<font color="#000000"><small>%1$s</small></font>]]></string>
 
 
     <string name="developing">开发中…</string>

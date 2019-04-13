@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <include layout="@layout/toolbar_title"/>
+        <include layout="@layout/blue_toolbar"/>
 
             <com.makeramen.roundedimageview.RoundedImageView
                 android:id="@+id/img_head"
@@ -105,12 +105,36 @@
                     android:layout_height="wrap_content">
 
                     <TextView
-                        android:text="@string/age"
+                        android:text="@string/birthday"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
 
                     <TextView
                         android:id="@+id/tv_birthday"
+                        android:layout_marginLeft="50dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+                <View
+                    android:background="@color/color_order_gray"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"/>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:padding="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:text="@string/constellation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/tv_constellation"
                         android:layout_marginLeft="50dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />

@@ -21,6 +21,9 @@
     <color name="color_order_pay">#199513</color>
     <color name="color_order_complete">#838383</color>
     <color name="color_order_tip">#E6843A</color>
+    <color name="color_red">#FF0000</color>
+    <color name="color_gray_background">#666666</color>
+    <color name="color_activity_default">#EEEEEE</color>
 
     <color name="splash_bg">#5DB9FC</color>
     <color name="color_pick_gray">#F3F3F3</color>

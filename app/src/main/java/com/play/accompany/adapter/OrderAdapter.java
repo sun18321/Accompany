@@ -22,6 +22,7 @@ import com.play.accompany.constant.OrderConstant;
 import com.play.accompany.constant.SpConstant;
 import com.play.accompany.design.CommentDialog;
 import com.play.accompany.utils.DateUtils;
+import com.play.accompany.utils.LogUtils;
 import com.play.accompany.utils.SPUtils;
 import com.play.accompany.utils.StringUtils;
 import com.play.accompany.view.AccompanyApplication;
@@ -103,6 +104,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderHolder>
             String detail = itemView.getContext().getResources().getString(R.string.price_detail_place);
             String format = String.format(detail, content);
             String text = itemView.getContext().getResources().getString(R.string.all_money) + all + itemView.getContext().getResources().getString(R.string.money) + format;
+
             tvPrice.setText(Html.fromHtml(text));
             int state = bean.getState();
             OrderState orderState = OrderConstant.getOrderState(bean.getStartTime(),state, isHost);
@@ -169,6 +171,8 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderHolder>
         void pleaseWait() {
             Toast.makeText(AccompanyApplication.getContext(), AccompanyApplication.getContext().getResources().getString(R.string.order_tips_pay)
                     , Toast.LENGTH_SHORT).show();
+
+
         }
 
         void servicing() {
@@ -177,7 +181,15 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderHolder>
         }
 
         void showCommentDialog(Context context,AllOrderBean bean) {
-            CommentDialog dialog = new CommentDialog(context, bean);
+            int evaluateGrade = bean.getEvaluateGrade();
+            int type;
+            if (evaluateGrade == 0) {
+                type = CommentDialog.COMMENT_PROGRESS;
+            } else {
+                type = CommentDialog.COMMENT_COMPLETE;
+            }
+
+            CommentDialog dialog = new CommentDialog(context, bean, type);
             dialog.show();
             dialog.setCommentListener(new CommentDialog.CommentListener() {
                 @Override

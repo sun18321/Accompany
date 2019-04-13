@@ -14,4 +14,7 @@ public class SpConstant {
     public static String INVITE_FLAG = "invite_flag";
 
     public static String INVITE_NUMBER = "invite_number";
+
+    public static String SHOW_LOCATION = "show_location";
+
 }

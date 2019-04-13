@@ -16,8 +16,12 @@ import com.play.accompany.constant.IntentConstant;
 import com.play.accompany.constant.SpConstant;
 import com.play.accompany.db.AccompanyDatabase;
 import com.play.accompany.utils.SPUtils;
+import com.play.accompany.utils.StringUtils;
 import com.play.accompany.view.AllOrderActivity;
+import com.play.accompany.view.EditUserActivity;
 import com.play.accompany.view.InviteCodeActivity;
+import com.play.accompany.view.MasterActivity;
+import com.play.accompany.view.ServiceActivity;
 import com.play.accompany.view.SettingActivity;
 import com.play.accompany.view.UserCenterActivity;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
@@ -83,6 +87,17 @@ public class MyFragment extends BaseFragment {
 
             }
         });
+
+        view.findViewById(R.id.rl_edit).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, EditUserActivity.class);
+                intent.putExtra(IntentConstant.INTENT_CODE, EditUserActivity.INTENT_EDIT);
+                intent.putExtra(IntentConstant.INTENT_USER, mUserInfo);
+                startActivity(intent);
+            }
+        });
+
         initItems();
     }
 
@@ -169,7 +184,10 @@ public class MyFragment extends BaseFragment {
         QMUICommonListItemView itemWallet = mGroupListView.createItemView(getResources().getString(R.string.wallet));
         itemWallet.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.money));
         itemWallet.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
-        itemWallet.setDetailText("12,345币");
+        TextView detailTextView = itemWallet.getDetailTextView();
+        detailTextView.setTextColor(ContextCompat.getColor(mContext, R.color.color_red));
+        String money = StringUtils.moneyExchange(SPUtils.getInstance().getInt(SpConstant.MY_GOLDEN)) + getResources().getString(R.string.money);
+        itemWallet.setDetailText(money);
 
         QMUICommonListItemView itemOrder = mGroupListView.createItemView(getResources().getString(R.string.my_order));
         itemOrder.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.order));
@@ -206,18 +224,17 @@ public class MyFragment extends BaseFragment {
         }).addItemView(itemServices, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                startActivity(new Intent(mContext, ServiceActivity.class));
             }
         }).addItemView(itemMaster, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                startActivity(new Intent(mContext, MasterActivity.class));
             }
         }).addItemView(itemAdvice, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(mContext, InviteCodeActivity.class
-                ));
+                startActivity(new Intent(mContext, InviteCodeActivity.class));
             }
         }).addItemView(itemSetting, new View.OnClickListener() {
             @Override

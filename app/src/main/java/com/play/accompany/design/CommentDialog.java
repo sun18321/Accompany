@@ -22,16 +22,24 @@ import com.play.accompany.utils.SPUtils;
 import com.play.accompany.view.AccompanyApplication;
 
 public class CommentDialog extends Dialog {
+    public static final int COMMENT_PROGRESS = 1001;
+    public static final int COMMENT_COMPLETE = 1002;
+
     private Context mContext;
     private String mId;
     private CommentListener mListener;
     private AllOrderBean mBean;
+    private int mCodeType;
+    private EditText mEditComment;
+    private RatingBar mRatingBar;
 
-    public CommentDialog(@NonNull Context context, AllOrderBean bean) {
+
+    public CommentDialog(@NonNull Context context, AllOrderBean bean, int codeType) {
         super(context);
 
         mContext = context;
         mBean = bean;
+        mCodeType = codeType;
         init();
     }
 
@@ -47,8 +55,8 @@ public class CommentDialog extends Dialog {
         RoundedImageView headImg = view.findViewById(R.id.img_head);
         TextView tvName = view.findViewById(R.id.tv_name);
         TextView tvDetail= view.findViewById(R.id.tv_details);
-        final EditText editComment = view.findViewById(R.id.edit_comment);
-        final RatingBar ratingBar = view.findViewById(R.id.rate);
+        mEditComment = view.findViewById(R.id.edit_comment);
+        mRatingBar = view.findViewById(R.id.rate);
 
 
         if (mBean != null) {
@@ -70,10 +78,10 @@ public class CommentDialog extends Dialog {
                     CommentBean bean = new CommentBean();
                     bean.setId(mId);
                     bean.setToken(SPUtils.getInstance().getString(SpConstant.APP_TOKEN));
-                    float rating = ratingBar.getRating();
+                    float rating = mRatingBar.getRating();
                     int score = (int) (rating * 2);
                     bean.setEvaluateGrade(score);
-                    String comment = editComment.getText().toString();
+                    String comment = mEditComment.getText().toString();
                     bean.setEvaluate(comment);
 
                     mListener.onComment(bean);

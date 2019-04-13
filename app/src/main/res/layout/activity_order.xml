@@ -286,7 +286,7 @@
             android:id="@+id/btn_submit"
             android:textColor="@color/color_white"
             android:text="@string/submit"
-            android:background="@drawable/btn_order_bg"
+            android:background="@drawable/blue_background"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content" />

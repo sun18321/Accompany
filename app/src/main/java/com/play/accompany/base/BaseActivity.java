@@ -60,6 +60,7 @@ public abstract class BaseActivity extends AppCompatActivity implements DialogIn
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        dismissDialog();
         mDialog = null;
     }
 
