@@ -6,20 +6,36 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.gson.reflect.TypeToken;
 import com.play.accompany.R;
 import com.play.accompany.base.BaseActivity;
+import com.play.accompany.bean.AttentionBean;
+import com.play.accompany.bean.BaseDecodeBean;
+import com.play.accompany.bean.OnlyCodeBean;
 import com.play.accompany.bean.UserInfo;
+import com.play.accompany.constant.AppConstant;
 import com.play.accompany.constant.IntentConstant;
 import com.play.accompany.constant.OtherConstant;
 import com.play.accompany.constant.SpConstant;
 import com.play.accompany.db.AccompanyDatabase;
+import com.play.accompany.net.AccompanyRequest;
+import com.play.accompany.net.NetFactory;
+import com.play.accompany.net.NetListener;
 import com.play.accompany.utils.DateUtils;
+import com.play.accompany.utils.EncodeUtils;
+import com.play.accompany.utils.GsonUtils;
+import com.play.accompany.utils.LogUtils;
 import com.play.accompany.utils.SPUtils;
+import com.play.accompany.utils.StringUtils;
+import com.play.accompany.utils.ToastUtils;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
+
+import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -28,6 +44,7 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.RequestBody;
 
 public class UserCenterActivity extends BaseActivity implements View.OnClickListener {
 
@@ -48,6 +65,12 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     private LinearLayout mLinOperation;
     private UserInfo mUserInfo;
     private Disposable mDisposable;
+    private LinearLayout mLinRate;
+    private TextView mTvRate;
+    private TextView mTvProfession;
+    private boolean mAttention;
+    private boolean mIsNet = false;
+    private TextView mTvConstellation;
 
     @Override
     protected int getLayout() {
@@ -96,6 +119,10 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         mBtnChat = findViewById(R.id.btn_chat);
         mBtnOrder = findViewById(R.id.btn_order);
         mLinOperation = findViewById(R.id.lin_operation);
+        mLinRate = findViewById(R.id.lin_rate);
+        mTvRate = findViewById(R.id.tv_rating);
+        mTvProfession = findViewById(R.id.tv_profession);
+        mTvConstellation = findViewById(R.id.tv_constellation);
 
         findViewById(R.id.rl_back).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,7 +134,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         if (mIsMe) {
             mBtnAttention.setVisibility(View.INVISIBLE);
             mLinOperation.setVisibility(View.INVISIBLE);
-        } else {
+            mLinRate.setVisibility(View.INVISIBLE);
         }
 
         mBtnOrder.setOnClickListener(this);
@@ -143,16 +170,38 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         if (!TextUtils.isEmpty(url)) {
             Glide.with(this).load(url).into(mImgHead);
         }
+        if (!mIsMe) {
+            Double grade = mUserInfo.getGrade();
+            mTvRate.setText("" + grade);
+            Boolean attention = mUserInfo.getAttention();
+            if (attention != null && attention) {
+                mAttention = true;
+                mBtnAttention.setText(getResources().getString(R.string.attention_already));
+            } else {
+                mAttention = false;
+                mBtnAttention.setText(getResources().getString(R.string.attention));
+            }
+        }
+        mTvInterest.setText(mUserInfo.getInterest());
+        mTvProfession.setText(mUserInfo.getProfession());
+        Integer favor = mUserInfo.getFavor();
+        if (favor != null) {
+            mTvFans.setText(favor + "");
+        } else {
+            mTvFans.setText("0");
+        }
+        LogUtils.d(getTag(), "date:" + mUserInfo.getDate());
+//        mTvConstellation.setText(StringUtils.getConstellationByString(mUserInfo.getDate()));
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        boolean isEdit = SPUtils.getInstance().getBoolean(SpConstant.IS_USER_EDIT, false);
-        if (mIsMe && isEdit) {
-            updateData();
-        }
+//        boolean isEdit = SPUtils.getInstance().getBoolean(SpConstant.IS_USER_EDIT, false);
+//        if (mIsMe && isEdit) {
+//            updateData();
+//        }
     }
 
     private void updateData() {
@@ -186,6 +235,83 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         });
     }
 
+    private void dealAttention() {
+        if (mAttention) {
+            new QMUIDialog.MessageDialogBuilder(this).setTitle(getResources().getString(R.string.tips))
+                    .setMessage(getResources().getString(R.string.tips_attention))
+                    .addAction(getResources().getString(R.string.cancel), new QMUIDialogAction.ActionListener() {
+                        @Override
+                        public void onClick(QMUIDialog dialog, int index) {
+                            dialog.dismiss();
+                        }
+                    }).addAction(getResources().getString(R.string.confirm), new QMUIDialogAction.ActionListener() {
+                @Override
+                public void onClick(QMUIDialog dialog, int index) {
+                    dialog.dismiss();
+                    attention();
+                }
+            }).create().show();
+        } else {
+            attention();
+        }
+    }
+
+    private void attention() {
+        if (mIsNet) {
+            return;
+        }
+        showDialog();
+        mIsNet = true;
+        AttentionBean bean = new AttentionBean();
+        bean.setToken(SPUtils.getInstance().getString(SpConstant.APP_TOKEN));
+        bean.setTargetId(mUserInfo.getUserId());
+        if (mAttention) {
+            bean.setFlag(OtherConstant.ATTEMTION_FLAG_CANCEL);
+        } else {
+            bean.setFlag(OtherConstant.ATTENTION_FLAG);
+        }
+        String json = GsonUtils.toJson(bean);
+        RequestBody body = EncodeUtils.encodeInBody(json);
+        AccompanyRequest request = new AccompanyRequest();
+        request.beginRequest(NetFactory.getNetRequest().getNetService().attention(body), new TypeToken<BaseDecodeBean>() {
+                }.getType(), new NetListener() {
+                    @Override
+                    public void onSuccess(Object o) {
+                        mIsNet = false;
+                        dismissDialog();
+                        if (mAttention) {
+                            ToastUtils.showCommonToast(getResources().getString(R.string.attention_cancel_success));
+                            mBtnAttention.setText(getResources().getString(R.string.attention));
+                        } else {
+                            ToastUtils.showCommonToast(getResources().getString(R.string.attention_success));
+                            mBtnAttention.setText(getResources().getString(R.string.attention_already));
+                        }
+                        mAttention = !mAttention;
+                        Intent intent = new Intent(AppConstant.BROADCAST_ATTENTION);
+                        intent.putExtra(IntentConstant.INTENT_USER_ID, mUserInfo.getUserId());
+                        sendBroadcast(intent);
+                    }
+
+                    @Override
+                    public void onFailed(int errCode) {
+
+                    }
+
+                    @Override
+                    public void onError() {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        dismissDialog();
+                        mIsNet = false;
+                    }
+                });
+
+    }
+
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -200,6 +326,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
                 }
                 break;
             case R.id.btn_attention:
+                dealAttention();
                 break;
             case R.id.btn_chat:
                 break;

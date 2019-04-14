@@ -92,7 +92,7 @@ public class AccompanyRequest{
         observable.subscribeOn(Schedulers.io()).subscribe();
     }
 
-    public void requestDealToast(Observable<BaseResponse> observable, String success, String failed) {
+    public void requestDealToast(Observable<BaseResponse> observable, final String success, final String failed) {
         if (!NetUtils.isNetworkConnected(AccompanyApplication.getContext())) {
             Toast.makeText(AccompanyApplication.getContext(), AccompanyApplication.getContext().getResources().getString(R.string.no_net), Toast.LENGTH_SHORT).show();
             return;
@@ -111,12 +111,12 @@ public class AccompanyRequest{
                     OnlyCodeBean bean = GsonUtils.fromJson(desDecrypt, OnlyCodeBean.class);
                     if (bean != null) {
                         if (bean.getCode() == AppConstant.RESPONSE_SUCCESS) {
-                            Toast.makeText(AccompanyApplication.getContext(), AccompanyApplication.getContext().getResources().getString(R.string.comment_success), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AccompanyApplication.getContext(), success, Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(AccompanyApplication.getContext(), AccompanyApplication.getContext().getResources().getString(R.string.comment_failed), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AccompanyApplication.getContext(), failed, Toast.LENGTH_SHORT).show();
                         }
                     } else {
-                        Toast.makeText(AccompanyApplication.getContext(), AccompanyApplication.getContext().getResources().getString(R.string.comment_failed), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AccompanyApplication.getContext(), failed, Toast.LENGTH_SHORT).show();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

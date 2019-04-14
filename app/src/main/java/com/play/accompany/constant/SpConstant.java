@@ -17,4 +17,7 @@ public class SpConstant {
 
     public static String SHOW_LOCATION = "show_location";
 
+    public static String USER_TYPE = "user_type";
+
+    public static String ATTENTION_COUNT = "attention_count";
 }

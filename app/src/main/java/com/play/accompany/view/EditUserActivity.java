@@ -90,6 +90,8 @@ public class EditUserActivity extends BaseActivity implements View.OnClickListen
     private String mUrl;
     private TextView mTvConstellation;
     private String mConstellation;
+    private EditText mEditInterest;
+    private EditText mEditProfession;
 
     @Override
     protected int getLayout() {
@@ -117,9 +119,12 @@ public class EditUserActivity extends BaseActivity implements View.OnClickListen
         mLinBirthday = findViewById(R.id.lin_birthday);
         mTvBirthday = findViewById(R.id.tv_birthday);
         mEditSign = findViewById(R.id.edit_sign);
+        mEditInterest = findViewById(R.id.edit_interest);
+        mEditProfession = findViewById(R.id.edit_profession);
         mTvConstellation = findViewById(R.id.tv_constellation);
         mHeadImg.setOnClickListener(this);
         mLinBirthday.setOnClickListener(this);
+
         findViewById(R.id.btn_save).setOnClickListener(this);
         if (mInfo != null) {
             setViews();
@@ -141,6 +146,8 @@ public class EditUserActivity extends BaseActivity implements View.OnClickListen
         mEditSign.setText(mInfo.getSign());
         mConstellation = StringUtils.getConstellationByString(mBirthday);
         mTvConstellation.setText(mConstellation);
+        mEditInterest.setText(mInfo.getInterest());
+        mEditProfession.setText(mInfo.getProfession());
     }
 
     private void saveUser() {
@@ -175,6 +182,8 @@ public class EditUserActivity extends BaseActivity implements View.OnClickListen
         if (TextUtils.isEmpty(sign)) {
             sign = getResources().getString(R.string.default_sign);
         }
+        String interest = mEditInterest.getText().toString();
+        String profession = mEditProfession.getText().toString();
 
         final UserInfo userInfo = new UserInfo();
         userInfo.setName(name);
@@ -183,6 +192,8 @@ public class EditUserActivity extends BaseActivity implements View.OnClickListen
         userInfo.setDate(mBirthday);
         userInfo.setToken(SPUtils.getInstance().getString(SpConstant.APP_TOKEN));
         userInfo.setGameZone(1);
+        userInfo.setInterest(interest);
+        userInfo.setProfession(profession);
         final String json = GsonUtils.toJson(userInfo);
         LogUtils.d("json", "json:" + json);
 
@@ -420,7 +431,7 @@ public class EditUserActivity extends BaseActivity implements View.OnClickListen
 
     private void showDataPick() {
         int[] ymd = DateUtils.getYMD(mBirthday);
-        new DatePickerDialog(this, AlertDialog.THEME_HOLO_LIGHT, new DatePickerDialog.OnDateSetListener() {
+        DatePickerDialog dialog = new DatePickerDialog(this, AlertDialog.THEME_HOLO_LIGHT, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 mBirthday = year + "-" + (month + 1) + "-" + dayOfMonth;
@@ -429,7 +440,10 @@ public class EditUserActivity extends BaseActivity implements View.OnClickListen
                 mTvConstellation.setText(mConstellation);
 
             }
-        }, ymd[0], ymd[1] -1, ymd[2]).show();
+        }, ymd[0], ymd[1] - 1, ymd[2]);
+        dialog.getDatePicker().setMaxDate(OtherConstant.MAX_DAY);
+        dialog.getDatePicker().setMinDate(OtherConstant.MIN_DAY);
+        dialog.show();
     }
 
     @Override

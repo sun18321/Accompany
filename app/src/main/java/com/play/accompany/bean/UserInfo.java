@@ -77,11 +77,88 @@ public class UserInfo implements Serializable {
     @ColumnInfo(name = "user_token")
     private String token;
 
+    @ColumnInfo(name = "user_interest")
+    private String interest;
+
+    @ColumnInfo(name = "user_profession")
+    private String profession;
+
+    @ColumnInfo(name = "user_attention_followed")
+    private Integer favor;
+
+    @Ignore
+    private Integer favorListSize;
+
     @Ignore
     private Integer inviteFlag;
 
     @Ignore
     private Integer inviteNum;
+
+    @Ignore
+    private Double grade;
+
+    @Ignore
+    private List<String> favorList;
+
+    @Ignore
+    private Boolean attention;
+
+    public Integer getFavor() {
+        return favor;
+    }
+
+    public void setFavor(Integer favor) {
+        this.favor = favor;
+    }
+
+    public Integer getFavorListSize() {
+        return favorListSize;
+    }
+
+    public void setFavorListSize(Integer favorListSize) {
+        this.favorListSize = favorListSize;
+    }
+
+    public Boolean getAttention() {
+        return attention;
+    }
+
+    public void setAttention(Boolean attention) {
+        this.attention = attention;
+    }
+
+    public String getInterest() {
+        return interest;
+    }
+
+    public void setInterest(String interest) {
+        this.interest = interest;
+    }
+
+    public String getProfession() {
+        return profession;
+    }
+
+    public void setProfession(String profession) {
+        this.profession = profession;
+    }
+
+    public List<String> getFavorList() {
+        return favorList;
+    }
+
+    public void setFavorList(List<String> favorList) {
+        this.favorList = favorList;
+    }
+
+    public Double getGrade() {
+        return grade;
+    }
+
+    public void setGrade(Double grade) {
+        this.grade = grade;
+    }
 
     public Integer getInviteFlag() {
         return inviteFlag;

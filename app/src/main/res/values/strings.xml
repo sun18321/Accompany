@@ -18,6 +18,7 @@
     <string name="phone_error">手机号格式错误</string>
     <string name="phone_beyond">手机号位数超出限制!</string>
     <string name="attention">关注</string>
+    <string name="attention_already">已关注</string>
     <string name="fans">粉丝</string>
     <string name="service">在线客服</string>
     <string name="master">申请大神</string>
@@ -102,7 +103,7 @@
     <string name="invite_tips">推荐朋友填写您的邀请码可参与运营活动领取礼品</string>
     <string name="invite_copy">复制邀请码</string>
     <string name="input_invite">填写邀请码</string>
-    <string name="invite_submit">提交</string>
+    <string name="submit_only">提交</string>
     <string name="invite_limit">每位用户只能填写一次邀请码，并且不能填写自己的哦^_^!</string>
     <string name="order_state_pay">已支付</string>
     <string name="order_state_no_pay">待支付</string>
@@ -143,7 +144,20 @@
     <string name="id_card">身份证号:</string>
     <string name="wechat_id">微信提现账号:</string>
     <string name="accompany_type">陪玩类型:</string>
-
+    <string name="tips_comment_complete">评价已完成</string>
+    <string name="appeal">申诉</string>
+    <string name="phone_num">手机号:</string>
+    <string name="data_loading">数据加载中</string>
+    <string name="tips">提示</string>
+    <string name="tips_attention">确定要取消关注吗？</string>
+    <string name="attention_success">关注成功</string>
+    <string name="attention_cancel_success">取消关注</string>
+    <string name="phone_first">请先填写手机号</string>
+    <string name="real_name_first">请先填写真实姓名</string>
+    <string name="id_first">请先填写身份证号</string>
+    <string name="wechat_first">请先填写微信提现账号</string>
+    <string name="game_type_first">至少选择一项陪玩游戏</string>
+    <string name="tips_master">申请大神请务必遵守以下规则,否则会审核不通过：/n 1.以上信息必须为真实信息。/n 2.头像必须使用本人真实照片。</string>
 
     <string name="price_detail_place"><![CDATA[<font color="#000000"><small>%1$s</small></font>]]></string>
 

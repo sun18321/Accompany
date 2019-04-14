@@ -9,75 +9,58 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.play.accompany.R;
+import com.play.accompany.bean.TopGameBean;
 import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
 import com.zhy.view.flowlayout.TagFlowLayout;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class TypeDialog extends AlertDialog.Builder {
     private Context mContext;
-    private List<Integer> mSelectList;
-    private List<String> mList = new ArrayList<>();
+    private Set<Integer> mSelectSet;
+    private List<String> mAllList = new ArrayList<>();
+    private TagFlowLayout mFlowLayout;
 
-
-    public TypeDialog(@NonNull Context context, List<Integer> list) {
+    public TypeDialog(@NonNull Context context, List<TopGameBean> allList, Set<Integer> selectSet) {
         super(context);
 
         mContext = context;
-        mSelectList = list;
+        mSelectSet = selectSet;
 
+        mAllList.clear();
+        for (TopGameBean topGameBean : allList) {
+            mAllList.add(topGameBean.getName());
+        }
         init();
     }
 
     private void init() {
-        mList.add("王者荣耀");
-        mList.add("英雄联盟");
-        mList.add("dota");
-        mList.add("绝地求生");
-        mList.add("吃鸡");
-        mList.add("守望先锋");
-        mList.add("魔兽争霸");
-        mList.add("仙剑奇侠传");
-        mList.add("三国志");
-        mList.add("穿越火线");
-        mList.add("跑跑卡丁车");
-        mList.add("传奇");
-        mList.add("帝国时代");
-        mList.add("王者荣耀");
-        mList.add("英雄联盟");
-        mList.add("dota");
-        mList.add("绝地求生");
-        mList.add("吃鸡");
-        mList.add("守望先锋");
-        mList.add("魔兽争霸");
-        mList.add("仙剑奇侠传");
-        mList.add("三国志");
-        mList.add("穿越火线");
-        mList.add("跑跑卡丁车");
-        mList.add("传奇");
-        mList.add("帝国时代");
-
-
 
         View view = LayoutInflater.from(mContext).inflate(R.layout.type_select, null);
-        final TagFlowLayout flowLayout = view.findViewById(R.id.id_flowlayout);
-        TagAdapter<String> adapter = new TagAdapter<String>(mList) {
+        mFlowLayout = view.findViewById(R.id.id_flowlayout);
+        TagAdapter<String> adapter = new TagAdapter<String>(mAllList) {
             @Override
             public View getView(FlowLayout parent, int position, String s) {
-                TextView tv = (TextView) LayoutInflater.from(mContext).inflate(R.layout.flowlayout_text, flowLayout, false);
+                TextView tv = (TextView) LayoutInflater.from(mContext).inflate(R.layout.flowlayout_text, mFlowLayout, false);
                 tv.setText(s);
                 return tv;
             }
         };
-        flowLayout.setAdapter(adapter);
-
+        if (!mSelectSet.isEmpty()) {
+            adapter.setSelectedList(mSelectSet);
+        }
+        mFlowLayout.setAdapter(adapter);
         setView(view);
-
     }
 
-    public String getData() {
-        return "data";
+
+    public Set<Integer> getSelectSet() {
+        if (mFlowLayout != null) {
+            return mFlowLayout.getSelectedList();
+        }
+        return null;
     }
 }

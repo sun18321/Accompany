@@ -11,7 +11,6 @@ public class TopGameBean {
 
     private int typeId;
     private String name;
-    private int isShow;
     private String url;
 
     public int getTypeId() {
@@ -30,13 +29,6 @@ public class TopGameBean {
         this.name = name;
     }
 
-    public int getIsShow() {
-        return isShow;
-    }
-
-    public void setIsShow(int isShow) {
-        this.isShow = isShow;
-    }
 
     public String getUrl() {
         return url;

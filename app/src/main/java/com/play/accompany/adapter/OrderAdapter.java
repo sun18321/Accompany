@@ -139,7 +139,8 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderHolder>
                     showCommentDialog(context,bean);
                     break;
                 case OrderConstant.CLICK_JUMP_COMPLETE:
-                    Toast.makeText(itemView.getContext(), "评价已完成，后续开发中", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(itemView.getContext(), "评价已完成，后续开发中", Toast.LENGTH_SHORT).show();
+                    showCommentDialog(context, bean);
                     break;
                 case OrderConstant.CLICK_JUMP_ACCEPT:
                     orderNext(bean.getId(),AccompanyApplication.getContext().getResources()
@@ -181,15 +182,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderHolder>
         }
 
         void showCommentDialog(Context context,AllOrderBean bean) {
-            int evaluateGrade = bean.getEvaluateGrade();
-            int type;
-            if (evaluateGrade == 0) {
-                type = CommentDialog.COMMENT_PROGRESS;
-            } else {
-                type = CommentDialog.COMMENT_COMPLETE;
-            }
-
-            CommentDialog dialog = new CommentDialog(context, bean, type);
+            CommentDialog dialog = new CommentDialog(context, bean);
             dialog.show();
             dialog.setCommentListener(new CommentDialog.CommentListener() {
                 @Override

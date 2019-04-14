@@ -5,9 +5,10 @@ import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
+import com.play.accompany.bean.FavoriteInfo;
 import com.play.accompany.bean.UserInfo;
 
-@Database(entities = UserInfo.class, version = 1, exportSchema = false)
+@Database(entities = {UserInfo.class, FavoriteInfo.class},version = 1, exportSchema = false)
 public abstract class AccompanyDatabase extends RoomDatabase {
     private static final String DB_NAME = "accompany.db";
     private static volatile AccompanyDatabase sInstance;
@@ -24,4 +25,6 @@ public abstract class AccompanyDatabase extends RoomDatabase {
     }
 
     public abstract UserDao getUserDao();
+
+    public abstract FavoriteDao getFavriteDao();
 }

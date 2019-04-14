@@ -1,7 +1,14 @@
 package com.play.accompany.view;
 
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.text.style.URLSpan;
 import android.view.View;
 import android.widget.TextView;
 
@@ -17,6 +24,7 @@ import com.play.accompany.net.NetFactory;
 import com.play.accompany.net.NetListener;
 import com.play.accompany.utils.EncodeUtils;
 import com.play.accompany.utils.GsonUtils;
+import com.play.accompany.utils.LogUtils;
 import com.play.accompany.utils.SPUtils;
 
 import java.util.List;
@@ -44,6 +52,10 @@ public class ServiceActivity extends BaseActivity {
 
         mTvService = findViewById(R.id.tv_service);
 
+//        CharSequence sequence = Html.fromHtml(html);
+//        mTvService.setText(sequence);
+//        mTvService.setMovementMethod(LinkMovementMethod.getInstance());
+
         showDialog();
         Token token = new Token(SPUtils.getInstance().getString(SpConstant.APP_TOKEN));
         String json = GsonUtils.toJson(token);
@@ -59,7 +71,14 @@ public class ServiceActivity extends BaseActivity {
                 }
                 ServiceBean bean = list.get(0);
                 String serviceMsg = bean.getServiceMsg();
-                mTvService.setText(serviceMsg);
+                CharSequence text;
+                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N) {
+                    text = Html.fromHtml(serviceMsg, Html.FROM_HTML_MODE_COMPACT);
+                } else {
+                    text = Html.fromHtml(serviceMsg);
+                }
+                mTvService.setText(text);
+                mTvService.setMovementMethod(LinkMovementMethod.getInstance());
             }
 
             @Override

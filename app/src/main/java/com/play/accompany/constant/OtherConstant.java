@@ -16,4 +16,18 @@ public class OtherConstant {
     public static final int INVITE_SUBMITED = 1;
 
     public static final long SUBMIT_SPACE_TIME = 10 * 60 * 1000;
+
+    public static final int USER_TYPE_ACCOMPANY = 0;
+
+    public static final int USER_TYPE_COMMON = 1;
+
+    public static final int USER_TYPE_WAIT = 2;
+
+    public static final long MIN_DAY = -2209017943000L;
+
+    public static final long MAX_DAY = 1262275200000L;
+
+    public static final int ATTENTION_FLAG = 1;
+
+    public static final int ATTEMTION_FLAG_CANCEL = 0;
 }

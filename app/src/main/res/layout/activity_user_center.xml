@@ -30,7 +30,7 @@
             android:id="@+id/rl_back"
             android:layout_marginTop="40dp"
             android:background="@drawable/back_backgroud"
-            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
             android:layout_width="30dp"
             android:layout_height="30dp">
 
@@ -44,7 +44,7 @@
         <TextView
             android:id="@+id/tv_sign"
             android:layout_alignParentBottom="true"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:layout_marginBottom="10dp"
             android:textColor="@color/color_white"
             android:layout_width="wrap_content"
@@ -53,7 +53,7 @@
         <LinearLayout
             android:id="@+id/lin_gender"
             android:layout_above="@id/tv_sign"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -78,29 +78,30 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_toRightOf="@id/lin_gender"
-            android:layout_alignBottom="@id/lin_gender"
-            android:layout_marginLeft="10dp"
+            android:id="@+id/lin_rate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/lin_gender"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@id/lin_gender"
             android:background="@drawable/star_background_white"
+            android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingLeft="6dp"
             android:paddingRight="6dp"
-            android:gravity="center_vertical"
             >
 
             <ImageView
-                android:src="@mipmap/star_full"
                 android:layout_width="16dp"
-                android:layout_height="16dp"/>
+                android:layout_height="16dp"
+                android:src="@mipmap/star_full"/>
 
             <TextView
                 android:id="@+id/tv_rating"
-                android:text="4.8"
-                android:textSize="14sp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                tools:text="4.8"/>
 
 
         </LinearLayout>
@@ -110,19 +111,19 @@
             android:textSize="26sp"
             android:textColor="@color/color_white"
             android:layout_marginBottom="5dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:layout_above="@id/lin_gender"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <Button
             android:id="@+id/btn_attention"
-            android:text="@string/attention"
+            tools:text="@string/attention"
             android:textColor="@color/color_white"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_marginBottom="10dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginEnd="20dp"
             android:background="@drawable/btn_bg"
             android:layout_width="80dp"
             android:layout_height="30dp" />
@@ -133,8 +134,8 @@
                 android:textColor="@color/color_white"
                 android:textSize="16sp"
                 android:layout_above="@id/btn_attention"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="70dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="70dp"
                 android:layout_marginBottom="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
@@ -144,8 +145,8 @@
                 android:textSize="16sp"
                 tools:text="999"
                 android:layout_above="@id/btn_attention"
-                android:layout_marginRight="30dp"
-                android:layout_alignParentRight="true"
+                android:layout_marginEnd="30dp"
+                android:layout_alignParentEnd="true"
                 android:layout_marginBottom="10dp"
                 android:textColor="@color/color_white"
                 android:layout_width="wrap_content"
@@ -171,7 +172,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 />
 
             <View
@@ -182,7 +183,7 @@
 
             <LinearLayout
                 android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -196,7 +197,7 @@
 
                 <TextView
                     android:id="@+id/tv_bottom_name"
-                    android:layout_marginLeft="20dp"
+                    android:layout_marginStart="20dp"
                     android:textColor="@color/color_black"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -204,7 +205,7 @@
 
             <LinearLayout
                 android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -218,7 +219,7 @@
 
                 <TextView
                     android:id="@+id/tv_id"
-                    android:layout_marginLeft="20dp"
+                    android:layout_marginStart="20dp"
                     android:textColor="@color/color_black"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -226,7 +227,7 @@
 
             <LinearLayout
                 android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -240,7 +241,7 @@
 
                 <TextView
                     android:id="@+id/tv_constellation"
-                    android:layout_marginLeft="20dp"
+                    android:layout_marginStart="20dp"
                     android:textColor="@color/color_black"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -250,7 +251,7 @@
 
             <LinearLayout
                 android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -264,7 +265,7 @@
 
                 <TextView
                     android:id="@+id/tv_game"
-                    android:layout_marginLeft="20dp"
+                    android:layout_marginStart="20dp"
                     android:textColor="@color/color_black"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -272,7 +273,7 @@
 
             <LinearLayout
                 android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -286,7 +287,7 @@
 
                 <TextView
                     android:id="@+id/tv_interest"
-                    android:layout_marginLeft="20dp"
+                    android:layout_marginStart="20dp"
                     android:textColor="@color/color_black"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -294,7 +295,7 @@
 
             <LinearLayout
                 android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -308,7 +309,7 @@
 
                 <TextView
                     android:id="@+id/tv_profession"
-                    android:layout_marginLeft="20dp"
+                    android:layout_marginStart="20dp"
                     android:textColor="@color/color_black"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -334,7 +335,7 @@
             android:text="@string/chat"
             android:textColor="@color/colorPrimary"
             android:background="@drawable/btn_chat_bg"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:layout_width="120dp"
             android:layout_height="wrap_content" />
 

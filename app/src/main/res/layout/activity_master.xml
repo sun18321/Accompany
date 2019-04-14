@@ -11,6 +11,7 @@
     <include layout="@layout/blue_toolbar"/>
 
     <RelativeLayout
+        android:id="@+id/rl_request"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -27,16 +28,32 @@
 
                 <TextView
                     android:text="@string/real_name"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content" />
+                    style="@style/master_text_size"/>
 
                 <EditText
                     android:id="@+id/edit_name"
-                    android:background="@null"
-                    android:maxLines="1"
-                    android:maxEms="10"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    style="@style/master_edit_size"/>
+
+            </LinearLayout>
+
+            <View
+                android:background="@color/color_gray"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:text="@string/phone_num"
+                    style="@style/master_text_size"/>
+
+                <EditText
+                    android:id="@+id/edit_phone"
+                    style="@style/master_edit_size"/>
 
             </LinearLayout>
 
@@ -53,16 +70,12 @@
 
                 <TextView
                     android:text="@string/id_card"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content" />
+                    style="@style/master_text_size"
+                     />
 
                 <EditText
                     android:id="@+id/edit_id"
-                    android:background="@null"
-                    android:maxLines="1"
-                    android:maxEms="20"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    style="@style/master_edit_size" />
 
             </LinearLayout>
 
@@ -79,16 +92,11 @@
 
                 <TextView
                     android:text="@string/wechat_id"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content" />
+                    style="@style/master_text_size" />
 
                 <EditText
                     android:id="@+id/edit_wechat"
-                    android:background="@null"
-                    android:maxLines="1"
-                    android:maxEms="20"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    style="@style/master_edit_size" />
 
             </LinearLayout>
 
@@ -106,15 +114,11 @@
 
                 <TextView
                     android:text="@string/accompany_type"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content" />
+                    style="@style/master_text_size" />
 
                 <TextView
                     android:id="@+id/tv_type"
-                    android:background="@null"
-                    android:maxLines="1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    style="@style/master_edit_size"/>
 
             </LinearLayout>
 
@@ -122,7 +126,7 @@
 
         <Button
             android:id="@+id/btn_submit"
-            android:text="@string/invite_submit"
+            android:text="@string/submit_only"
             android:background="@drawable/ripple_button"
             android:layout_marginBottom="20dp"
             android:layout_marginLeft="20dp"
@@ -131,6 +135,34 @@
             android:textColor="@color/color_white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
+        <TextView
+            android:text="@string/tips_master"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="120dp"
+            android:padding="10dp"
+            android:textColor="@color/color_gray"
+            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_wait"
+        android:visibility="invisible"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_activity_default"
+        >
+
+        <TextView
+            android:text="正在审核中"
+            android:textSize="24sp"
+            android:textColor="@color/color_red"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
     </RelativeLayout>
 

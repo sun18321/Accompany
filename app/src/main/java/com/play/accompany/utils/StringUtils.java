@@ -56,6 +56,25 @@ public class StringUtils {
         return integer2String(i);
     }
 
+    public static String GameList2String(List<String> list) {
+        if (list.isEmpty()) {
+            return "";
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < list.size(); i++) {
+            String s = list.get(i);
+            if (i == 2) {
+                sb.append(AccompanyApplication.getContext().getResources().getString(R.string.vertical));
+                sb.append("...");
+                break;
+            }
+            if (sb.length() > 0) {
+                sb.append(AccompanyApplication.getContext().getResources().getString(R.string.vertical));
+            }
+            sb.append(s);
+        }
+        return sb.toString();
+    }
 
     private static String integer2String(int i) {
         String s;

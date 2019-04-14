@@ -24,6 +24,7 @@ import com.play.accompany.view.MasterActivity;
 import com.play.accompany.view.ServiceActivity;
 import com.play.accompany.view.SettingActivity;
 import com.play.accompany.view.UserCenterActivity;
+import com.play.accompany.view.WalletActivity;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
 import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
 
@@ -110,6 +111,11 @@ public class MyFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
 
+        //关注需要时刻刷新
+        if (mTvAttention != null) {
+            mTvAttention.setText(SPUtils.getInstance().getInt(SpConstant.ATTENTION_COUNT, 0) + "");
+        }
+
         boolean isEdit = SPUtils.getInstance().getBoolean(SpConstant.IS_USER_EDIT, false);
         if (isEdit) {
             getUserInfo();
@@ -161,6 +167,10 @@ public class MyFragment extends BaseFragment {
         String userId = mUserInfo.getUserId();
         mTvName.setText(getResources().getString(R.string.nick_name) + ":" + name);
         mTvId.setText(getResources().getString(R.string.id) + ":" + userId);
+        Integer attention_followed = mUserInfo.getFavor();
+        if (attention_followed != null) {
+            mTvFans.setText(attention_followed);
+        }
     }
 
     private void glideFuzzy(String url) {
@@ -214,7 +224,7 @@ public class MyFragment extends BaseFragment {
         QMUIGroupListView.newSection(mContext).addItemView(itemWallet, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                startActivity(new Intent(mContext, WalletActivity.class));
             }
         }).addItemView(itemOrder, new View.OnClickListener() {
             @Override

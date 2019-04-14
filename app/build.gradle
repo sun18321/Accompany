@@ -62,5 +62,6 @@ dependencies {
     }
     annotationProcessor 'android.arch.persistence.room:compiler:1.1.1'
     implementation 'com.hyman:flowlayout-lib:1.1.2'
+    debugImplementation 'com.amitshekhar.android:debug-db:1.0.0'
 
 }

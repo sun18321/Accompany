@@ -15,6 +15,7 @@ import com.google.gson.reflect.TypeToken;
 import com.play.accompany.R;
 import com.play.accompany.base.BaseActivity;
 import com.play.accompany.bean.BaseDecodeBean;
+import com.play.accompany.bean.Test;
 import com.play.accompany.bean.Token;
 import com.play.accompany.bean.UserInfo;
 import com.play.accompany.constant.AppConstant;

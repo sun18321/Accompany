@@ -2,11 +2,15 @@ package com.play.accompany.utils;
 
 import android.text.TextUtils;
 
+import com.play.accompany.bean.FavoriteInfo;
 import com.play.accompany.bean.UserInfo;
 import com.play.accompany.constant.OtherConstant;
 import com.play.accompany.constant.SpConstant;
 import com.play.accompany.db.AccompanyDatabase;
 import com.play.accompany.view.AccompanyApplication;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserInfoDatabaseUtils {
     public static void saveUserInfo(final UserInfo userInfo) {
@@ -52,6 +56,12 @@ public class UserInfoDatabaseUtils {
             SPUtils.getInstance().put(SpConstant.INVITE_NUMBER, num);
         }
 
+        Integer type = userInfo.getType();
+        if (type != null) {
+            int userType = type;
+            SPUtils.getInstance().put(SpConstant.USER_TYPE, userType);
+        }
+
         ThreadPool.newInstance().add(new Runnable() {
             @Override
             public void run() {
@@ -59,10 +69,15 @@ public class UserInfoDatabaseUtils {
                 if (info == null) {
                     AccompanyDatabase.getInstance(AccompanyApplication.getContext()).getUserDao().insert(userInfo);
                 } else {
+                    Integer databaseId = info.getDatabaseId();
+                    userInfo.setDatabaseId(databaseId);
                     AccompanyDatabase.getInstance(AccompanyApplication.getContext()).getUserDao().update(userInfo);
                 }
             }
         });
+
+        List<String> favorList = userInfo.getFavorList();
+        saveFavorite(favorList);
     }
 
 
@@ -98,5 +113,42 @@ public class UserInfoDatabaseUtils {
                 AccompanyDatabase.getInstance(AccompanyApplication.getContext()).getUserDao().update(savedUserInfo);
             }
         });
+    }
+
+    private static void saveFavorite(final List<String> list) {
+        if (list.isEmpty()) {
+            return;
+        }
+        int count = list.size();
+        SPUtils.getInstance().put(SpConstant.ATTENTION_COUNT, count);
+
+        ThreadPool.newInstance().add(new Runnable() {
+            @Override
+            public void run() {
+                List<FavoriteInfo> saveList = AccompanyDatabase.getInstance(AccompanyApplication.getContext()).getFavriteDao().getAllFavoriteByUserId(SPUtils.getInstance().getString(SpConstant.MY_USER_ID));
+                if (saveList.isEmpty()) {
+                    List<FavoriteInfo> insertList = getFavoriteList(list);
+                    AccompanyDatabase.getInstance(AccompanyApplication.getContext()).getFavriteDao().insertList(insertList);
+                } else {
+                    if (saveList.size() > list.size()) {
+                        List<FavoriteInfo> updateList = getFavoriteList(list);
+                        AccompanyDatabase.getInstance(AccompanyApplication.getContext()).getFavriteDao().deleteAll(saveList);
+                        AccompanyDatabase.getInstance(AccompanyApplication.getContext()).getFavriteDao().insertList(updateList);
+                    }
+                }
+            }
+        });
+
+    }
+
+    private static List<FavoriteInfo> getFavoriteList(List<String> list) {
+        List<FavoriteInfo> favoriteList = new ArrayList<>();
+        for (String s : list) {
+            FavoriteInfo info = new FavoriteInfo();
+            info.setFavoriteId(s);
+            info.setUserId(SPUtils.getInstance().getString(SpConstant.MY_USER_ID));
+            favoriteList.add(info);
+        }
+        return favoriteList;
     }
 }

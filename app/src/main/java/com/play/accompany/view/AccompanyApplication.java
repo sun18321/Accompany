@@ -15,7 +15,6 @@ public class AccompanyApplication extends Application {
         return mContext;
     }
 
-    private static UserInfo mUserInfo = null;
 
     @Override
     public void onCreate() {
@@ -28,11 +27,5 @@ public class AccompanyApplication extends Application {
         UMConfigure.init(this, AppConstant.UMENG_KEY, "default", UMConfigure.DEVICE_TYPE_PHONE, null);
     }
 
-    public static void setUserInfo(UserInfo info) {
-        mUserInfo = info;
-    }
 
-    public static UserInfo getUserInfo() {
-        return mUserInfo;
-    }
 }

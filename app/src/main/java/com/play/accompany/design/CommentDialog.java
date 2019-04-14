@@ -7,9 +7,11 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.makeramen.roundedimageview.RoundedImageView;
@@ -19,27 +21,28 @@ import com.play.accompany.bean.CommentBean;
 import com.play.accompany.constant.SpConstant;
 import com.play.accompany.utils.LogUtils;
 import com.play.accompany.utils.SPUtils;
+import com.play.accompany.utils.ToastUtils;
 import com.play.accompany.view.AccompanyApplication;
 
-public class CommentDialog extends Dialog {
-    public static final int COMMENT_PROGRESS = 1001;
-    public static final int COMMENT_COMPLETE = 1002;
+public class CommentDialog extends Dialog implements View.OnClickListener {
 
     private Context mContext;
     private String mId;
     private CommentListener mListener;
     private AllOrderBean mBean;
-    private int mCodeType;
     private EditText mEditComment;
     private RatingBar mRatingBar;
+    private TextView mTvComment;
+    private TextView mTvComplete;
+    private Button mButtonSubmit;
+    private boolean mIsComplete;
 
 
-    public CommentDialog(@NonNull Context context, AllOrderBean bean, int codeType) {
+    public CommentDialog(@NonNull Context context, AllOrderBean bean) {
         super(context);
 
         mContext = context;
         mBean = bean;
-        mCodeType = codeType;
         init();
     }
 
@@ -57,41 +60,46 @@ public class CommentDialog extends Dialog {
         TextView tvDetail= view.findViewById(R.id.tv_details);
         mEditComment = view.findViewById(R.id.edit_comment);
         mRatingBar = view.findViewById(R.id.rate);
+        mTvComment = view.findViewById(R.id.tv_comment);
+        mTvComplete = view.findViewById(R.id.tv_complete);
+        mButtonSubmit = view.findViewById(R.id.btn_submit);
 
-
-        if (mBean != null) {
-            String url = mBean.getUrl();
-            if (!TextUtils.isEmpty(url)) {
-                Glide.with(mContext).load(url).into(headImg);
-            }
-            tvName.setText(mBean.getName());
-            int all = (mBean.getNum()) * (mBean.getPrice());
-            tvDetail.setText(all + AccompanyApplication.getContext().getResources().getString(R.string.money));
-            mId = mBean.getId();
+        if (mBean == null) {
+            ToastUtils.showErrorToast();
+            return;
+        }
+        int grade = mBean.getEvaluateGrade();
+        if (grade != 0) {
+            mIsComplete = true;
         }
 
+        if (mIsComplete) {
+            mRatingBar.setIsIndicator(true);
+            mTvComplete.setVisibility(View.VISIBLE);
+            mTvComment.setVisibility(View.VISIBLE);
+            mEditComment.setVisibility(View.GONE);
+            mButtonSubmit.setText(mContext.getResources().getString(R.string.appeal));
+            String evaluate = mBean.getEvaluate();
+            float floatGrade = (float) grade / 2;
+            mRatingBar.setRating(floatGrade);
+            mTvComment.setText(evaluate);
+        }else {
+            mRatingBar.setIsIndicator(false);
+            mTvComplete.setVisibility(View.GONE);
+            mTvComment.setVisibility(View.GONE);
+            mEditComment.setVisibility(View.VISIBLE);
+            mButtonSubmit.setText(mContext.getResources().getString(R.string.submit_only));
+        }
+        String url = mBean.getUrl();
+        if (!TextUtils.isEmpty(url)) {
+            Glide.with(mContext).load(url).into(headImg);
+        }
+        tvName.setText(mBean.getName());
+        int all = (mBean.getNum()) * (mBean.getPrice());
+        tvDetail.setText(all + AccompanyApplication.getContext().getResources().getString(R.string.money));
+        mId = mBean.getId();
+        mButtonSubmit.setOnClickListener(this);
 
-        view.findViewById(R.id.btn_submit).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mListener != null) {
-                    CommentBean bean = new CommentBean();
-                    bean.setId(mId);
-                    bean.setToken(SPUtils.getInstance().getString(SpConstant.APP_TOKEN));
-                    float rating = mRatingBar.getRating();
-                    int score = (int) (rating * 2);
-                    bean.setEvaluateGrade(score);
-                    String comment = mEditComment.getText().toString();
-                    bean.setEvaluate(comment);
-
-                    mListener.onComment(bean);
-                }
-
-                if (CommentDialog.this.isShowing()) {
-                    CommentDialog.this.dismiss();
-                }
-            }
-        });
         view.findViewById(R.id.img_close).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,6 +110,28 @@ public class CommentDialog extends Dialog {
         });
 
         setContentView(view);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (mIsComplete) {
+            ToastUtils.showCommonToast("你想要申诉");
+        } else {
+            if (mListener != null) {
+                CommentBean bean = new CommentBean();
+                bean.setId(mId);
+                bean.setToken(SPUtils.getInstance().getString(SpConstant.APP_TOKEN));
+                float rating = mRatingBar.getRating();
+                int score = (int) (rating * 2);
+                bean.setEvaluateGrade(score);
+                String comment = mEditComment.getText().toString();
+                bean.setEvaluate(comment);
+                mListener.onComment(bean);
+            }
+        }
+        if (CommentDialog.this.isShowing()) {
+            CommentDialog.this.dismiss();
+        }
     }
 
     public void setCommentListener(CommentListener listener) {

@@ -56,4 +56,13 @@ public interface NetService {
 
     @POST("getCfgService")
     Observable<BaseResponse> getService(@Body RequestBody body);
+
+    @POST("getGameType")
+    Observable<BaseResponse> getAllGame(@Body RequestBody body);
+
+    @POST("applyAnchor")
+    Observable<BaseResponse> applyMaster(@Body RequestBody body);
+
+    @POST("favor")
+    Observable<BaseResponse> attention(@Body RequestBody body);
 }
