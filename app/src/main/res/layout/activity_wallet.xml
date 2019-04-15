@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.WalletActivity"
+    android:orientation="vertical"
+    android:background="@color/color_activity_default"
+    >
+
+    <include layout="@layout/blue_toolbar"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:padding="10dp"
+                android:background="@color/white"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:text="@string/wallet_remain"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/tv_gold"
+                    android:textColor="@color/red"
+                    tools:text="10099999"
+                    android:layout_marginStart="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_marginTop="10dp"
+                android:background="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:padding="10dp"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:text="@string/wallet_recharge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:textColor="@color/gray"
+                        android:text="@string/tips_wallet"
+                        android:textSize="12sp"
+                        android:layout_marginStart="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:weightSum="2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:id="@+id/lin_first"
+                        style="@style/wallet_lin">
+
+                        <ImageView
+                            android:src="@mipmap/gold"
+                            android:layout_width="26dp"
+                            android:layout_height="26dp" />
+
+                        <TextView
+                            android:text="30"
+                            android:layout_marginStart="10dp"
+                            android:textColor="@color/black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:text="¥30"
+                            android:textColor="@color/gray"
+                            android:layout_marginEnd="10dp"
+                            android:layout_width="match_parent"
+                            android:gravity="end"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/lin_second"
+                        style="@style/wallet_lin"
+                        >
+
+                        <ImageView
+                            android:src="@mipmap/gold"
+                            android:layout_width="26dp"
+                            android:layout_height="26dp" />
+
+                        <TextView
+                            android:text="50"
+                            android:layout_marginStart="10dp"
+                            android:textColor="@color/black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:text="¥50"
+                            android:textColor="@color/gray"
+                            android:layout_marginEnd="10dp"
+                            android:layout_width="match_parent"
+                            android:gravity="end"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:weightSum="2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:id="@+id/lin_third"
+                        style="@style/wallet_lin"
+                        >
+
+                        <ImageView
+                            android:src="@mipmap/gold"
+                            android:layout_width="26dp"
+                            android:layout_height="26dp" />
+
+                        <TextView
+                            android:text="100"
+                            android:layout_marginStart="10dp"
+                            android:textColor="@color/black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:text="¥100"
+                            android:textColor="@color/gray"
+                            android:layout_marginEnd="10dp"
+                            android:layout_width="match_parent"
+                            android:gravity="end"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/lin_fourth"
+                        style="@style/wallet_lin"
+                        >
+
+                        <ImageView
+                            android:src="@mipmap/gold"
+                            android:layout_width="26dp"
+                            android:layout_height="26dp" />
+
+                        <TextView
+                            android:text="200"
+                            android:layout_marginStart="10dp"
+                            android:textColor="@color/black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:text="¥200"
+                            android:textColor="@color/gray"
+                            android:layout_marginEnd="10dp"
+                            android:layout_width="match_parent"
+                            android:gravity="end"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:weightSum="2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:id="@+id/lin_fifth"
+                        style="@style/wallet_lin"
+                        >
+
+                        <ImageView
+                            android:src="@mipmap/gold"
+                            android:layout_width="26dp"
+                            android:layout_height="26dp" />
+
+                        <TextView
+                            android:text="500"
+                            android:layout_marginStart="10dp"
+                            android:textColor="@color/black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:text="¥500"
+                            android:textColor="@color/gray"
+                            android:layout_marginEnd="10dp"
+                            android:layout_width="match_parent"
+                            android:gravity="end"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/lin_sixth"
+                        style="@style/wallet_lin"
+                        >
+
+                        <ImageView
+                            android:src="@mipmap/gold"
+                            android:layout_width="26dp"
+                            android:layout_height="26dp" />
+
+                        <TextView
+                            android:text="1000"
+                            android:layout_marginStart="10dp"
+                            android:textColor="@color/black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:text="¥1000"
+                            android:textColor="@color/gray"
+                            android:layout_marginEnd="10dp"
+                            android:layout_width="match_parent"
+                            android:gravity="end"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_marginTop="10dp"
+                android:background="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:text="@string/recharge_type"
+                    android:padding="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+
+                <LinearLayout
+                    android:id="@+id/lin_wechat"
+                    android:orientation="horizontal"
+                    android:padding="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:src="@mipmap/wechat"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:text="@string/wechat"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_marginStart="10dp"
+                        android:layout_height="wrap_content" />
+
+                    <CheckBox
+                        android:id="@+id/check_wechat"
+                        android:clickable="false"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <View
+                    android:background="@color/gray"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"/>
+
+                <LinearLayout
+                    android:id="@+id/lin_alipay"
+                    android:orientation="horizontal"
+                    android:padding="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:src="@mipmap/alipay"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:text="@string/alipay"
+                        android:layout_marginStart="10dp"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content" />
+
+                    <CheckBox
+                        android:id="@+id/check_alipay"
+                        android:clickable="false"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_pay"
+            android:layout_alignParentBottom="true"
+            android:textColor="@color/white"
+            android:background="@drawable/ripple_button"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+</LinearLayout>

@@ -10,7 +10,10 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class StringUtils {
@@ -269,10 +272,22 @@ public class StringUtils {
     }
 
     public static String getConstellationByString(String birthday) {
-        String[] split = birthday.split("-");
+        String date = dateFormat(birthday);
+        String[] split = date.split("-");
         if (split.length > 2) {
            return getConstellation(Integer.parseInt(split[1]), Integer.parseInt(split[2]));
         }
         return "";
+    }
+
+    private static String dateFormat(String date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date parse = null;
+        try {
+            parse = sdf.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return sdf.format(parse);
     }
 }

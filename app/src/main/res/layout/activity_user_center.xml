@@ -134,8 +134,8 @@
                 android:textColor="@color/color_white"
                 android:textSize="16sp"
                 android:layout_above="@id/btn_attention"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="70dp"
+                android:layout_toStartOf="@id/tv_fans"
+                android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />

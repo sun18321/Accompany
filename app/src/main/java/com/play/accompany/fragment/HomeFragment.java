@@ -53,6 +53,8 @@ import io.reactivex.Observable;
 import okhttp3.RequestBody;
 
 public class HomeFragment extends BaseFragment {
+    public static final int REQUEST_CODE = 1001;
+
     private static HomeFragment sHomeFragment;
     private RecyclerView mRecyclerView;
     private HomeAdapter mAdapter;
@@ -217,10 +219,9 @@ public class HomeFragment extends BaseFragment {
             @Override
             public void onTopCLick(TopGameBean bean) {
                 if (bean != null) {
-                    String name = bean.getName();
                     int typeId = bean.getTypeId();
                     if (typeId == OtherConstant.TYPE_OTHER) {
-                        goTopGame(name);
+                        goTopGame();
                     } else {
                         queryType(typeId);
                     }
@@ -290,10 +291,9 @@ public class HomeFragment extends BaseFragment {
         });
     }
 
-    private void goTopGame(String name) {
+    private void goTopGame() {
         Intent intent = new Intent(mContext, RankActivity.class);
-        intent.putExtra(RankActivity.ACTIVITY_TITLE, name);
-        mContext.startActivity(intent);
+        startActivityForResult(intent, REQUEST_CODE);
     }
 
     private String getToken() {
@@ -347,6 +347,19 @@ public class HomeFragment extends BaseFragment {
                     mInfoList.add(info);
                 }
             });
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (data != null) {
+            int extra = data.getIntExtra(IntentConstant.INTENT_GAME_ID, 0);
+            if (extra == 0) {
+                return;
+            }
+            queryType(extra);
         }
     }
 

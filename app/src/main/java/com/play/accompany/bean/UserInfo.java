@@ -86,6 +86,9 @@ public class UserInfo implements Serializable {
     @ColumnInfo(name = "user_attention_followed")
     private Integer favor;
 
+    @ColumnInfo(name = "user_other_game")
+    private String otherGame;
+
     @Ignore
     private Integer favorListSize;
 
@@ -103,6 +106,14 @@ public class UserInfo implements Serializable {
 
     @Ignore
     private Boolean attention;
+
+    public String getOtherGame() {
+        return otherGame;
+    }
+
+    public void setOtherGame(String otherGame) {
+        this.otherGame = otherGame;
+    }
 
     public Integer getFavor() {
         return favor;

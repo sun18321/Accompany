@@ -4,11 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.MasterActivity"
     android:orientation="vertical"
-    >
+    tools:context=".view.MasterActivity">
 
-    <include layout="@layout/blue_toolbar"/>
+    <include layout="@layout/blue_toolbar" />
 
     <RelativeLayout
         android:id="@+id/rl_request"
@@ -16,62 +15,61 @@
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <LinearLayout
-                android:orientation="horizontal"
-                android:padding="10dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10dp">
 
                 <TextView
-                    android:text="@string/real_name"
-                    style="@style/master_text_size"/>
+                    style="@style/master_text_size"
+                    android:text="@string/real_name" />
 
                 <EditText
                     android:id="@+id/edit_name"
-                    style="@style/master_edit_size"/>
+                    style="@style/master_edit_size" />
 
             </LinearLayout>
 
             <View
-                android:background="@color/color_gray"
                 android:layout_width="match_parent"
-                android:layout_height="0.5dp" />
+                android:layout_height="0.5dp"
+                android:background="@color/color_gray" />
 
             <LinearLayout
-                android:orientation="horizontal"
-                android:padding="10dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10dp">
 
                 <TextView
-                    android:text="@string/phone_num"
-                    style="@style/master_text_size"/>
+                    style="@style/master_text_size"
+                    android:text="@string/phone_num" />
 
                 <EditText
                     android:id="@+id/edit_phone"
-                    style="@style/master_edit_size"/>
+                    style="@style/master_edit_size" />
 
             </LinearLayout>
 
             <View
-                android:background="@color/color_gray"
                 android:layout_width="match_parent"
-                android:layout_height="0.5dp" />
+                android:layout_height="0.5dp"
+                android:background="@color/color_gray" />
 
             <LinearLayout
-                android:orientation="horizontal"
-                android:padding="10dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10dp">
 
                 <TextView
-                    android:text="@string/id_card"
                     style="@style/master_text_size"
-                     />
+                    android:text="@string/id_card" />
 
                 <EditText
                     android:id="@+id/edit_id"
@@ -80,19 +78,19 @@
             </LinearLayout>
 
             <View
-                android:background="@color/color_gray"
                 android:layout_width="match_parent"
-                android:layout_height="0.5dp" />
+                android:layout_height="0.5dp"
+                android:background="@color/color_gray" />
 
             <LinearLayout
-                android:orientation="horizontal"
-                android:padding="10dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10dp">
 
                 <TextView
-                    android:text="@string/wechat_id"
-                    style="@style/master_text_size" />
+                    style="@style/master_text_size"
+                    android:text="@string/wechat_id" />
 
                 <EditText
                     android:id="@+id/edit_wechat"
@@ -101,68 +99,72 @@
             </LinearLayout>
 
             <View
-                android:background="@color/color_gray"
                 android:layout_width="match_parent"
-                android:layout_height="0.5dp" />
+                android:layout_height="0.5dp"
+                android:background="@color/color_gray" />
 
             <LinearLayout
                 android:id="@+id/lin_type"
-                android:orientation="horizontal"
-                android:padding="10dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10dp">
 
                 <TextView
-                    android:text="@string/accompany_type"
-                    style="@style/master_text_size" />
+                    style="@style/master_text_size"
+                    android:text="@string/accompany_type" />
 
                 <TextView
                     android:id="@+id/tv_type"
-                    style="@style/master_edit_size"/>
+                    style="@style/master_edit_size" />
 
             </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/color_gray" />
 
         </LinearLayout>
 
         <Button
             android:id="@+id/btn_submit"
-            android:text="@string/submit_only"
-            android:background="@drawable/ripple_button"
-            android:layout_marginBottom="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:layout_alignParentBottom="true"
-            android:textColor="@color/color_white"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/ripple_button"
+            android:text="@string/submit_only"
+            android:textColor="@color/color_white" />
 
         <TextView
-            android:text="@string/tips_master"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="120dp"
             android:padding="10dp"
+            android:text="@string/tips_master"
             android:textColor="@color/color_gray"
-            android:textSize="16sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:textSize="16sp" />
 
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/rl_wait"
-        android:visibility="invisible"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/color_activity_default"
-        >
+        android:visibility="invisible">
 
         <TextView
-            android:text="正在审核中"
-            android:textSize="24sp"
-            android:textColor="@color/color_red"
-            android:layout_centerInParent="true"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="正在审核中"
+            android:textColor="@color/color_red"
+            android:textSize="24sp" />
 
     </RelativeLayout>
 

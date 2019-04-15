@@ -8,6 +8,10 @@ import android.view.View;
 
 import com.play.accompany.R;
 import com.play.accompany.base.BaseActivity;
+import com.play.accompany.constant.SpConstant;
+import com.play.accompany.utils.SPUtils;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
 import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
 
@@ -38,6 +42,9 @@ public class SettingActivity extends BaseActivity {
         QMUICommonListItemView itemNotice = mGroupListView.createItemView(getResources().getString(R.string.setting_notice));
         itemNotice.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
 
+        QMUICommonListItemView itemQuit = mGroupListView.createItemView(getResources().getString(R.string.quit_login));
+        itemQuit.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
+
         QMUIGroupListView.newSection(this).addItemView(itemSound, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -53,7 +60,29 @@ public class SettingActivity extends BaseActivity {
             public void onClick(View v) {
 
             }
+        }).addItemView(itemQuit, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new QMUIDialog.MessageDialogBuilder(SettingActivity.this).setTitle(getResources().getString(R.string.tips))
+                        .setMessage(getResources().getString(R.string.tips_login)).addAction(getResources().getString(R.string.cancel), new QMUIDialogAction.ActionListener() {
+                    @Override
+                    public void onClick(QMUIDialog dialog, int index) {
+                        dialog.dismiss();
+                    }
+                }).addAction(getResources().getString(R.string.confirm), new QMUIDialogAction.ActionListener() {
+                    @Override
+                    public void onClick(QMUIDialog dialog, int index) {
+                        quitLogin();
+                        dialog.dismiss();
+                    }
+                }).create().show();
+            }
         }).addTo(mGroupListView);
     }
 
+    private void quitLogin() {
+        SPUtils.getInstance().put(SpConstant.APP_TOKEN, "");
+        startActivity(new Intent(this, AccountActivity.class));
+        this.finish();
+    }
 }

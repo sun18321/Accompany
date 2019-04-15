@@ -95,6 +95,9 @@ public class UserInfoDatabaseUtils {
                 savedUserInfo.setGender(userInfo.getGender());
                 savedUserInfo.setDate(userInfo.getDate());
                 savedUserInfo.setSign(userInfo.getSign());
+                savedUserInfo.setInterest(userInfo.getInterest());
+                savedUserInfo.setProfession(userInfo.getProfession());
+                savedUserInfo.setOtherGame(userInfo.getOtherGame());
                 AccompanyDatabase.getInstance(AccompanyApplication.getContext()).getUserDao().update(savedUserInfo);
             }
         });

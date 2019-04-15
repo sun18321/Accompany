@@ -92,6 +92,7 @@ public class EditUserActivity extends BaseActivity implements View.OnClickListen
     private String mConstellation;
     private EditText mEditInterest;
     private EditText mEditProfession;
+    private EditText mEditOtherGame;
 
     @Override
     protected int getLayout() {
@@ -122,10 +123,12 @@ public class EditUserActivity extends BaseActivity implements View.OnClickListen
         mEditInterest = findViewById(R.id.edit_interest);
         mEditProfession = findViewById(R.id.edit_profession);
         mTvConstellation = findViewById(R.id.tv_constellation);
+        mEditOtherGame = findViewById(R.id.edit_other_game);
         mHeadImg.setOnClickListener(this);
         mLinBirthday.setOnClickListener(this);
 
         findViewById(R.id.btn_save).setOnClickListener(this);
+
         if (mInfo != null) {
             setViews();
         }
@@ -148,6 +151,7 @@ public class EditUserActivity extends BaseActivity implements View.OnClickListen
         mTvConstellation.setText(mConstellation);
         mEditInterest.setText(mInfo.getInterest());
         mEditProfession.setText(mInfo.getProfession());
+        mEditOtherGame.setText(mInfo.getOtherGame());
     }
 
     private void saveUser() {
@@ -184,6 +188,7 @@ public class EditUserActivity extends BaseActivity implements View.OnClickListen
         }
         String interest = mEditInterest.getText().toString();
         String profession = mEditProfession.getText().toString();
+        String otherGame = mEditOtherGame.getText().toString();
 
         final UserInfo userInfo = new UserInfo();
         userInfo.setName(name);
@@ -194,6 +199,7 @@ public class EditUserActivity extends BaseActivity implements View.OnClickListen
         userInfo.setGameZone(1);
         userInfo.setInterest(interest);
         userInfo.setProfession(profession);
+        userInfo.setOtherGame(otherGame);
         final String json = GsonUtils.toJson(userInfo);
         LogUtils.d("json", "json:" + json);
 

@@ -200,7 +200,7 @@ public class HomeAdapter extends RecyclerView.Adapter {
             });
             tvName.setText(info.getName());
             tvPrice.setText(info.getPrice() + mContext.getResources().getString(R.string.price));
-            tvGame.setText(StringUtils.getGameString(info.getGameType()));
+            tvGame.setText(StringUtils.GameList2String(info.getGameTypeName()));
             tvIntroduction.setText(info.getSign());
             Glide.with(itemView.getContext()).load(info.getUrl()).into(imgHead);
             tvDistance.setText(StringUtils.m2Km(info.getLbs()));

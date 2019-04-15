@@ -35,6 +35,7 @@ import com.play.accompany.utils.ToastUtils;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 
+import java.text.ParseException;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -146,7 +147,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         }
     }
 
-    private void setViews() {
+    private void setViews(){
         mTvSign.setText(mUserInfo.getSign());
         int gender = mUserInfo.getGender();
         if (gender == OtherConstant.GENDER_FEMALE) {
@@ -191,7 +192,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
             mTvFans.setText("0");
         }
         LogUtils.d(getTag(), "date:" + mUserInfo.getDate());
-//        mTvConstellation.setText(StringUtils.getConstellationByString(mUserInfo.getDate()));
+        mTvConstellation.setText(StringUtils.getConstellationByString(mUserInfo.getDate()));
     }
 
     @Override

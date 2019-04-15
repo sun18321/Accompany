@@ -108,14 +108,13 @@ public class CommentDialog extends Dialog implements View.OnClickListener {
                 }
             }
         });
-
         setContentView(view);
     }
 
     @Override
     public void onClick(View v) {
         if (mIsComplete) {
-            ToastUtils.showCommonToast("你想要申诉");
+            ToastUtils.showCommonToast("请到我的界面联系在线客服");
         } else {
             if (mListener != null) {
                 CommentBean bean = new CommentBean();

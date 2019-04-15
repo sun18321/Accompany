@@ -58,11 +58,14 @@ public interface NetService {
     Observable<BaseResponse> getService(@Body RequestBody body);
 
     @POST("getGameType")
-    Observable<BaseResponse> getAllGame(@Body RequestBody body);
+    Observable<BaseResponse> getOtherGame(@Body RequestBody body);
 
     @POST("applyAnchor")
     Observable<BaseResponse> applyMaster(@Body RequestBody body);
 
     @POST("favor")
     Observable<BaseResponse> attention(@Body RequestBody body);
+
+    @POST("getGameTypeAll")
+    Observable<BaseResponse> getAllGame(@Body RequestBody body);
 }

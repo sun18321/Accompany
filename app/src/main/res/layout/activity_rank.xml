@@ -9,25 +9,7 @@
     android:fitsSystemWindows="true"
     >
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?android:attr/actionBarSize"
-        >
-
-        <TextView
-            android:id="@+id/tv_title"
-            android:layout_gravity="center"
-            android:textColor="@color/color_black"
-            android:textSize="18sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </android.support.v7.widget.Toolbar>
-
-    <View
-        android:background="@color/color_gray"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"/>
+    <include layout="@layout/blue_toolbar"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler"

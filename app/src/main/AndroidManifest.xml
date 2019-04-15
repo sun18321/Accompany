@@ -75,7 +75,7 @@
         <activity
             android:name=".view.RankActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/NoActionBarStatus" />
         <activity
             android:name=".view.AccountActivity"
             android:screenOrientation="portrait"

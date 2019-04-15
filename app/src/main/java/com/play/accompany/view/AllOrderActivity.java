@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.TextView;
 
 import com.google.gson.reflect.TypeToken;
 import com.play.accompany.R;
@@ -43,6 +44,7 @@ public class AllOrderActivity extends BaseActivity implements OrderAdapter.Order
     private View mLoadingView;
     private List<AllOrderBean> mList = new ArrayList<>();
     private OrderAdapter mAdapter;
+    private TextView mTvNoOrder;
 
     @Override
     protected int getLayout() {
@@ -60,6 +62,7 @@ public class AllOrderActivity extends BaseActivity implements OrderAdapter.Order
         mRefreshLayout = findViewById(R.id.refresh_layout);
         mRecyclerView = findViewById(R.id.recycler);
         mLoadingView = findViewById(R.id.loading_view);
+        mTvNoOrder = findViewById(R.id.tv_no_order);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
@@ -90,6 +93,13 @@ public class AllOrderActivity extends BaseActivity implements OrderAdapter.Order
             @Override
             public void onSuccess(List<AllOrderBean> list) {
                 removeLoading();
+                if (list.isEmpty()) {
+                    mTvNoOrder.setVisibility(View.VISIBLE);
+                    return;
+                }
+                if (mTvNoOrder != null && mTvNoOrder.getVisibility() == View.VISIBLE) {
+                    mTvNoOrder.setVisibility(View.INVISIBLE);
+                }
                 mList.clear();
                 mList.addAll(list);
                 if (mAdapter == null) {

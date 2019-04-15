@@ -48,6 +48,8 @@
         <item name="android:progressDrawable">@drawable/star</item>
         <!-- 根据自定义星星图片的大小,设置相应的值,否则可能显示不全 -->
         <item name="android:numColumns">5</item>
+        <item name="android:minHeight">30dip</item>
+        <item name="android:maxHeight">30dip</item>
     </style>
 
     <style name="master_text_size">
@@ -63,6 +65,37 @@
         <item name="android:textSize">18sp</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="edit_text">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/edit_text_black</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="edit_edit">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/edit_text_black</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">50dp</item>
+        <item name="android:background">@null</item>
+    </style>
+
+    <style name="wallet_lin">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_marginStart">10dp</item>
+        <item name="android:layout_marginEnd">10dp</item>
+        <item name="android:layout_marginBottom">5dp</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:clickable">true</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:background">@drawable/selector_wallet</item>
     </style>
 
 

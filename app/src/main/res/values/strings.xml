@@ -47,6 +47,7 @@
     <string name="all_money">总金额:</string>
     <string name="money">币</string>
     <string name="submit">提交订单</string>
+    <string name="format_bill">支付%1$s元</string>
     <string name="small_all">小计</string>
     <string name="no_login">您还未登录，请先登录</string>
     <string name="cancel">取消</string>
@@ -157,7 +158,16 @@
     <string name="id_first">请先填写身份证号</string>
     <string name="wechat_first">请先填写微信提现账号</string>
     <string name="game_type_first">至少选择一项陪玩游戏</string>
-    <string name="tips_master">申请大神请务必遵守以下规则,否则会审核不通过：/n 1.以上信息必须为真实信息。/n 2.头像必须使用本人真实照片。</string>
+    <string name="tips_master">申请大神请务必遵守以下规则,\n否则会审核不通过：\n 1.以上信息必须为真实信息。\n 2.头像必须使用本人真实照片。</string>
+    <string name="good_comment">好评</string>
+    <string name="bad_comment">差评</string>
+    <string name="quit_login">退出登录</string>
+    <string name="tips_login">确定要退出登录吗？</string>
+    <string name="wallet_remain">余额:</string>
+    <string name="wallet_recharge">充值</string>
+    <string name="tips_wallet">1人民币等于1金币</string>
+    <string name="recharge_type">充值方式</string>
+    <string name="tips_order">暂无订单,可点击陪陪下达订单</string>
 
     <string name="price_detail_place"><![CDATA[<font color="#000000"><small>%1$s</small></font>]]></string>
 
