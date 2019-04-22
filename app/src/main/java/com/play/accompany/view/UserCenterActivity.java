@@ -45,6 +45,7 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import io.rong.imkit.RongIM;
 import okhttp3.RequestBody;
 
 public class UserCenterActivity extends BaseActivity implements View.OnClickListener {
@@ -330,6 +331,9 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
                 dealAttention();
                 break;
             case R.id.btn_chat:
+                if (mUserInfo != null) {
+                    RongIM.getInstance().startPrivateChat(this, mUserInfo.getUserId(), mUserInfo.getName());
+                }
                 break;
         }
     }

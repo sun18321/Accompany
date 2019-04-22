@@ -89,7 +89,6 @@ public abstract class BaseActivity extends AppCompatActivity implements DialogIn
         super.startActivityForResult(intent, requestCode, options);
 
         overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
-
     }
 
     @Override

@@ -33,6 +33,16 @@ public class UserInfoDatabaseUtils {
             SPUtils.getInstance().put(SpConstant.MY_USER_ID, userId);
         }
 
+        String name = userInfo.getName();
+        if (!TextUtils.isEmpty(name)) {
+            SPUtils.getInstance().put(SpConstant.MY_USER_NAME, name);
+        }
+
+        String url = userInfo.getUrl();
+        if (!TextUtils.isEmpty(url)) {
+            SPUtils.getInstance().put(SpConstant.MY_USER_URL, url);
+        }
+
         String inviteCode = userInfo.getInviteCode();
         if (!TextUtils.isEmpty(inviteCode)) {
             SPUtils.getInstance().put(SpConstant.MY_INVITE_CODE, inviteCode);

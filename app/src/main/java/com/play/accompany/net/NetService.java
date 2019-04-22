@@ -68,4 +68,7 @@ public interface NetService {
 
     @POST("getGameTypeAll")
     Observable<BaseResponse> getAllGame(@Body RequestBody body);
+
+    @POST("rongCloudRegister")
+    Observable<BaseResponse> getChatToken(@Body RequestBody body);
 }

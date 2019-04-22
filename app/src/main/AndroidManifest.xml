@@ -9,6 +9,9 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.VIBRATE"/>
+
+
 
     <application
         android:name=".view.AccompanyApplication"
@@ -19,25 +22,40 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".view.WalletActivity"
+        <activity android:name=".view.ConversationActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/NoActionBarStatus"/>
+            android:theme="@style/NoActionBarStatus"
+            android:windowSoftInputMode="stateHidden|adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data
+                    android:host="com.play.accompany"
+                    android:pathPrefix="/conversation/"
+                    android:scheme="rong" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".view.WalletActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBarStatus" />
         <activity
             android:name=".view.ServiceActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/NoActionBarStatus"/>
+            android:theme="@style/NoActionBarStatus" />
         <activity
             android:name=".view.MasterActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/NoActionBarStatus"/>
+            android:theme="@style/NoActionBarStatus" />
         <activity
             android:name=".view.RuleActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/NoActionBarStatus"/>
+            android:theme="@style/NoActionBarStatus" />
         <activity
             android:name=".view.EditUserActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/NoActionBarStatus"/>
+            android:theme="@style/NoActionBarStatus" />
         <activity
             android:name=".view.WebViewActivity"
             android:screenOrientation="portrait"
@@ -64,7 +82,6 @@
             android:theme="@style/FullscreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -96,6 +113,16 @@
             android:name=".view.InviteCodeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBarStatus" />
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.play.accompany.FileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/rc_file_path" />
+        </provider>
     </application>
 
 </manifest>

@@ -20,4 +20,10 @@ public class SpConstant {
     public static String USER_TYPE = "user_type";
 
     public static String ATTENTION_COUNT = "attention_count";
+
+    public static String CHAT_TOKEN = "chat_token";
+
+    public static String MY_USER_NAME = "my_user_name";
+
+    public static String MY_USER_URL = "my_user_url";
 }

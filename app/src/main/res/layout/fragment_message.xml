@@ -5,13 +5,13 @@
     android:fitsSystemWindows="true"
     >
 
+    <include layout="@layout/toolbar_title"/>
 
-    <TextView
-        android:id="@+id/message"
-        android:text="点击登录"
-        android:textSize="30sp"
-        android:layout_marginTop="30dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+
+    <fragment
+        android:id="@+id/conversationlist"
+        android:name="io.rong.imkit.fragment.ConversationListFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </LinearLayout>
