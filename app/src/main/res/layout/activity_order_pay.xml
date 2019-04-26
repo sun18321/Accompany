@@ -94,6 +94,7 @@
             android:layout_height="0.1dp"/>
 
         <RelativeLayout
+            android:visibility="invisible"
             android:id="@+id/rl_wechat"
             android:padding="10dp"
             android:background="@color/color_white"
@@ -117,13 +118,14 @@
 
         </RelativeLayout>
 
-        <View
-            android:background="@color/color_order_gray"
-            android:layout_width="match_parent"
-            android:layout_height="0.1dp"/>
+        <!--<View-->
+            <!--android:background="@color/color_order_gray"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="0.1dp"/>-->
 
 
         <RelativeLayout
+            android:visibility="invisible"
             android:id="@+id/rl_alipay"
             android:padding="10dp"
             android:background="@color/color_white"

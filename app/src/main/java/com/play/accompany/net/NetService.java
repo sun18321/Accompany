@@ -71,4 +71,7 @@ public interface NetService {
 
     @POST("rongCloudRegister")
     Observable<BaseResponse> getChatToken(@Body RequestBody body);
+
+    @POST("rongCloudGetInfo")
+    Observable<BaseResponse> getChaterInfo(@Body RequestBody body);
 }

@@ -26,4 +26,6 @@ public class SpConstant {
     public static String MY_USER_NAME = "my_user_name";
 
     public static String MY_USER_URL = "my_user_url";
+
+    public static String ACCEPT_NEW_NOTICE = "accept_new_notice";
 }

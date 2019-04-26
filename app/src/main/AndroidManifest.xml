@@ -9,9 +9,7 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.VIBRATE"/>
-
-
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:name=".view.AccompanyApplication"
@@ -22,7 +20,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".view.ConversationActivity"
+        <activity android:name=".view.NoticeSettingActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBarStatus"/>
+        <activity
+            android:name=".view.ConversationActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBarStatus"
             android:windowSoftInputMode="stateHidden|adjustResize">
@@ -35,7 +37,6 @@
                     android:scheme="rong" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".view.WalletActivity"
             android:screenOrientation="portrait"
@@ -87,6 +88,7 @@
         </activity>
         <activity
             android:name=".view.MainActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -121,8 +123,20 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/rc_file_path" />
+                android:resource="@xml/file_path" />
+
         </provider>
+
+        <!--<provider-->
+            <!--android:name="android.support.v4.content.FileProvider"-->
+            <!--android:authorities="com.play.accompany.provider"-->
+            <!--android:exported="false"-->
+            <!--android:grantUriPermissions="true">-->
+            <!--<meta-data-->
+                <!--android:name="android.support.FILE_PROVIDER_PATHS"-->
+                <!--android:resource="@xml/file_path" />-->
+        <!--</provider>-->
+
     </application>
 
 </manifest>

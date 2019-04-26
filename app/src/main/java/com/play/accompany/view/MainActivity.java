@@ -20,6 +20,7 @@ import com.play.accompany.base.BaseActivity;
 import com.play.accompany.base.BaseFragment;
 import com.play.accompany.bean.BaseDecodeBean;
 import com.play.accompany.bean.ChatBean;
+import com.play.accompany.bean.ChatInfo;
 import com.play.accompany.bean.Token;
 import com.play.accompany.constant.SpConstant;
 import com.play.accompany.db.AccompanyDatabase;
@@ -196,6 +197,8 @@ public class MainActivity extends BaseActivity {
 
                             if (TextUtils.equals(s, SPUtils.getInstance().getString(SpConstant.MY_USER_ID))) {
                                 return new UserInfo(SPUtils.getInstance().getString(SpConstant.MY_USER_ID), SPUtils.getInstance().getString(SpConstant.MY_USER_NAME), uri);
+                            } else {
+                                getChatInfo(s);
                             }
                             return null;
                         }
@@ -224,6 +227,43 @@ public class MainActivity extends BaseActivity {
         }
         fragmentTransaction.show(fragment).commitAllowingStateLoss();
         mCurrentTag = tag;
+    }
+
+    private void getChatInfo(String userId) {
+        ChatInfo info = new ChatInfo(userId);
+        String json = GsonUtils.toJson(info);
+        RequestBody body = EncodeUtils.encodeInBody(json);
+        AccompanyRequest request = new AccompanyRequest();
+        request.beginRequest(NetFactory.getNetRequest().getNetService().getChaterInfo(body), new TypeToken<BaseDecodeBean<List<com.play.accompany.bean.UserInfo>>>() {
+        }.getType(), new NetListener<List<com.play.accompany.bean.UserInfo>>() {
+            @Override
+            public void onSuccess(List<com.play.accompany.bean.UserInfo> list) {
+                if (list.isEmpty()) {
+                    return;
+                }
+                com.play.accompany.bean.UserInfo userInfo = list.get(0);
+                if (userInfo != null) {
+                    String url = userInfo.getUrl();
+                    UserInfo chatInfo = new UserInfo(userInfo.getUserId(), userInfo.getName(), Uri.parse(url));
+                    RongIM.getInstance().refreshUserInfoCache(chatInfo);
+                }
+            }
+
+            @Override
+            public void onFailed(int errCode) {
+
+            }
+
+            @Override
+            public void onError() {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
     }
 
     @Override

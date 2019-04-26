@@ -15,6 +15,8 @@ import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
 import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
 
+import io.rong.imkit.RongIM;
+
 public class SettingActivity extends BaseActivity {
     QMUIGroupListView mGroupListView;
 
@@ -45,12 +47,7 @@ public class SettingActivity extends BaseActivity {
         QMUICommonListItemView itemQuit = mGroupListView.createItemView(getResources().getString(R.string.quit_login));
         itemQuit.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
 
-        QMUIGroupListView.newSection(this).addItemView(itemSound, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        }).addItemView(itemPrivacy, new View.OnClickListener() {
+        QMUIGroupListView.newSection(this).addItemView(itemPrivacy, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(SettingActivity.this,PrivacyActivity.class));
@@ -58,7 +55,7 @@ public class SettingActivity extends BaseActivity {
         }).addItemView(itemNotice, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                startActivity(new Intent(SettingActivity.this, NoticeSettingActivity.class));
             }
         }).addItemView(itemQuit, new View.OnClickListener() {
             @Override
@@ -81,8 +78,9 @@ public class SettingActivity extends BaseActivity {
     }
 
     private void quitLogin() {
-        SPUtils.getInstance().put(SpConstant.APP_TOKEN, "");
-        startActivity(new Intent(this, AccountActivity.class));
+        SPUtils.getInstance().clear();
+        RongIM.getInstance().logout();
+        startActivity(new Intent(this, AccountActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
         this.finish();
     }
 }

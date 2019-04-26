@@ -54,6 +54,9 @@ public class SplashActivity extends BaseActivity {
     private int mRepeatCount = 3;
     private long mUnitTimes = 1000;
     private Disposable mDisposable;
+    private final int mDelay = 2000;
+    private long mCurrentTimes;
+
 
     private String json = "{\"code\":1,\"msg\":{\"userId\":\"12555999996\",\"token\":\"1c0a4b11e03c42a62c3be2823af08678\",\"time\":1552941667073}}";
 
@@ -134,6 +137,7 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void verifyToken(String s) {
+        mCurrentTimes = System.currentTimeMillis();
         Token token = new Token(s);
         String json = GsonUtils.toJson(token);
         RequestBody body = EncodeUtils.encodeInBody(json);
@@ -155,7 +159,7 @@ public class SplashActivity extends BaseActivity {
                         SplashActivity.this.finish();
                     } else {
                         UserInfoDatabaseUtils.saveUserInfo(list.get(0));
-                        startCountdown();
+                        delay();
                     }
                 }
             }
@@ -178,6 +182,21 @@ public class SplashActivity extends BaseActivity {
 
             }
         });
+    }
+
+    private void delay() {
+        long time = System.currentTimeMillis() - mCurrentTimes;
+        if (time < mDelay) {
+            long timeSpace = mDelay - time;
+            mRlLogo.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    startCountdown();
+                }
+            }, timeSpace);
+        } else {
+            startCountdown();
+        }
     }
 
     private void startCountdown() {

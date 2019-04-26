@@ -221,12 +221,7 @@ public class MyFragment extends BaseFragment {
         itemSetting.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.setting));
         itemSetting.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
 
-        QMUIGroupListView.newSection(mContext).addItemView(itemWallet, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(mContext, WalletActivity.class));
-            }
-        }).addItemView(itemOrder, new View.OnClickListener() {
+        QMUIGroupListView.newSection(mContext).addItemView(itemOrder, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(mContext, AllOrderActivity.class));

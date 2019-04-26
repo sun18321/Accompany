@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -93,6 +94,7 @@ public class EditUserActivity extends BaseActivity implements View.OnClickListen
     private EditText mEditInterest;
     private EditText mEditProfession;
     private EditText mEditOtherGame;
+    private File mFile;
 
     @Override
     protected int getLayout() {
@@ -250,7 +252,6 @@ public class EditUserActivity extends BaseActivity implements View.OnClickListen
     @NeedsPermission({Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE})
     public void selectCamera() {
         takePhoto();
-        Toast.makeText(this,getResources().getString(R.string.developing),Toast.LENGTH_SHORT).show();
     }
 
     @OnPermissionDenied({Manifest.permission.CAMERA})
@@ -282,30 +283,41 @@ public class EditUserActivity extends BaseActivity implements View.OnClickListen
             sb.append(image);
             LogUtils.d("aboutimage", "append:" + sb.toString());
             uploadImage(sb.toString());
-        } else if (requestCode == request_code_camera && data != null) {
+        } else if (requestCode == request_code_camera) {
+            LogUtils.d(getTag(), "camera result");
+            LogUtils.d(getTag(), "go crop path:" + FileProvider.getUriForFile(this, getPackageName() + ".FileProvider", mFile).toString());
 
+            if (mFile.exists()) {
+                goCrop(FileProvider.getUriForFile(this, getPackageName() + ".FileProvider", mFile));
+            } else {
+                LogUtils.d(getTag(), "no photo");
+            }
         }
 
     }
 
     private void takePhoto() {
         // 步骤一：创建存储照片的文件
-//        String path = getFilesDir() + File.separator + "images" + File.separator;
-//        File file = new File(path, String.valueOf((new Date()).getTime()) + ".png");
-//        if(!file.getParentFile().exists())
-//            file.getParentFile().mkdirs();
-//
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-//            //步骤二：Android 7.0及以上获取文件 Uri
-//            mUri = FileProvider.getUriForFile(this, "com.example.admin.custmerviewapplication", file);
-//        } else {
-//            //步骤三：获取文件Uri
-//            mUri = Uri.fromFile(file);
-//        }
-//        //步骤四：调取系统拍照
-//        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-//        intent.putExtra(MediaStore.EXTRA_OUTPUT, mUri);
-//        startActivityForResult(intent, REQUEST_TAKE_PHOTO_CODE);
+        mFile = new File(Environment.getExternalStorageDirectory().getPath() + "/Accompany", System.currentTimeMillis() + ".png");
+        if(!mFile.getParentFile().exists()){
+            mFile.getParentFile().mkdirs();
+        }
+        Uri uri;
+        LogUtils.d(getTag(), "file path:" + Environment.getExternalStorageDirectory().getPath() + "/Accompany");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            //步骤二：Android 7.0及以上获取文件 Uri
+            uri = FileProvider.getUriForFile(this, getPackageName() + ".FileProvider", mFile);
+
+            LogUtils.d(getTag(), "uri path:" + uri.toString());
+
+        } else {
+            //步骤三：获取文件Uri
+            uri = Uri.fromFile(mFile);
+        }
+        //步骤四：调取系统拍照
+        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+        startActivityForResult(intent, request_code_camera);
     }
 
     private void uploadImage(String image) {
@@ -354,11 +366,11 @@ public class EditUserActivity extends BaseActivity implements View.OnClickListen
         options.setToolbarTitle(getResources().getString(R.string.crop_image));
         options.setToolbarColor(ActivityCompat.getColor(this, R.color.colorPrimary));
         options.setStatusBarColor(ActivityCompat.getColor(this, R.color.colorPrimary));
-        options.setHideBottomControls(true);
+//        options.setHideBottomControls(true);
         File outDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
         File outFile = new File(outDir, System.currentTimeMillis() + ".png");
         Uri destinationUri = Uri.fromFile(outFile);
-        UCrop.of(imgUri,destinationUri).withOptions(options).withAspectRatio(1,1).withMaxResultSize(QMUIDisplayHelper.dp2px(this,120),QMUIDisplayHelper.dp2px(this,120)).start(this);
+        UCrop.of(imgUri,destinationUri).withOptions(options).withAspectRatio(1,1).start(this);
     }
 
     private String getImagePath(Uri uri) {
