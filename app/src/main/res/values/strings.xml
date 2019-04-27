@@ -1,4 +1,4 @@
-<resources>
+<resources tools:ignore="MissingTranslation" xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">伽岚果</string>
     <string name="skip">跳过</string>
     <string name="home">首页</string>
