@@ -169,6 +169,7 @@
     <string name="recharge_type">充值方式</string>
     <string name="tips_order">暂无订单,可点击陪陪下达订单</string>
     <string name="conversation">会话</string>
+    <string name="photo_failed">获取照片失败</string>
 
     <string name="price_detail_place"><![CDATA[<font color="#000000"><small>%1$s</small></font>]]></string>
 

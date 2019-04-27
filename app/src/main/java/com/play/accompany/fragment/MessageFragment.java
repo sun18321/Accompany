@@ -41,7 +41,7 @@ public class MessageFragment extends BaseFragment {
         ((MainActivity) mContext).setSupportActionBar(toolbar);
         ((MainActivity) mContext).getSupportActionBar().setDisplayShowTitleEnabled(false);
         TextView tvTitle = view.findViewById(R.id.tv_title);
-        tvTitle.setText(getResources().getString(R.string.conversation));
+        tvTitle.setText(getResources().getString(R.string.message));
 
         enterFragment();
     }

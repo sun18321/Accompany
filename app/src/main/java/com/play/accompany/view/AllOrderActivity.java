@@ -93,7 +93,7 @@ public class AllOrderActivity extends BaseActivity implements OrderAdapter.Order
             @Override
             public void onSuccess(List<AllOrderBean> list) {
                 removeLoading();
-                if (list.isEmpty()) {
+                if (list == null || list.isEmpty()) {
                     mTvNoOrder.setVisibility(View.VISIBLE);
                     return;
                 }

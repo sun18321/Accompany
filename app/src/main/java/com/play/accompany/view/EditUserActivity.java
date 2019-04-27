@@ -3,10 +3,14 @@ package com.play.accompany.view;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -55,11 +59,15 @@ import com.play.accompany.utils.GsonUtils;
 import com.play.accompany.utils.LogUtils;
 import com.play.accompany.utils.SPUtils;
 import com.play.accompany.utils.StringUtils;
+import com.play.accompany.utils.ToastUtils;
 import com.play.accompany.utils.UserInfoDatabaseUtils;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.yalantis.ucrop.UCrop;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -133,6 +141,15 @@ public class EditUserActivity extends BaseActivity implements View.OnClickListen
 
         if (mInfo != null) {
             setViews();
+        }
+
+        createFile();
+    }
+
+    private void createFile() {
+        File file = new File(Environment.getExternalStorageDirectory() + "/Pictures");
+        if (!file.exists()) {
+            file.mkdirs();
         }
     }
 
@@ -269,7 +286,17 @@ public class EditUserActivity extends BaseActivity implements View.OnClickListen
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == request_code_album && data != null) {
+
+            LogUtils.d(getTag(), "uri:" + data.getData().toString());
+            LogUtils.d(getTag(), "path:" + getImagePath(data.getData()));
+
+
+            String imagePath = getImagePath(data.getData());
+            LogUtils.d(getTag(),"string2uri:" + Uri.parse(imagePath));
+            Uri uriForFile = FileProvider.getUriForFile(this, (getPackageName() + ".FileProvider"), new File(imagePath));
+            LogUtils.d(getTag(), "file_provider:" + uriForFile.toString());
             goCrop(data.getData());
+
         } else if (requestCode == UCrop.REQUEST_CROP && data != null) {
             Uri output = UCrop.getOutput(data);
             String path = getImagePath(output);
@@ -285,8 +312,8 @@ public class EditUserActivity extends BaseActivity implements View.OnClickListen
             uploadImage(sb.toString());
         } else if (requestCode == request_code_camera) {
             LogUtils.d(getTag(), "camera result");
-            LogUtils.d(getTag(), "go crop path:" + FileProvider.getUriForFile(this, getPackageName() + ".FileProvider", mFile).toString());
-
+//            LogUtils.d(getTag(),"uri:" + FileProvider.getUriForFile(this, getPackageName() + ".FileProvider", mFile));
+            LogUtils.d(getTag(), "uri string:" + FileProvider.getUriForFile(this, getPackageName() + ".FileProvider", mFile).toString());
             if (mFile.exists()) {
                 goCrop(FileProvider.getUriForFile(this, getPackageName() + ".FileProvider", mFile));
             } else {
@@ -298,12 +325,12 @@ public class EditUserActivity extends BaseActivity implements View.OnClickListen
 
     private void takePhoto() {
         // 步骤一：创建存储照片的文件
-        mFile = new File(Environment.getExternalStorageDirectory().getPath() + "/Accompany", System.currentTimeMillis() + ".png");
+        mFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/accompany", System.currentTimeMillis() + ".png");
         if(!mFile.getParentFile().exists()){
             mFile.getParentFile().mkdirs();
         }
         Uri uri;
-        LogUtils.d(getTag(), "file path:" + Environment.getExternalStorageDirectory().getPath() + "/Accompany");
+        LogUtils.d(getTag(), "file path:" + Environment.getExternalStorageDirectory().getAbsolutePath() + "/accompany");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             //步骤二：Android 7.0及以上获取文件 Uri
             uri = FileProvider.getUriForFile(this, getPackageName() + ".FileProvider", mFile);
@@ -315,8 +342,9 @@ public class EditUserActivity extends BaseActivity implements View.OnClickListen
             uri = Uri.fromFile(mFile);
         }
         //步骤四：调取系统拍照
-        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         startActivityForResult(intent, request_code_camera);
     }
 

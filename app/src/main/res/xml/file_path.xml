@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <paths xmlns:android="http://schemas.android.com/apk/res/android">
-    <files-path
-        name="images"
-        path="Accompany" />
-    <!--files-path  相当于 getFilesDir（）-->
+    <!--<files-path-->
+        <!--name="images"-->
+        <!--path="accompany" />-->
+    <!--&lt;!&ndash;files-path  相当于 getFilesDir（）&ndash;&gt;-->
     <external-path
-        name="images"
-        path="Accompany" />
+        name="accompany_images"
+        path="accompany" />
     <!--external-path  相当于 Environment.getExternalStorageDirectory()-->
-    <external-files-path
-        name="images"
-        path="Accompany" />
+    <!--<external-files-path-->
+        <!--name="images"-->
+        <!--path="accompany" />-->
     <!--external-files-path  相当于 getExternalFilesDir("") -->
     <root-path
         name="images"

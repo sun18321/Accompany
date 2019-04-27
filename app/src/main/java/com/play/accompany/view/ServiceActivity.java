@@ -19,6 +19,7 @@ import com.play.accompany.bean.BaseDecodeBean;
 import com.play.accompany.bean.ServiceBean;
 import com.play.accompany.bean.Token;
 import com.play.accompany.constant.SpConstant;
+import com.play.accompany.design.HtmlTagHandler;
 import com.play.accompany.net.AccompanyRequest;
 import com.play.accompany.net.NetFactory;
 import com.play.accompany.net.NetListener;
@@ -73,7 +74,8 @@ public class ServiceActivity extends BaseActivity {
                 String serviceMsg = bean.getServiceMsg();
                 CharSequence text;
                 if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N) {
-                    text = Html.fromHtml(serviceMsg, Html.FROM_HTML_MODE_COMPACT);
+                    String s = serviceMsg.replaceAll("font", "bluefont");
+                    text = Html.fromHtml(s, Html.FROM_HTML_MODE_COMPACT,null, new HtmlTagHandler());
                 } else {
                     text = Html.fromHtml(serviceMsg);
                 }
