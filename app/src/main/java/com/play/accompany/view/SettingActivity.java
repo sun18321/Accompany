@@ -9,6 +9,7 @@ import android.view.View;
 import com.play.accompany.R;
 import com.play.accompany.base.BaseActivity;
 import com.play.accompany.constant.SpConstant;
+import com.play.accompany.db.AccompanyDatabase;
 import com.play.accompany.utils.SPUtils;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;

@@ -26,7 +26,7 @@ public class AccompanyRequest{
     private NetListener mListener;
     private StringListener mStringListener;
 
-    public void beginRequest(Observable<BaseResponse> observable, final Type type, NetListener listener) {
+    public void beginRequest(Observable<BaseResponse> observable, final Type type, final NetListener listener) {
         mListener = listener;
         if (!NetUtils.isNetworkConnected(AccompanyApplication.getContext())) {
             Toast.makeText(AccompanyApplication.getContext(), AccompanyApplication.getContext().getResources().getString(R.string.no_net), Toast.LENGTH_SHORT).show();

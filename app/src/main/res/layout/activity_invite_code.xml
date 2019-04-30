@@ -12,29 +12,18 @@
 
     <include layout="@layout/blue_toolbar"/>
 
-    <LinearLayout
-        android:padding="20dp"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:text="@string/invite_code"
-            android:textSize="20sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
         <TextView
             android:id="@+id/tv_invite"
+            android:layout_marginTop="10dp"
             android:textSize="20sp"
-            android:layout_marginLeft="30dp"
+            android:textColor="@color/red"
+            android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
-
-    </LinearLayout>
 
     <TextView
         android:padding="20dp"
+        android:layout_gravity="center"
         android:text="@string/invite_tips"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
@@ -44,11 +33,23 @@
         android:text="@string/invite_copy"
         android:textColor="@color/color_white"
         android:background="@drawable/ripple_button"
-        android:layout_margin="20dp"
+        android:layout_margin="10dp"
         android:layout_width="match_parent"
         android:layout_height="40dp"/>
+
+
+
+    <ImageView
+        android:id="@+id/img_switch"
+        android:layout_marginStart="20dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp" />
+
+
     <LinearLayout
-        android:orientation="horizontal"
+        android:id="@+id/lin_expand"
+        android:orientation="vertical"
+        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -56,32 +57,43 @@
             android:id="@+id/edit_invite"
             android:background="@drawable/invite_bg_gray"
             android:textColor="@color/color_white"
-            android:paddingLeft="55dp"
-            android:paddingRight="55dp"
-            android:layout_marginLeft="20dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
             android:hint="@string/input_invite"
+            android:gravity="center"
             android:textColorHint="@color/color_white"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="40dp"/>
+
+        <TextView
+        android:padding="20dp"
+        android:layout_marginTop="10dp"
+        android:textSize="20sp"
+        android:text="@string/invite_limit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
         <Button
             android:id="@+id/btn_submit"
             android:text="@string/submit_only"
+            android:layout_gravity="center"
             android:textColor="@color/color_white"
             android:background="@drawable/ripple_button"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
             android:layout_height="40dp"/>
 
     </LinearLayout>
 
     <TextView
-        android:padding="20dp"
-        android:layout_marginTop="40dp"
-        android:textSize="20sp"
-        android:text="@string/invite_limit"
+        android:visibility="invisible"
+        android:id="@+id/test"
+        android:layout_marginTop="10dp"
+        android:text="定位用的"
+        android:layout_gravity="center"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

@@ -1,5 +1,8 @@
 package com.play.accompany.view;
 
+import android.animation.Animator;
+import android.animation.AnimatorInflater;
+import android.animation.ObjectAnimator;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -7,7 +10,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.gson.reflect.TypeToken;
@@ -24,6 +30,7 @@ import com.play.accompany.net.NetFactory;
 import com.play.accompany.net.NetListener;
 import com.play.accompany.utils.EncodeUtils;
 import com.play.accompany.utils.GsonUtils;
+import com.play.accompany.utils.LogUtils;
 import com.play.accompany.utils.SPUtils;
 import com.play.accompany.utils.ToastUtils;
 
@@ -35,6 +42,16 @@ public class InviteCodeActivity extends BaseActivity implements View.OnClickList
 
     private EditText mEditInvite;
     private String mInviteCode;
+    private ImageView mImgSwitch;
+    private LinearLayout mLinExpand;
+    private boolean mAnimating = false;
+    private final long mAnimTime = 500;
+    private boolean mIsExpand;
+    private int mCurrentAngle = 0;
+    private final int mRotateAngle = 180;
+    private Animator mAnimatorExpand;
+    private Animator mAnimatorCollapse;
+    private TextView mTvTest;
 
     @Override
     protected int getLayout() {
@@ -57,6 +74,90 @@ public class InviteCodeActivity extends BaseActivity implements View.OnClickList
         mEditInvite = findViewById(R.id.edit_invite);
         findViewById(R.id.btn_copy).setOnClickListener(this);
         findViewById(R.id.btn_submit).setOnClickListener(this);
+        mImgSwitch = findViewById(R.id.img_switch);
+        mLinExpand = findViewById(R.id.lin_expand);
+        mTvTest = findViewById(R.id.test);
+
+        if (SPUtils.getInstance().getBoolean(SpConstant.INVITE_FLAG)) {
+            mImgSwitch.setImageResource(R.drawable.invite_arrow_up);
+            mLinExpand.setVisibility(View.INVISIBLE);
+            mIsExpand = false;
+        } else {
+            mImgSwitch.setImageResource(R.drawable.invite_arrow_down);
+            mLinExpand.setVisibility(View.VISIBLE);
+            mIsExpand = true;
+        }
+        mImgSwitch.setOnClickListener(this);
+        LogUtils.d("anim", "start expand:" + mIsExpand);
+
+
+        mLinExpand.setPivotY(0);
+        mAnimatorExpand = AnimatorInflater.loadAnimator(this, R.animator.invite_expand);
+        mAnimatorExpand.setTarget(mLinExpand);
+        mAnimatorExpand.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                mAnimating = true;
+                mLinExpand.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                mAnimating = false;
+                mIsExpand = !mIsExpand;
+                mLinExpand.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
+
+        mAnimatorCollapse = AnimatorInflater.loadAnimator(this, R.animator.invite_collapse);
+        mAnimatorCollapse.setTarget(mLinExpand);
+        mAnimatorCollapse.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                mAnimating = true;
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                mAnimating = false;
+                mIsExpand = !mIsExpand;
+                mLinExpand.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
+    }
+
+    private void startAnim() {
+        if (mCurrentAngle == 360) {
+            mCurrentAngle = 0;
+        }
+        ObjectAnimator rotation = ObjectAnimator.ofFloat(mImgSwitch, "rotation", mCurrentAngle, mCurrentAngle + mRotateAngle).setDuration(mAnimTime);
+        rotation.start();
+        if (mIsExpand) {
+            mAnimatorCollapse.start();
+        } else {
+            mAnimatorExpand.start();
+        }
+        mCurrentAngle += mRotateAngle;
     }
 
     @Override
@@ -67,6 +168,11 @@ public class InviteCodeActivity extends BaseActivity implements View.OnClickList
                 break;
             case R.id.btn_submit:
                 submitCode();
+                break;
+            case R.id.img_switch:
+                if (!mAnimating) {
+                    startAnim();
+                }
                 break;
         }
     }

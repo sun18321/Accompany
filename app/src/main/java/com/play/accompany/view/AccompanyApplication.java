@@ -5,6 +5,7 @@ import android.app.Application;
 import android.content.Context;
 
 import com.play.accompany.bean.UserInfo;
+import com.play.accompany.chat.ChatConnectListener;
 import com.play.accompany.constant.AppConstant;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
@@ -49,6 +50,7 @@ public class AccompanyApplication extends Application {
              * IMKit SDK调用第一步 初始化
              */
             RongIM.init(this);
+            RongIM.setConnectionStatusListener(new ChatConnectListener());
         }
     }
 
