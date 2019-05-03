@@ -11,6 +11,23 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <!--用于进行网络定位-->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <!--用于访问GPS定位-->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <!--获取运营商信息，用于支持提供运营商信息相关的接口-->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <!--用于访问wifi网络信息，wifi信息会用于进行网络定位-->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <!--这个权限用于获取wifi的获取权限，wifi信息会用来进行网络定位-->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <!--用于申请调用A-GPS模块-->
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"/>
+    <!--用于申请获取蓝牙信息进行室内定位-->
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+
+
 
     <application
         android:name=".view.AccompanyApplication"
@@ -125,18 +142,17 @@
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_path" />
-
         </provider>
 
-        <!--<provider-->
-            <!--android:name="android.support.v4.content.FileProvider"-->
-            <!--android:authorities="com.play.accompany.provider"-->
-            <!--android:exported="false"-->
-            <!--android:grantUriPermissions="true">-->
-            <!--<meta-data-->
-                <!--android:name="android.support.FILE_PROVIDER_PATHS"-->
-                <!--android:resource="@xml/file_path" />-->
-        <!--</provider>-->
+        <!--gaode map-->
+        <meta-data android:name="com.amap.api.v2.apikey"
+            android:value="b041371bc7989e6e9ad3bffa89b8c490">
+        </meta-data>
+
+        <service android:name="com.amap.api.location.APSService">
+        </service>
+
+
 
     </application>
 

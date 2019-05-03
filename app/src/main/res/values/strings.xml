@@ -103,7 +103,7 @@
     <string name="game">游戏</string>
     <string name="invite_code">我的邀请码</string>
     <string name="invite_tips">推荐朋友填写您的邀请码可参与运营活动领取礼品</string>
-    <string name="invite_copy">复制邀请码</string>
+    <string name="invite_copy">点击复制邀请码</string>
     <string name="input_invite">填写邀请码</string>
     <string name="submit_only">提交</string>
     <string name="invite_limit">每位用户只能填写一次邀请码，并且不能填写自己的哦^_^!</string>
@@ -171,6 +171,7 @@
     <string name="tips_order">暂无订单,可点击陪陪下达订单</string>
     <string name="conversation">会话</string>
     <string name="photo_failed">获取照片失败</string>
+    <string name="location_msg">应用需要获取您的位置信息,向您展示附近的陪陪</string>
 
     <string name="price_detail_place"><![CDATA[<font color="#000000"><small>%1$s</small></font>]]></string>
 

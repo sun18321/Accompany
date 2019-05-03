@@ -1,6 +1,8 @@
 package com.play.accompany.view;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
@@ -32,6 +35,7 @@ import com.play.accompany.net.NetFactory;
 import com.play.accompany.net.NetListener;
 import com.play.accompany.utils.EncodeUtils;
 import com.play.accompany.utils.GsonUtils;
+import com.play.accompany.utils.LocationUtils;
 import com.play.accompany.utils.LogUtils;
 import com.play.accompany.utils.SPUtils;
 import com.play.accompany.utils.ThreadPool;
@@ -46,7 +50,12 @@ import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.UserInfo;
 import okhttp3.RequestBody;
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.OnShowRationale;
+import permissions.dispatcher.PermissionRequest;
+import permissions.dispatcher.RuntimePermissions;
 
+@RuntimePermissions
 public class MainActivity extends BaseActivity {
 
     private BottomNavigationView mNavigationView;
@@ -93,6 +102,10 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
+        if (SPUtils.getInstance().getBoolean(SpConstant.SHOW_LOCATION, true)) {
+            MainActivityPermissionsDispatcher.requestPermissionWithPermissionCheck(this);
+        }
+
         mNavigationView = findViewById(R.id.navigation);
         mHomeFragment = HomeFragment.newInstance();
 //        if (mConversationListFragment == null) {
@@ -266,9 +279,32 @@ public class MainActivity extends BaseActivity {
         });
     }
 
-    @Override
-    protected void parseIntent() {
+    @NeedsPermission({Manifest.permission.ACCESS_COARSE_LOCATION})
+    public void requestPermission() {
+        LocationUtils.startLocate();
+    }
 
+    @OnShowRationale({Manifest.permission.ACCESS_COARSE_LOCATION})
+    public void showReason(final PermissionRequest request) {
+        new AlertDialog.Builder(this).setMessage(getResources().getString(R.string.location_msg))
+                .setPositiveButton(getResources().getString(R.string.confirm), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        request.proceed();
+                    }
+                }).setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                request.cancel();
+            }
+        }).show();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        MainActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
     }
 
 }
