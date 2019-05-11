@@ -5,7 +5,9 @@ import android.app.Application;
 import android.content.Context;
 
 import com.play.accompany.bean.UserInfo;
+import com.play.accompany.chat.ChatClickListener;
 import com.play.accompany.chat.ChatConnectListener;
+import com.play.accompany.chat.MessageReceiverListener;
 import com.play.accompany.constant.AppConstant;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
@@ -50,7 +52,12 @@ public class AccompanyApplication extends Application {
              * IMKit SDK调用第一步 初始化
              */
             RongIM.init(this);
+            //连接状态
             RongIM.setConnectionStatusListener(new ChatConnectListener());
+            //收到消息
+            RongIM.setOnReceiveMessageListener(new MessageReceiverListener());
+            //会话点击
+            RongIM.setConversationClickListener(new ChatClickListener());
         }
     }
 

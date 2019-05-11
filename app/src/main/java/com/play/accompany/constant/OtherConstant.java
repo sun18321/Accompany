@@ -30,4 +30,8 @@ public class OtherConstant {
     public static final int ATTENTION_FLAG = 1;
 
     public static final int ATTEMTION_FLAG_CANCEL = 0;
+
+    public static final String ORDER_CHANNEL = "accompany.order.notify";
+
+    public static final int NOTIFY_CODE = 999;
 }

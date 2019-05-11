@@ -10,12 +10,15 @@ import android.widget.TextView;
 
 import com.play.accompany.R;
 import com.play.accompany.base.BaseFragment;
+import com.play.accompany.constant.SpConstant;
+import com.play.accompany.utils.SPUtils;
 import com.play.accompany.view.AccountActivity;
 import com.play.accompany.view.MainActivity;
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 
 import io.rong.imkit.RongIM;
 import io.rong.imkit.fragment.ConversationListFragment;
+import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.UserInfo;
 
@@ -67,4 +70,13 @@ public class MessageFragment extends BaseFragment {
         fragment.setUri(uri);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (RongIM.getInstance().getCurrentConnectionStatus() != RongIMClient.ConnectionStatusListener.ConnectionStatus.CONNECTED
+                && RongIM.getInstance().getCurrentConnectionStatus() != RongIMClient.ConnectionStatusListener.ConnectionStatus.CONNECTING) {
+
+            RongIM.connect(SPUtils.getInstance().getString(SpConstant.CHAT_TOKEN), null);
+        }
+    }
 }

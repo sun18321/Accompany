@@ -166,12 +166,13 @@
     <string name="tips_login">确定要退出登录吗？</string>
     <string name="wallet_remain">余额:</string>
     <string name="wallet_recharge">充值</string>
-    <string name="tips_wallet">1人民币等于1金币</string>
+    <string name="tips_wallet">1人民币等于1果币</string>
     <string name="recharge_type">充值方式</string>
     <string name="tips_order">暂无订单,可点击陪陪下达订单</string>
     <string name="conversation">会话</string>
     <string name="photo_failed">获取照片失败</string>
     <string name="location_msg">应用需要获取您的位置信息,向您展示附近的陪陪</string>
+    <string name="new_order">您有新的订单</string>
 
     <string name="price_detail_place"><![CDATA[<font color="#000000"><small>%1$s</small></font>]]></string>
 

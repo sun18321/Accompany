@@ -45,6 +45,7 @@
             android:name=".view.ConversationActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBarStatus"
+            android:launchMode="singleTop"
             android:windowSoftInputMode="stateHidden|adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -133,6 +134,11 @@
             android:name=".view.InviteCodeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBarStatus" />
+
+        <activity
+            android:name=".wxapi.WXPayEntryActivity"
+            android:exported="true"
+            android:launchMode="singleTop"/>
 
         <provider
             android:name="android.support.v4.content.FileProvider"

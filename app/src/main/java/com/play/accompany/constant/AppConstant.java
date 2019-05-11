@@ -2,8 +2,8 @@ package com.play.accompany.constant;
 
 public class AppConstant {
 
-    public static String BASE_URL = "http://47.92.255.86:7070/peipei/";
-//    public static String BASE_URL = "http://10.254.74.57:7070/peipei/";
+//    public static String BASE_URL = "http://47.92.255.86:7070/peipei/";
+    public static String BASE_URL = "http://192.168.43.53:7070/peipei/";
     public static int RESPONSE_SUCCESS = 1;
 
     public static int ERROR_TOKEN = 404;
@@ -19,5 +19,7 @@ public class AppConstant {
     public static final String UMENG_KEY = "5c9757943fc195e343000255";
 
     public static final String BROADCAST_ATTENTION = "com.accompany.attention";
+
+    public static final String WE_CHAT_ID = "wx7beb369a31f962e1";
 
 }
