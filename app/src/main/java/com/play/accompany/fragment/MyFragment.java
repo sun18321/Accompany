@@ -50,6 +50,7 @@ public class MyFragment extends BaseFragment {
     private boolean mFirst = true;
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
     private UserInfo mUserInfo;
+    private QMUICommonListItemView mItemWallet;
 
     public static MyFragment newInstance() {
         if (sMyFragment == null) {
@@ -114,6 +115,11 @@ public class MyFragment extends BaseFragment {
         //关注需要时刻刷新
         if (mTvAttention != null) {
             mTvAttention.setText(SPUtils.getInstance().getInt(SpConstant.ATTENTION_COUNT, 0) + "");
+        }
+
+        if (mItemWallet != null) {
+            String money = StringUtils.moneyExchange(SPUtils.getInstance().getInt(SpConstant.MY_GOLDEN)) + getResources().getString(R.string.money);
+            mItemWallet.setDetailText(money);
         }
 
         boolean isEdit = SPUtils.getInstance().getBoolean(SpConstant.IS_USER_EDIT, false);
@@ -191,13 +197,13 @@ public class MyFragment extends BaseFragment {
 //        QMUICommonListItemView item_setting = mGroupListView.createItemView(ContextCompat.getDrawable(mContext, R.drawable.setting), getResources().getString(R.string.setting), "",
 //                QMUICommonListItemView.HORIZONTAL, QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
 
-        QMUICommonListItemView itemWallet = mGroupListView.createItemView(getResources().getString(R.string.wallet));
-        itemWallet.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.money));
-        itemWallet.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
-        TextView detailTextView = itemWallet.getDetailTextView();
+        mItemWallet = mGroupListView.createItemView(getResources().getString(R.string.wallet));
+        mItemWallet.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.money));
+        mItemWallet.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
+        TextView detailTextView = mItemWallet.getDetailTextView();
         detailTextView.setTextColor(ContextCompat.getColor(mContext, R.color.color_red));
         String money = StringUtils.moneyExchange(SPUtils.getInstance().getInt(SpConstant.MY_GOLDEN)) + getResources().getString(R.string.money);
-        itemWallet.setDetailText(money);
+        mItemWallet.setDetailText(money);
 
         QMUICommonListItemView itemOrder = mGroupListView.createItemView(getResources().getString(R.string.my_order));
         itemOrder.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.order));
@@ -221,7 +227,7 @@ public class MyFragment extends BaseFragment {
         itemSetting.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.setting));
         itemSetting.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
 
-        QMUIGroupListView.newSection(mContext).addItemView(itemWallet, new View.OnClickListener() {
+        QMUIGroupListView.newSection(mContext).addItemView(mItemWallet, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(mContext,WalletActivity.class));

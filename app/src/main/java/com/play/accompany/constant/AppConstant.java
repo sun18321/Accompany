@@ -2,8 +2,8 @@ package com.play.accompany.constant;
 
 public class AppConstant {
 
-//    public static String BASE_URL = "http://47.92.255.86:7070/peipei/";
-    public static String BASE_URL = "http://192.168.43.53:7070/peipei/";
+    public static String BASE_URL = "http://47.92.255.86:7070/peipei/";
+//    public static String BASE_URL = "http://192.168.43.53:7070/peipei/";
     public static int RESPONSE_SUCCESS = 1;
 
     public static int ERROR_TOKEN = 404;

@@ -47,10 +47,14 @@ public class WXPayEntryActivity extends AppCompatActivity implements IWXAPIEvent
         if (baseResp.getType() == ConstantsAPI.COMMAND_PAY_BY_WX) {
             if (baseResp.errCode == 0) {
                 //支付成功
+                LogUtils.d(WE_CHAT_PAY, "支付成功");
             } else if (baseResp.errCode == -1) {
                 //支付失败
+                LogUtils.d(WE_CHAT_PAY, "支付失败" + "--" + baseResp.errStr);
+
             } else if (baseResp.errCode == -2) {
                 //取消支付
+                LogUtils.d(WE_CHAT_PAY, "取消支付");
             }
         }
     }

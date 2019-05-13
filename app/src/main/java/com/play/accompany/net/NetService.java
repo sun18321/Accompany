@@ -74,4 +74,14 @@ public interface NetService {
 
     @POST("rongCloudGetInfo")
     Observable<BaseResponse> getChaterInfo(@Body RequestBody body);
+
+    @POST("isCash")
+    Observable<BaseResponse> getCashPermission(@Body RequestBody body);
+
+    @POST("cash")
+    Observable<BaseResponse> doCash(@Body RequestBody body);
+
+    @POST("wx_unifiedorder")
+    Observable<BaseResponse> requestWxPay(@Body RequestBody body);
 }
+

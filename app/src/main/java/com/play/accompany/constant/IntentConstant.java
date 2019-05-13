@@ -20,4 +20,6 @@ public class IntentConstant {
     public static final String INTENT_USER_ID = "intent_user_id";
 
     public static final String INTENT_GAME_ID = "intent_game_id";
+
+    public static final String INTENT_CASH = "intent_cash";
 }

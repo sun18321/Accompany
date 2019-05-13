@@ -41,92 +41,96 @@
                 android:layout_height="match_parent" />
         </RelativeLayout>
 
-        <TextView
-            android:id="@+id/tv_sign"
+        <RelativeLayout
+            android:background="@mipmap/user_bg"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="10dp"
-            android:layout_marginBottom="10dp"
-            android:textColor="@color/color_white"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_width="match_parent"
+            android:layout_height="100dp">
 
-        <LinearLayout
-            android:id="@+id/lin_gender"
-            android:layout_above="@id/tv_sign"
-            android:layout_marginStart="10dp"
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:gravity="center_vertical"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            >
-            <ImageView
-                android:id="@+id/img_gender"
-                tools:src="@drawable/male"
-                android:layout_width="10dp"
-                android:layout_height="10dp" />
             <TextView
-                android:id="@+id/tv_age"
-                tools:text="99"
-                android:textSize="14sp"
-                android:gravity="center"
+                android:id="@+id/tv_sign"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginBottom="10dp"
                 android:textColor="@color/color_white"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
-        </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/lin_rate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/lin_gender"
-            android:layout_marginStart="10dp"
-            android:layout_toEndOf="@id/lin_gender"
-            android:background="@drawable/star_background_white"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingLeft="6dp"
-            android:paddingRight="6dp"
-            >
-
-            <ImageView
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:src="@mipmap/star_full"/>
-
-            <TextView
-                android:id="@+id/tv_rating"
+            <LinearLayout
+                android:id="@+id/lin_gender"
+                android:layout_above="@id/tv_sign"
+                android:layout_marginStart="10dp"
+                android:orientation="horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
-                tools:text="4.8"/>
+                android:layout_marginBottom="5dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                >
+                <ImageView
+                    android:id="@+id/img_gender"
+                    tools:src="@drawable/male"
+                    android:layout_width="12dp"
+                    android:layout_height="12dp" />
+                <TextView
+                    android:id="@+id/tv_age"
+                    tools:text="99"
+                    android:textSize="16sp"
+                    android:gravity="center"
+                    android:textColor="@color/color_white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/lin_rate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/lin_gender"
+                android:layout_marginStart="10dp"
+                android:layout_toEndOf="@id/lin_gender"
+                android:background="@drawable/star_background_white"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="6dp"
+                android:paddingRight="6dp"
+                >
 
-        </LinearLayout>
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@mipmap/star_full"/>
 
-        <TextView
-            android:id="@+id/tv_name"
-            android:textSize="26sp"
-            android:textColor="@color/color_white"
-            android:layout_marginBottom="5dp"
-            android:layout_marginStart="10dp"
-            android:layout_above="@id/lin_gender"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/tv_rating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    tools:text="4.8"/>
+            </LinearLayout>
 
-        <Button
-            android:id="@+id/btn_attention"
-            tools:text="@string/attention"
-            android:textColor="@color/color_white"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginBottom="10dp"
-            android:layout_marginEnd="20dp"
-            android:background="@drawable/btn_bg"
-            android:layout_width="80dp"
-            android:layout_height="30dp" />
+            <TextView
+                android:id="@+id/tv_name"
+                android:textSize="26sp"
+                android:textColor="@color/color_white"
+                android:layout_marginBottom="5dp"
+                android:layout_marginStart="10dp"
+                android:layout_above="@id/lin_gender"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/btn_attention"
+                tools:text="@string/attention"
+                android:textColor="@color/color_white"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginBottom="10dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/btn_bg"
+                android:layout_width="80dp"
+                android:layout_height="30dp" />
 
             <TextView
                 android:id="@+id/place_fans"
@@ -151,6 +155,9 @@
                 android:textColor="@color/color_white"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
+
+        </RelativeLayout>
+
     </RelativeLayout>
 
     <android.support.v7.widget.CardView

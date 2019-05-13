@@ -1,5 +1,5 @@
-<resources tools:ignore="MissingTranslation"
-           xmlns:tools="http://schemas.android.com/tools">
+<resources xmlns:tools="http://schemas.android.com/tools"
+           tools:ignore="MissingTranslation">
     <string name="app_name">伽岚果</string>
     <string name="skip">跳过</string>
     <string name="home">首页</string>
@@ -164,7 +164,7 @@
     <string name="bad_comment">差评</string>
     <string name="quit_login">退出登录</string>
     <string name="tips_login">确定要退出登录吗？</string>
-    <string name="wallet_remain">余额:</string>
+    <string name="wallet_remain">剩余果币:</string>
     <string name="wallet_recharge">充值</string>
     <string name="tips_wallet">1人民币等于1果币</string>
     <string name="recharge_type">充值方式</string>
@@ -173,9 +173,17 @@
     <string name="photo_failed">获取照片失败</string>
     <string name="location_msg">应用需要获取您的位置信息,向您展示附近的陪陪</string>
     <string name="new_order">您有新的订单</string>
+    <string name="cash">提现</string>
+    <string name="wallet_now">立即充值</string>
+    <string name="cash_rule">提现要求:</string>
+    <string name="cash_rule_detail">①剩余果币必须高于%1$d币才能提现\n②单次提现的金额必须是%2$d的整倍数\n③单笔提现最大金额为%3$d元\n④单个账户每日最多提现%4$d次\n⑤提现成功会转至您指定的微信账户中\n</string>
+    <string name="cash_no_more">当前果币不足</string>
+    <string name="cash_tip">请输入提现金额</string>
+    <string name="cash_success">提现成功</string>
+    <string name="wallet_tips_money">请先选择充值金额</string>
+    <string name="wallet_tips_type">请先选择充值方式</string>
 
     <string name="price_detail_place"><![CDATA[<font color="#000000"><small>%1$s</small></font>]]></string>
-
 
     <string name="developing">开发中…</string>
 

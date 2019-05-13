@@ -34,4 +34,7 @@ public class OtherConstant {
     public static final String ORDER_CHANNEL = "accompany.order.notify";
 
     public static final int NOTIFY_CODE = 999;
+
+    //1表示可以体现
+    public static final int MONEY_CAN_CASH = 1;
 }
