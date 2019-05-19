@@ -83,5 +83,8 @@ public interface NetService {
 
     @POST("wx_unifiedorder")
     Observable<BaseResponse> requestWxPay(@Body RequestBody body);
+
+    @POST("getGold")
+    Observable<BaseResponse> getGold(@Body RequestBody body);
 }
 

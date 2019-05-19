@@ -296,7 +296,7 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
         }
         int money = mPayMoney * 100;
         if (mPayType == mTypeWechat) {
-            getWxPay(1);
+            getWxPay(money);
         } else {
 
         }
