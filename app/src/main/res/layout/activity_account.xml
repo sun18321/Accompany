@@ -8,109 +8,132 @@
     tools:context=".view.AccountActivity"
     >
 
-<LinearLayout
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <include layout="@layout/toolbar_title"/>
+        <include layout="@layout/toolbar_title"/>
 
-    <RelativeLayout
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="30dp"
-        android:background="@drawable/round_background"
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/round_background">
+
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@mipmap/splash_log"/>
+        </RelativeLayout>
+
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_account"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:counterEnabled="true"
+            app:counterMaxLength="11"
+            app:counterOverflowTextAppearance="@style/TextAppearance.Design.Counter.Overflow"
+            app:counterTextAppearance="@style/TextAppearance.Design.Counter"
+            app:errorEnabled="true"
+            >
+
+            <EditText
+                android:id="@+id/edit_account"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:hint="@string/input_account"
+                android:imeOptions="actionNext"
+                android:inputType="phone"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_code"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:counterEnabled="true"
+            app:counterOverflowTextAppearance="@style/TextAppearance.Design.Counter.Overflow"
+            app:counterTextAppearance="@style/TextAppearance.Design.Counter"
+            app:passwordToggleEnabled="true"
+            >
+
+            <EditText
+                android:id="@+id/edit_code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:hint="@string/input_password"
+                android:imeOptions="actionDone"
+                android:inputType="numberPassword"
+                />
+        </android.support.design.widget.TextInputLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_get_code"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_weight="1"
+                android:background="@drawable/ripple_button"
+                android:text="@string/get_code"
+                android:textColor="@color/color_white"
+                />
+
+            <Button
+                android:id="@+id/btn_login"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_weight="1"
+                android:background="@drawable/ripple_button"
+                android:text="@string/login"
+                android:textColor="@color/color_white"
+                />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/lin_wechat"
+        android:orientation="vertical"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:layout_above="@id/tv_rule"
+        android:gravity="center_horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
         <ImageView
-            android:src="@mipmap/splash_log"
-            android:layout_width="80dp"
-            android:layout_height="80dp"/>
-    </RelativeLayout>
-
-
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/input_account"
-        android:layout_marginTop="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:counterEnabled="true"
-        app:counterMaxLength="11"
-        app:counterTextAppearance="@style/TextAppearance.Design.Counter"
-        app:counterOverflowTextAppearance="@style/TextAppearance.Design.Counter.Overflow"
-        app:errorEnabled="true"
-        >
-        <EditText
-            android:id="@+id/edit_account"
-            android:hint="@string/input_account"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:inputType="phone"
-            android:imeOptions="actionNext"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </android.support.design.widget.TextInputLayout>
-
-    <android.support.design.widget.TextInputLayout
-        android:layout_marginTop="20dp"
-        android:id="@+id/input_code"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:counterEnabled="true"
-        app:counterTextAppearance="@style/TextAppearance.Design.Counter"
-        app:counterOverflowTextAppearance="@style/TextAppearance.Design.Counter.Overflow"
-        app:passwordToggleEnabled="true"
-        >
-        <EditText
-            android:id="@+id/edit_code"
-            android:hint="@string/input_password"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="numberPassword"
-            android:imeOptions="actionDone"
-            />
-    </android.support.design.widget.TextInputLayout>
-
-    <LinearLayout
-        android:layout_marginTop="20dp"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <Button
-            android:id="@+id/btn_get_code"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:textColor="@color/color_white"
-            android:background="@drawable/ripple_button"
-            android:text="@string/get_code"
-            />
-
-        <Button
-            android:id="@+id/btn_login"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:textColor="@color/color_white"
-            android:background="@drawable/ripple_button"
-            android:text="@string/login"
-            />
+            android:src="@mipmap/wechat"
+            android:layout_width="50dp"
+            android:layout_height="50dp"/>
+        <TextView
+            android:text="微信登录"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
     </LinearLayout>
 
-
-</LinearLayout>
     <TextView
         android:id="@+id/tv_rule"
         android:text="@string/login_rule"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="10dp"
         android:textSize="16sp"
         android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"

@@ -245,6 +245,7 @@ public class HomeFragment extends BaseFragment {
             public void onBannerClick(String url) {
                 Intent intent = new Intent(mContext, WebViewActivity.class);
                 intent.putExtra(IntentConstant.INTENT_URL, url);
+                intent.putExtra(IntentConstant.INTENT_TITLE, mContext.getResources().getString(R.string.webview_title_activity));
                 startActivity(intent);
             }
         });

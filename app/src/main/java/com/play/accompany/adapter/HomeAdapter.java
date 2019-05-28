@@ -176,17 +176,19 @@ public class HomeAdapter extends RecyclerView.Adapter {
         ImageView imgHead;
         TextView tvName;
         TextView tvIntroduction;
-        TextView tvGame;
         TextView tvPrice;
         TextView tvDistance;
+        TextView tvGrade;
+        TextView tvCount;
          ContentViewHolder(@NonNull View itemView) {
             super(itemView);
              imgHead = itemView.findViewById(R.id.head_image);
              tvName= itemView.findViewById(R.id.tv_name);
-             tvGame = itemView.findViewById(R.id.tv_game);
              tvIntroduction = itemView.findViewById(R.id.tv_introduction);
              tvPrice = itemView.findViewById(R.id.tv_price);
              tvDistance = itemView.findViewById(R.id.tv_distance);
+             tvGrade = itemView.findViewById(R.id.tv_grade);
+             tvCount = itemView.findViewById(R.id.tv_count);
         }
 
         void bindItem(final UserInfo info) {
@@ -200,10 +202,11 @@ public class HomeAdapter extends RecyclerView.Adapter {
             });
             tvName.setText(info.getName());
             tvPrice.setText(info.getPrice() + mContext.getResources().getString(R.string.price));
-            tvGame.setText(StringUtils.GameList2String(info.getGameTypeName()));
             tvIntroduction.setText(info.getSign());
             Glide.with(itemView.getContext()).load(info.getUrl()).into(imgHead);
             tvDistance.setText(StringUtils.m2Km(info.getLbs()));
+            tvGrade.setText(String.valueOf(info.getGrade()));
+            tvCount.setText(String.valueOf(info.getOrderNum()) + "单");
         }
     }
 

@@ -45,6 +45,7 @@ public class AllOrderActivity extends BaseActivity implements OrderAdapter.Order
     private List<AllOrderBean> mList = new ArrayList<>();
     private OrderAdapter mAdapter;
     private TextView mTvNoOrder;
+    private boolean mNeting = false;
 
     @Override
     protected int getLayout() {
@@ -147,6 +148,10 @@ public class AllOrderActivity extends BaseActivity implements OrderAdapter.Order
     }
 
     private void orderNext(String id, final String success, final String failed) {
+        if (mNeting) {
+            return;
+        }
+        mNeting = true;
         AcceptOrderBean bean = new AcceptOrderBean();
         bean.setId(id);
         bean.setToken(SPUtils.getInstance().getString(SpConstant.APP_TOKEN));
@@ -175,7 +180,7 @@ public class AllOrderActivity extends BaseActivity implements OrderAdapter.Order
 
             @Override
             public void onComplete() {
-
+                mNeting = false;
             }
         });
     }

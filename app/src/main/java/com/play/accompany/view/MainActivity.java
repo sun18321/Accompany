@@ -17,6 +17,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 
+import com.bumptech.glide.Glide;
 import com.google.gson.reflect.TypeToken;
 import com.play.accompany.R;
 import com.play.accompany.base.BaseActivity;
@@ -96,8 +97,17 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+
+        Glide.with(this).pauseRequests();
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
+
+        Glide.with(this).resumeRequests();
     }
 
     @Override
@@ -107,6 +117,7 @@ public class MainActivity extends BaseActivity {
         }
 
         mNavigationView = findViewById(R.id.navigation);
+        mNavigationView.setItemIconTintList(null);
         mHomeFragment = HomeFragment.newInstance();
 //        if (mConversationListFragment == null) {
 //            mConversationListFragment = new ConversationListFragment();

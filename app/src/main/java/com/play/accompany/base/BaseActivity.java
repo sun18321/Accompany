@@ -1,8 +1,12 @@
 package com.play.accompany.base;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,6 +17,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
 import com.play.accompany.R;
@@ -21,11 +26,18 @@ import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+
 public abstract class BaseActivity extends AppCompatActivity implements DialogInterface.OnCancelListener {
     protected ProgressDialog mDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+
+        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.O && isTranslucentOrFloating()) {
+            fixOrientation();
+        }
         super.onCreate(savedInstanceState);
         setContentView(getLayout());
 
@@ -55,6 +67,15 @@ public abstract class BaseActivity extends AppCompatActivity implements DialogIn
 
         MobclickAgent.onPageEnd(getTag());
         MobclickAgent.onPause(this);
+    }
+
+   //8.0.0透明情况下不能锁定竖屏
+    @Override
+    public void setRequestedOrientation(int requestedOrientation) {
+        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.O && isTranslucentOrFloating()) {
+            return;
+        }
+        super.setRequestedOrientation(requestedOrientation);
     }
 
     @Override
@@ -97,6 +118,34 @@ public abstract class BaseActivity extends AppCompatActivity implements DialogIn
         overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
     }
 
+    private boolean fixOrientation(){
+        try {
+            Field field = Activity.class.getDeclaredField("mActivityInfo");
+            field.setAccessible(true);
+            ActivityInfo o = (ActivityInfo)field.get(this);
+            o.screenOrientation = -1;
+            field.setAccessible(false);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    private boolean isTranslucentOrFloating(){
+        boolean isTranslucentOrFloating = false;
+        try {
+            int [] styleableRes = (int[]) Class.forName("com.android.internal.R$styleable").getField("Window").get(null);
+            final TypedArray ta = obtainStyledAttributes(styleableRes);
+            Method m = ActivityInfo.class.getMethod("isTranslucentOrFloating", TypedArray.class);
+            m.setAccessible(true);
+            isTranslucentOrFloating = (boolean)m.invoke(null, ta);
+            m.setAccessible(false);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return isTranslucentOrFloating;
+    }
 
     protected abstract int getLayout();
 
@@ -147,5 +196,19 @@ public abstract class BaseActivity extends AppCompatActivity implements DialogIn
     @Override
     public void onCancel(DialogInterface dialog) {
         LogUtils.d("request", "father dialog dismiss");
+    }
+
+    protected void showKeyBoard(View view) {
+        InputMethodManager imm = ( InputMethodManager ) view.getContext( ).getSystemService( Context.INPUT_METHOD_SERVICE );
+        if (imm != null) {
+            imm.showSoftInput(view,InputMethodManager.SHOW_FORCED);
+        }
+    }
+
+    protected void hideKeyBoard(View view) {
+        InputMethodManager imm = ( InputMethodManager ) view.getContext( ).getSystemService( Context.INPUT_METHOD_SERVICE );
+        if (imm != null && imm.isActive()) {
+            imm.hideSoftInputFromWindow(view.getApplicationWindowToken(), 0);
+        }
     }
 }

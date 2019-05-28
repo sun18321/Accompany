@@ -7,9 +7,11 @@ import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 
 import com.play.accompany.bean.OrderNotifyBean;
+import com.play.accompany.constant.SpConstant;
 import com.play.accompany.utils.GsonUtils;
 import com.play.accompany.utils.LogUtils;
 import com.play.accompany.utils.NotificationUtils;
+import com.play.accompany.utils.SPUtils;
 import com.play.accompany.view.AccompanyApplication;
 
 
@@ -43,7 +45,7 @@ public class MessageReceiverListener implements RongIMClient.OnReceiveMessageLis
 //        }
 
         int id = 0;
-        if (message.getConversationType() == Conversation.ConversationType.SYSTEM) {
+        if (SPUtils.getInstance().getBoolean(SpConstant.ACCEPT_NEW_NOTICE) && message.getConversationType() == Conversation.ConversationType.SYSTEM) {
             if (message.getContent() instanceof TextMessage) {
                 TextMessage content = (TextMessage) message.getContent();
                 String extra = content.getExtra();

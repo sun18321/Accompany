@@ -54,7 +54,7 @@ public class SplashActivity extends BaseActivity {
     private int mRepeatCount = 3;
     private long mUnitTimes = 1000;
     private Disposable mDisposable;
-    private final int mDelay = 2000;
+    private final int mDelay = 3000;
     private long mCurrentTimes;
 
 
@@ -191,11 +191,11 @@ public class SplashActivity extends BaseActivity {
             mRlLogo.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    startCountdown();
+                    goMain();
                 }
             }, timeSpace);
         } else {
-            startCountdown();
+            goMain();
         }
     }
 

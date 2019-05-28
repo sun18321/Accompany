@@ -6,6 +6,8 @@ import android.util.Base64;
 import com.play.accompany.R;
 import com.play.accompany.view.AccompanyApplication;
 
+import org.w3c.dom.Text;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -134,6 +136,20 @@ public class StringUtils {
      * 409：订单开始时间不对
      * 410: 验证码错误
      * 411: 验证码过期
+     * 412: 验证码发送过于频繁
+     * 413: 邀请码无效
+     * 414: 邀请码 已经使用
+     * 415: 订单状态 不对
+     * 416: 订单完成的过早
+     * 417: 无法取消 关注
+     * 418: 图片URL过期
+     * 419：头像过大
+     * 420：提现金额过小
+     * 421：提现金额过大
+     *
+     * 600：融云用户注册 无效
+     * 601：融云用户更新 无效
+     * 700: 微信登录错误
      * <p>
      * 998：非管理员权限，无法修改
      * 999: 服务器其他错误
@@ -174,6 +190,42 @@ public class StringUtils {
                 break;
             case 411:
                 errorInfo = "验证码过期";
+                break;
+            case 412:
+                errorInfo = "验证码发送频繁";
+                break;
+            case 413:
+                errorInfo = "无效邀请码";
+                break;
+            case 414:
+                errorInfo = "已填写邀请码";
+                break;
+            case 415:
+                errorInfo = "订单状态无效";
+                break;
+            case 416:
+                errorInfo = "未到订单完成时间";
+                break;
+            case 417:
+                errorInfo = "无法取消关注";
+                break;
+            case 419:
+                errorInfo = "头像过大";
+                break;
+            case 420:
+                errorInfo = "提现金额过小";
+                break;
+            case 421:
+                errorInfo = "提现金额过大";
+                break;
+            case 600:
+                errorInfo = "聊天系统注册错误";
+                break;
+            case 601:
+                errorInfo = "聊天系统更新错误";
+                break;
+            case 700:
+                errorInfo = "微信登录错误";
                 break;
             default:
                 errorInfo = "未知错误";
@@ -272,6 +324,9 @@ public class StringUtils {
     }
 
     public static String getConstellationByString(String birthday) {
+        if (TextUtils.isEmpty(birthday)) {
+            return "";
+        }
         String date = dateFormat(birthday);
         String[] split = date.split("-");
         if (split.length > 2) {

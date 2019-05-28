@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--选择状态下的颜色-->
+    <item android:color="@color/bottom_select"  android:state_enabled="true" android:state_checked="true" />
+    <!--未选择状态下的颜色-->
+    <item android:color="@color/bottom_unselect" android:state_enabled="true" android:state_checked="false" />
+
+</selector>

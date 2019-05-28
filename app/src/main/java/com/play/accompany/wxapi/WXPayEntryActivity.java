@@ -12,6 +12,7 @@ import com.play.accompany.R;
 import com.play.accompany.bean.BaseDecodeBean;
 import com.play.accompany.bean.GoldBean;
 import com.play.accompany.constant.AppConstant;
+import com.play.accompany.constant.OtherConstant;
 import com.play.accompany.constant.SpConstant;
 import com.play.accompany.net.AccompanyRequest;
 import com.play.accompany.net.NetFactory;
@@ -20,6 +21,7 @@ import com.play.accompany.utils.EncodeUtils;
 import com.play.accompany.utils.LogUtils;
 import com.play.accompany.utils.SPUtils;
 import com.play.accompany.utils.ToastUtils;
+import com.play.accompany.view.AccompanyApplication;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
@@ -65,58 +67,75 @@ public class WXPayEntryActivity extends AppCompatActivity implements IWXAPIEvent
             if (baseResp.errCode == 0) {
                 //支付成功
                 LogUtils.d(WE_CHAT_PAY, "支付成功");
-                checkGold();
-                ToastUtils.showCommonToast("支付成功");
+                ToastUtils.showCommonToast(getResources().getString(R.string.pay_success));
+                if (AccompanyApplication.getOrderPay()) {
+                    sendPay();
+                    AccompanyApplication.endOrderPay();
+                } else {
+                    sendWallet();
+                }
 //                WXPayEntryActivity.this.finish();
             } else if (baseResp.errCode == -1) {
                 //支付失败
                 LogUtils.d(WE_CHAT_PAY, "支付失败" + "--" + baseResp.errStr);
-                ToastUtils.showCommonToast("支付失败");
+                ToastUtils.showCommonToast(getResources().getString(R.string.pay_failed));
                 WXPayEntryActivity.this.finish();
             } else if (baseResp.errCode == -2) {
                 //取消支付
                 LogUtils.d(WE_CHAT_PAY, "取消支付");
-                ToastUtils.showCommonToast("取消支付");
+                ToastUtils.showCommonToast(getResources().getString(R.string.pay_cancel));
                 WXPayEntryActivity.this.finish();
             }
         }
     }
 
-    private void checkGold() {
-        showDialog();
-        AccompanyRequest request = new AccompanyRequest();
-        RequestBody body = EncodeUtils.encodeToken();
-        request.beginRequest(NetFactory.getNetRequest().getNetService().getGold(body), new TypeToken<BaseDecodeBean<List<GoldBean>>>() {
-        }.getType(), new NetListener<List<GoldBean>>() {
-            @Override
-            public void onSuccess(List<GoldBean> list) {
-                dismissDialog();
-                if (list.isEmpty()) {
-                    WXPayEntryActivity.this.finish();
-                    return;
-                }
-                GoldBean bean = list.get(0);
-                SPUtils.getInstance().put(SpConstant.MY_GOLDEN, bean.getGold());
-                WXPayEntryActivity.this.finish();
-            }
-
-            @Override
-            public void onFailed(int errCode) {
-
-            }
-
-            @Override
-            public void onError() {
-
-            }
-
-            @Override
-            public void onComplete() {
-                dismissDialog();
-                WXPayEntryActivity.this.finish();
-            }
-        });
+    private void sendPay() {
+        Intent intent = new Intent(OtherConstant.PAY_RECEIVER);
+        sendBroadcast(intent);
+        WXPayEntryActivity.this.finish();
     }
+
+    private void sendWallet() {
+        Intent intent = new Intent(OtherConstant.WALLET_RECEIVER);
+        sendBroadcast(intent);
+        WXPayEntryActivity.this.finish();
+    }
+
+//    private void checkGold() {
+//        showDialog();
+//        AccompanyRequest request = new AccompanyRequest();
+//        RequestBody body = EncodeUtils.encodeToken();
+//        request.beginRequest(NetFactory.getNetRequest().getNetService().getGold(body), new TypeToken<BaseDecodeBean<List<GoldBean>>>() {
+//        }.getType(), new NetListener<List<GoldBean>>() {
+//            @Override
+//            public void onSuccess(List<GoldBean> list) {
+//                dismissDialog();
+//                if (list.isEmpty()) {
+//                    WXPayEntryActivity.this.finish();
+//                    return;
+//                }
+//                GoldBean bean = list.get(0);
+//                SPUtils.getInstance().put(SpConstant.MY_GOLDEN, bean.getGold());
+//                WXPayEntryActivity.this.finish();
+//            }
+//
+//            @Override
+//            public void onFailed(int errCode) {
+//
+//            }
+//
+//            @Override
+//            public void onError() {
+//
+//            }
+//
+//            @Override
+//            public void onComplete() {
+//                dismissDialog();
+//                WXPayEntryActivity.this.finish();
+//            }
+//        });
+//    }
 
     @Override
     protected void onPause() {

@@ -86,5 +86,14 @@ public interface NetService {
 
     @POST("getGold")
     Observable<BaseResponse> getGold(@Body RequestBody body);
+
+    @POST("loginWx")
+    Observable<BaseResponse> loginWeChat(@Body RequestBody body);
+
+    @POST("sendLocal")
+    Observable<BaseResponse> sendLocal(@Body RequestBody body);
+
+    @POST("ali_order")
+    Observable<BaseResponse> requestAlipay(@Body RequestBody body);
 }
 

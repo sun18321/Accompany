@@ -1,7 +1,11 @@
 package com.play.accompany.view;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -18,6 +22,7 @@ import com.play.accompany.R;
 import com.play.accompany.base.BaseActivity;
 import com.play.accompany.bean.BaseDecodeBean;
 import com.play.accompany.bean.CashBean;
+import com.play.accompany.bean.GoldBean;
 import com.play.accompany.bean.RequestPayBean;
 import com.play.accompany.bean.WxPayBean;
 import com.play.accompany.constant.AppConstant;
@@ -69,6 +74,7 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
     private EditText mEditInput;
     private Button mButtonCash;
     private CashBean mCashBean;
+    private WalletReceiver mReceiver;
 
     @Override
     protected int getLayout() {
@@ -164,14 +170,33 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
     }
 
     @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        mReceiver = new WalletReceiver();
+        IntentFilter intentFilter = new IntentFilter(OtherConstant.WALLET_RECEIVER);
+        registerReceiver(mReceiver, intentFilter);
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
+
+        if (mDialog != null && mDialog.isShowing()) {
+            dismissDialog();
+        }
 
         if (mTvGold != null) {
             mTvGold.setText(SPUtils.getInstance().getInt(SpConstant.MY_GOLDEN) + "");
         }
-        if (mDialog != null && mDialog.isShowing()) {
-            dismissDialog();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if (mReceiver != null) {
+            unregisterReceiver(mReceiver);
         }
     }
 
@@ -294,32 +319,30 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
             ToastUtils.showCommonToast(getResources().getString(R.string.wallet_tips_type));
             return;
         }
-        int money = mPayMoney * 100;
+        PayUtils payUtils = new PayUtils(this);
         if (mPayType == mTypeWechat) {
-            getWxPay(money);
+            payUtils.requestWeChatPay(mPayMoney);
         } else {
-
+            payUtils.requestAlipay(mPayMoney);
         }
         showDialog();
     }
 
-    private void getWxPay(int money) {
-        RequestPayBean bean = new RequestPayBean();
-        bean.setToken(SPUtils.getInstance().getString(SpConstant.APP_TOKEN));
-        bean.setGold(money);
-        String json = GsonUtils.toJson(bean);
-        RequestBody body = EncodeUtils.encodeInBody(json);
+    private void checkGold() {
         AccompanyRequest request = new AccompanyRequest();
-        request.beginRequest(NetFactory.getNetRequest().getNetService().requestWxPay(body), new TypeToken<BaseDecodeBean<List<WxPayBean>>>() {
-
-        }.getType(), new NetListener<List<WxPayBean>>() {
+        RequestBody body = EncodeUtils.encodeToken();
+        request.beginRequest(NetFactory.getNetRequest().getNetService().getGold(body), new TypeToken<BaseDecodeBean<List<GoldBean>>>() {
+        }.getType(), new NetListener<List<GoldBean>>() {
             @Override
-            public void onSuccess(List<WxPayBean> list) {
+            public void onSuccess(List<GoldBean> list) {
                 if (list.isEmpty()) {
                     return;
                 }
-                WxPayBean payBean = list.get(0);
-                payByWeChat(payBean);
+                GoldBean bean = list.get(0);
+                SPUtils.getInstance().put(SpConstant.MY_GOLDEN, bean.getGold());
+                if (mTvGold != null) {
+                    mTvGold.setText(SPUtils.getInstance().getInt(SpConstant.MY_GOLDEN) + "");
+                }
             }
 
             @Override
@@ -334,81 +357,16 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
 
             @Override
             public void onComplete() {
-
             }
         });
     }
 
-    private String createSign(WxPayBean bean) {
-            Map<String, String> map = new HashMap<>();
-            map.put("appid", bean.getAppid());
-            map.put("partnerid", bean.getMchId());
-            map.put("prepayid", bean.getOut_trade_no());
-            map.put("package", "Sign=WXPay");
-            map.put("noncestr", bean.getNonce_str());
-            map.put("timestamp", bean.getTime());
+    class WalletReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            LogUtils.d("wallet", "receiver success");
 
-            ArrayList<String> sortList = new ArrayList<>();
-            sortList.add("appid");
-            sortList.add("partnerid");
-            sortList.add("prepayid");
-            sortList.add("package");
-            sortList.add("noncestr");
-            sortList.add("timestamp");
-            Collections.sort(sortList);
-
-            String md5 = "";
-            int size = sortList.size();
-            for (int k = 0; k < size; k++) {
-                if (k == 0) {
-                    md5 += sortList.get(k) + "=" + map.get(sortList.get(k));
-                } else {
-                    md5 += "&" + sortList.get(k) + "=" + map.get(sortList.get(k));
-                }
-            }
-            String stringSignTemp = md5+"&key=7ce06dddd19ef49908892fea02862860";
-
-            LogUtils.d("pwd", "pwd:" + stringSignTemp);
-
-            String sign= MD5.Md5(stringSignTemp).toUpperCase();
-
-        LogUtils.d("pwd", "sign:" + sign);
-
-            return sign;
-    }
-
-    private void payByWeChat(WxPayBean bean) {
-        IWXAPI api = WXAPIFactory.createWXAPI(this, AppConstant.WE_CHAT_ID);
-        api.registerApp(AppConstant.WE_CHAT_ID);
-        PayReq req = new PayReq();
-
-        req.appId = bean.getAppid();//你的微信appid
-        req.partnerId = bean.getMchId();//商户号
-        req.prepayId = bean.getOut_trade_no();//预支付交易会话ID
-        req.nonceStr = bean.getNonce_str();//随机字符串
-        req.timeStamp = bean.getTime();//时间戳
-        req.sign = bean.getSign();//签名
-        req.packageValue = "Sign=WXPay";//扩展字段,这里固定填写Sign=WXPay
-
-        createSign(bean);
-
-        api.sendReq(req);
-    }
-
-
-
-    private void showKeyBoard(View view) {
-        InputMethodManager imm = ( InputMethodManager ) view.getContext( ).getSystemService( Context.INPUT_METHOD_SERVICE );
-        if (imm != null) {
-            imm.showSoftInput(view,InputMethodManager.SHOW_FORCED);
-        }
-    }
-
-    private void hideKeyBoard(View view) {
-        InputMethodManager imm = ( InputMethodManager ) view.getContext( ).getSystemService( Context.INPUT_METHOD_SERVICE );
-        if (imm != null && imm.isActive()) {
-            imm.hideSoftInputFromWindow(view.getApplicationWindowToken(), 0);
-
+            checkGold();
         }
     }
 }

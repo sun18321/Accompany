@@ -1,29 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_marginTop="10dp"
-    android:layout_marginLeft="5dp"
-    android:layout_marginRight="5dp"
-    app:cardElevation="2dp"
-    app:cardCornerRadius="8dp"
-    android:foreground="?android:attr/selectableItemBackground"
-    android:focusable="true"
-    android:clickable="true"
-    xmlns:tools="http://schemas.android.com/tools"
-    >
+<!--<android.support.v7.widget.CardView android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+    <!--android:layout_marginTop="10dp"-->
+    <!--android:layout_marginLeft="5dp"-->
+    <!--android:layout_marginRight="5dp"-->
+    <!--app:cardElevation="2dp"-->
+    <!--app:cardCornerRadius="8dp"-->
+    <!--android:foreground="?android:attr/selectableItemBackground"-->
+    <!--android:focusable="true"-->
+    <!--android:clickable="true"-->
+    <!--xmlns:tools="http://schemas.android.com/tools"-->
+    <!--&gt;-->
 
 <RelativeLayout
+    android:layout_marginTop="4dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="10dp"
+    android:padding="12dp"
     xmlns:tools="http://schemas.android.com/tools"
     >
 
     <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/head_image"
-        app:riv_corner_radius="5dp"
+        app:riv_corner_radius="40dp"
         tools:src="@mipmap/head_default"
         android:layout_width="80dp"
         android:layout_height="80dp" />
@@ -35,14 +38,13 @@
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:weightSum="7"
         >
 
         <TextView
             android:id="@+id/tv_name"
-            android:textColor="@color/color_title_orange"
+            android:textColor="@color/home_text"
             tools:text="池鱼"
-            android:textSize="22sp"
+            android:textSize="20sp"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_weight="3"
@@ -51,19 +53,34 @@
             android:ellipsize="end"
             />
 
-        <TextView
-            android:id="@+id/tv_game"
-            android:textSize="16sp"
-            android:textColor="@color/color_black"
-            tools:text="王者荣耀丨绝地求生"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="2"
+        <LinearLayout
             android:layout_marginTop="4dp"
-            android:maxLines="1"
-            android:maxEms="10"
-            android:ellipsize="end"
-            />
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:src="@mipmap/star_home"
+                android:layout_width="14dp"
+                android:layout_height="14dp"/>
+
+            <TextView
+                android:id="@+id/tv_grade"
+                android:textColor="@color/home_location"
+                android:layout_marginStart="2dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/tv_count"
+                android:textColor="@color/home_location"
+                android:layout_marginStart="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+
+        </LinearLayout>
 
         <LinearLayout
             android:gravity="center_vertical"
@@ -75,7 +92,7 @@
             >
 
             <ImageView
-                android:src="@mipmap/label"
+                android:src="@mipmap/sign"
                 android:layout_width="14dp"
                 android:layout_height="14dp" />
 
@@ -97,23 +114,39 @@
 
     </LinearLayout>
     <TextView
+        android:layout_marginTop="5dp"
         android:id="@+id/tv_price"
         tools:text="25币/小时"
         android:layout_alignParentRight="true"
         android:textSize="14sp"
-        android:textColor="@color/color_price_red"
+        android:textColor="@color/home_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <TextView
-        android:id="@+id/tv_distance"
-        tools:text="2.5km"
-        android:textSize="14sp"
-        android:layout_toLeftOf="@id/tv_price"
-        android:layout_marginRight="5dp"
-        android:textColor="@color/color_black"
+    <LinearLayout
+        android:layout_marginTop="5dp"
+        android:layout_toStartOf="@id/tv_price"
+        android:gravity="center_vertical"
+        android:layout_marginEnd="8dp"
+        android:orientation="horizontal"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:src="@mipmap/location"
+            android:layout_width="14dp"
+            android:layout_height="14dp"/>
+
+        <TextView
+            android:id="@+id/tv_distance"
+            tools:text="2.5km"
+            android:textSize="14sp"
+            android:textColor="@color/home_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
 
 </RelativeLayout>
-</android.support.v7.widget.CardView>
+<!--</android.support.v7.widget.CardView>-->

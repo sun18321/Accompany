@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    <include layout="@layout/toolbar_title"/>
+    <include layout="@layout/blue_toolbar"/>
 
     <LinearLayout
         android:padding="10dp"

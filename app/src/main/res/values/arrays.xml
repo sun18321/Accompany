@@ -40,5 +40,9 @@
         <item>45</item>
     </string-array>
 
+    <string-array name="record">
+        <item>充值记录</item>
+        <item>提现记录</item>
+    </string-array>
 
 </resources>

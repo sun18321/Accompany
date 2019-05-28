@@ -97,8 +97,9 @@ public class CashActivity extends BaseActivity {
             ToastUtils.showCommonToast(getResources().getString(R.string.cash_no_more));
             return;
         }
-
-        new QMUIDialog.MessageDialogBuilder(this).setTitle(getResources().getString(R.string.tips)).setMessage("您将提现" + mMoney + "元")
+        String format = getResources().getString(R.string.format_cash);
+        String tips = String.format(format, mMoney);
+        new QMUIDialog.MessageDialogBuilder(this).setTitle(getResources().getString(R.string.tips)).setMessage(tips)
                 .addAction(getResources().getString(R.string.cancel), new QMUIDialogAction.ActionListener() {
                     @Override
                     public void onClick(QMUIDialog dialog, int index) {

@@ -53,8 +53,9 @@ public class ChatClickListener implements RongIM.ConversationClickListener {
                     AccompanyApplication.getContext().startActivity(new Intent("android.intent.action.VIEW", uri).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                 }
             }
+            return true;
         }
-        return true;
+        return false;
     }
 
     @Override

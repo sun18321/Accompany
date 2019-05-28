@@ -5,6 +5,7 @@ import android.app.Application;
 import android.content.Context;
 
 import com.play.accompany.bean.UserInfo;
+import com.play.accompany.bean.WeChatInfo;
 import com.play.accompany.chat.ChatClickListener;
 import com.play.accompany.chat.ChatConnectListener;
 import com.play.accompany.chat.MessageReceiverListener;
@@ -18,6 +19,8 @@ import static io.rong.imkit.utils.SystemUtils.getCurProcessName;
 
 public class AccompanyApplication extends Application {
     private static Context mContext;
+    private static WeChatInfo mInfo;
+    private static boolean mOrderPay = false;
 
     public static Context getContext() {
         return mContext;
@@ -83,5 +86,28 @@ public class AccompanyApplication extends Application {
         return null;
     }
 
+    public static WeChatInfo getWeChatInfo() {
+        return mInfo;
+    }
+
+    public static void setWeChatInfo(WeChatInfo info) {
+        mInfo = info;
+    }
+
+    public static void clearWeChatInfo() {
+        mInfo = null;
+    }
+
+    public static boolean getOrderPay() {
+        return mOrderPay;
+    }
+
+    public static void startOrderPay() {
+        mOrderPay = true;
+    }
+
+    public static void endOrderPay() {
+        mOrderPay = false;
+    }
 
 }

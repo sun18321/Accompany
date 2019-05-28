@@ -45,6 +45,7 @@ import com.play.accompany.bean.HeadImageBean;
 import com.play.accompany.bean.ResponseImage;
 import com.play.accompany.bean.UpUser;
 import com.play.accompany.bean.UserInfo;
+import com.play.accompany.bean.WeChatInfo;
 import com.play.accompany.constant.AppConstant;
 import com.play.accompany.constant.IntentConstant;
 import com.play.accompany.constant.OtherConstant;
@@ -68,6 +69,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Date;
 import java.util.List;
 
@@ -219,6 +222,12 @@ public class EditUserActivity extends BaseActivity implements View.OnClickListen
         userInfo.setInterest(interest);
         userInfo.setProfession(profession);
         userInfo.setOtherGame(otherGame);
+        WeChatInfo weChatInfo = AccompanyApplication.getWeChatInfo();
+        if (weChatInfo != null) {
+            userInfo.setWxImgurl(weChatInfo.getHeadimgurl());
+            userInfo.setWxOpenId(weChatInfo.getOpenid());
+            userInfo.setWxUnionid(weChatInfo.getUnionid());
+        }
         final String json = GsonUtils.toJson(userInfo);
         LogUtils.d("json", "json:" + json);
 
@@ -230,6 +239,10 @@ public class EditUserActivity extends BaseActivity implements View.OnClickListen
                 Toast.makeText(EditUserActivity.this, getResources().getString(R.string.user_update), Toast.LENGTH_SHORT).show();
                 //写入数据库
                 UserInfoDatabaseUtils.updateUserInfo(userInfo);
+                if (AccompanyApplication.getWeChatInfo() != null) {
+                    UserInfoDatabaseUtils.updateUrl(AccompanyApplication.getWeChatInfo().getHeadimgurl());
+                    AccompanyApplication.clearWeChatInfo();
+                }
                 if (mIntentCode == INTENT_REGISTER) {
                     MainActivity.launch(EditUserActivity.this);
                 }

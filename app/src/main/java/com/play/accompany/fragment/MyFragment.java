@@ -15,6 +15,7 @@ import com.play.accompany.bean.UserInfo;
 import com.play.accompany.constant.IntentConstant;
 import com.play.accompany.constant.SpConstant;
 import com.play.accompany.db.AccompanyDatabase;
+import com.play.accompany.utils.LogUtils;
 import com.play.accompany.utils.SPUtils;
 import com.play.accompany.utils.StringUtils;
 import com.play.accompany.view.AllOrderActivity;
@@ -180,6 +181,7 @@ public class MyFragment extends BaseFragment {
     }
 
     private void glideFuzzy(String url) {
+        LogUtils.d("glide", "url:" + url);
         Glide.with(mContext).load(url).into(mImgHead);
         Glide.with(mContext)
                 .load(url)

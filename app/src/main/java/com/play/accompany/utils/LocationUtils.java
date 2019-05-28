@@ -1,13 +1,18 @@
 package com.play.accompany.utils;
 
 import android.annotation.SuppressLint;
-import android.util.Log;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
+import com.play.accompany.bean.LocalBean;
+import com.play.accompany.constant.SpConstant;
+import com.play.accompany.net.AccompanyRequest;
+import com.play.accompany.net.NetFactory;
 import com.play.accompany.view.AccompanyApplication;
+
+import okhttp3.RequestBody;
 
 public class LocationUtils {
     private static final String mTag = "location";
@@ -26,10 +31,12 @@ public class LocationUtils {
                      double longitude = aMapLocation.getLongitude();
                      double latitude = aMapLocation.getLatitude();
                      String address = aMapLocation.getAddress();
+                     String city = aMapLocation.getCity();
                      LogUtils.d(mTag, "long:" + longitude + "lat:" + latitude);
                      LogUtils.d(mTag, address);
                      LogUtils.d(mTag, "区:" + aMapLocation.getDistrict());
                      LogUtils.d(mTag, "error:" + aMapLocation.getErrorCode() + "error info:" + aMapLocation.getErrorInfo());
+                     sendLocal(city, latitude, longitude);
 
                      mLocationClient.onDestroy();
                      mLocationClient = null;
@@ -69,5 +76,16 @@ public class LocationUtils {
 
     }
 
+    private static void sendLocal(String city, double latitude, double longitude) {
+        LocalBean bean = new LocalBean();
+        bean.setToken(SPUtils.getInstance().getString(SpConstant.APP_TOKEN));
+        bean.setAddress(city);
+        bean.setLocalX(latitude);
+        bean.setLocalY(longitude);
+        String json = GsonUtils.toJson(bean);
+        RequestBody body = EncodeUtils.encodeInBody(json);
+        AccompanyRequest request = new AccompanyRequest();
+        request.onlyRequest(NetFactory.getNetRequest().getNetService().sendLocal(body));
+    }
 
 }

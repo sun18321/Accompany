@@ -29,10 +29,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-
-        <activity android:name=".view.CashActivity"
-                  android:screenOrientation="portrait"
-                  android:theme="@style/NoActionBarStatus"/>
+        <activity
+            android:name=".view.RecordActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBarStatus"/>
+        <activity
+            android:name=".view.CashActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBarStatus"/>
         <activity
             android:name=".view.NoticeSettingActivity"
             android:screenOrientation="portrait"
@@ -139,10 +143,16 @@
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
+
                 <category android:name="android.intent.category.DEFAULT"/>
+
                 <data android:scheme="wx7beb369a31f962e1"/>
             </intent-filter>
         </activity>
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:exported="true"
+            android:launchMode="singleTop"/>
 
         <provider
             android:name="android.support.v4.content.FileProvider"

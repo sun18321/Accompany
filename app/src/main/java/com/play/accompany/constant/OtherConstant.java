@@ -35,6 +35,13 @@ public class OtherConstant {
 
     public static final int NOTIFY_CODE = 999;
 
-    //1表示可以体现
+    //1表示可以提现
     public static final int MONEY_CAN_CASH = 1;
+
+    public static final String WE_CHAT_RECEIVER = "we_chat_receiver";
+
+    public static final String PAY_RECEIVER = "pay_receiver";
+
+    public static final String WALLET_RECEIVER = "wallet_receiver";
+
 }

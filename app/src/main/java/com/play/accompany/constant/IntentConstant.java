@@ -22,4 +22,8 @@ public class IntentConstant {
     public static final String INTENT_GAME_ID = "intent_game_id";
 
     public static final String INTENT_CASH = "intent_cash";
+
+    public static final String INTENT_WE_CHAT_CODE = "intent_we_chat_code";
+
+
 }

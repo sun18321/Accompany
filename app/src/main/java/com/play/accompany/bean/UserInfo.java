@@ -107,6 +107,50 @@ public class UserInfo implements Serializable {
     @Ignore
     private Boolean attention;
 
+    @Ignore
+    private String wxOpenId;
+
+    @Ignore
+    private String wxUnionid;
+
+    @Ignore
+    private String wxImgurl;
+
+    @Ignore
+    private int orderNum;
+
+    public int getOrderNum() {
+        return orderNum;
+    }
+
+    public void setOrderNum(int orderNum) {
+        this.orderNum = orderNum;
+    }
+
+    public String getWxOpenId() {
+        return wxOpenId;
+    }
+
+    public void setWxOpenId(String wxOpenId) {
+        this.wxOpenId = wxOpenId;
+    }
+
+    public String getWxUnionid() {
+        return wxUnionid;
+    }
+
+    public void setWxUnionid(String wxUnionid) {
+        this.wxUnionid = wxUnionid;
+    }
+
+    public String getWxImgurl() {
+        return wxImgurl;
+    }
+
+    public void setWxImgurl(String wxImgurl) {
+        this.wxImgurl = wxImgurl;
+    }
+
     public String getOtherGame() {
         return otherGame;
     }

@@ -16,6 +16,7 @@ import com.play.accompany.utils.LogUtils;
 
 public class WebViewActivity extends BaseActivity {
     private String mUrl;
+    private String mTitle;
 
 
     @Override
@@ -31,8 +32,7 @@ public class WebViewActivity extends BaseActivity {
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void initViews() {
-        initToolbar("活动");
-
+        initToolbar(mTitle);
 //        setStatusColor(R.color.color_red);
 
         WebView webView = findViewById(R.id.webview);
@@ -40,9 +40,6 @@ public class WebViewActivity extends BaseActivity {
         webView.setWebViewClient(new WebViewClient());
         if (!TextUtils.isEmpty(mUrl)) {
             webView.loadUrl(mUrl);
-
-
-
         }
     }
 
@@ -51,6 +48,7 @@ public class WebViewActivity extends BaseActivity {
         Intent intent = getIntent();
         if (intent != null) {
             mUrl = intent.getStringExtra(IntentConstant.INTENT_URL);
+            mTitle = intent.getStringExtra(IntentConstant.INTENT_TITLE);
             LogUtils.d(getTag(), "url:" + mUrl);
         }
     }

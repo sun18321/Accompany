@@ -125,6 +125,16 @@
                 android:layout_height="0.5dp"
                 android:background="@color/color_gray" />
 
+            <TextView
+                android:id="@+id/tv_master"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="40dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:textColor="@color/color_gray"
+                android:textSize="14sp" />
+
         </LinearLayout>
 
         <Button
@@ -138,16 +148,6 @@
             android:background="@drawable/ripple_button"
             android:text="@string/submit_only"
             android:textColor="@color/color_white" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="120dp"
-            android:padding="10dp"
-            android:text="@string/tips_master"
-            android:textColor="@color/color_gray"
-            android:textSize="16sp" />
 
     </RelativeLayout>
 
