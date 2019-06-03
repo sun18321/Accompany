@@ -205,7 +205,7 @@ public class HomeAdapter extends RecyclerView.Adapter {
             tvIntroduction.setText(info.getSign());
             Glide.with(itemView.getContext()).load(info.getUrl()).into(imgHead);
             tvDistance.setText(StringUtils.m2Km(info.getLbs()));
-            tvGrade.setText(String.valueOf(info.getGrade()));
+            tvGrade.setText(String.valueOf(info.getGrade()/2));
             tvCount.setText(String.valueOf(info.getOrderNum()) + "单");
         }
     }

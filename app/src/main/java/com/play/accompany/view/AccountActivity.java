@@ -181,7 +181,28 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
         String json = GsonUtils.toJson(codeLogin);
         RequestBody body = EncodeUtils.encodeInBody(json);
         AccompanyRequest request = new AccompanyRequest();
-        request.onlyRequest(NetFactory.getNetRequest().getNetService().getCode(body));
+        request.beginRequest(NetFactory.getNetRequest().getNetService().getCode(body), new TypeToken<BaseDecodeBean<String>>() {
+        }.getType(), new NetListener<String>() {
+            @Override
+            public void onSuccess(String o) {
+                ToastUtils.showCommonToast(getResources().getString(R.string.code_success));
+            }
+
+            @Override
+            public void onFailed(int errCode) {
+
+            }
+
+            @Override
+            public void onError() {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
         mButtonGetCode.setClickable(false);
         mButtonGetCode.setText(mCountdownTime / mUnitTime + "S");
         Observable.interval(mUnitTime, TimeUnit.SECONDS)

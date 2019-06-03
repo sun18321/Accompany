@@ -114,12 +114,11 @@ public class StringUtils {
         return s;
     }
 
-    public static String m2Km(int m) {
+    public static String m2Km(double m) {
         if (m == 0) {
-            return "0km";
+            return "<1km";
         }
-        double km = (double) m / (double) 1000;
-        return km + "km";
+        return m + "km";
     }
 
     /**

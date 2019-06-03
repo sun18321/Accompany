@@ -86,7 +86,7 @@ public class MasterActivity extends BaseActivity implements View.OnClickListener
 
         int type = SPUtils.getInstance().getInt(SpConstant.USER_TYPE, 1);
         if (type == OtherConstant.USER_TYPE_COMMON) {
-            mRlRequest.setVisibility(View.VISIBLE);
+            mRlWait.setVisibility(View.INVISIBLE);
             getData();
         } else if (type == OtherConstant.USER_TYPE_WAIT) {
             mRlWait.setVisibility(View.VISIBLE);
@@ -236,6 +236,10 @@ public class MasterActivity extends BaseActivity implements View.OnClickListener
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.lin_type:
+                if (mDataList == null || mDataList.isEmpty()) {
+                    ToastUtils.showCommonToast(getResources().getString(R.string.data_error));
+                    return;
+                }
                 final TypeDialog dialogBuild = new TypeDialog(this, mDataList,mSelectSet);
                 dialogBuild.setPositiveButton(getResources().getString(R.string.confirm), new DialogInterface.OnClickListener() {
                     @Override
@@ -250,7 +254,6 @@ public class MasterActivity extends BaseActivity implements View.OnClickListener
                     public void onClick(DialogInterface dialog, int which) {
                     }
                 });
-
                 dialogBuild.create().show();
                 break;
             case R.id.btn_submit:

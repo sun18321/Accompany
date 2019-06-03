@@ -60,7 +60,10 @@ public class UserInfo implements Serializable {
     private String sign;
 
     @Ignore
-    private Integer lbs;
+    private Double lbs;
+
+    @Ignore
+    private String address;
 
     @ColumnInfo(name = "user_url")
     private String url;
@@ -311,11 +314,11 @@ public class UserInfo implements Serializable {
         this.sign = sign;
     }
 
-    public Integer getLbs() {
+    public Double getLbs() {
         return lbs;
     }
 
-    public void setLbs(Integer lbs) {
+    public void setLbs(Double lbs) {
         this.lbs = lbs;
     }
 
@@ -357,5 +360,13 @@ public class UserInfo implements Serializable {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

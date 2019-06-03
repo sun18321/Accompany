@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.animation.AnimationUtils;
+import android.view.animation.BounceInterpolator;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -52,6 +53,7 @@ public class InviteCodeActivity extends BaseActivity implements View.OnClickList
     private Animator mAnimatorExpand;
     private Animator mAnimatorCollapse;
     private TextView mTvTest;
+    private int mHeight = 0;
 
     @Override
     protected int getLayout() {
@@ -70,9 +72,9 @@ public class InviteCodeActivity extends BaseActivity implements View.OnClickList
         TextView tvInviteCode = findViewById(R.id.tv_invite);
         mInviteCode = SPUtils.getInstance().getString(SpConstant.MY_INVITE_CODE);
         tvInviteCode.setText(mInviteCode);
+        tvInviteCode.setOnClickListener(this);
 
         mEditInvite = findViewById(R.id.edit_invite);
-        findViewById(R.id.btn_copy).setOnClickListener(this);
         findViewById(R.id.btn_submit).setOnClickListener(this);
         mImgSwitch = findViewById(R.id.img_switch);
         mLinExpand = findViewById(R.id.lin_expand);
@@ -153,23 +155,111 @@ public class InviteCodeActivity extends BaseActivity implements View.OnClickList
         ObjectAnimator rotation = ObjectAnimator.ofFloat(mImgSwitch, "rotation", mCurrentAngle, mCurrentAngle + mRotateAngle).setDuration(mAnimTime);
         rotation.start();
         if (mIsExpand) {
-            mAnimatorCollapse.start();
+//            mAnimatorCollapse.start();
+            collapseView();
         } else {
-            mAnimatorExpand.start();
+//            mAnimatorExpand.start();
+            expandView();
         }
         mCurrentAngle += mRotateAngle;
+    }
+
+    private void expandView() {
+        ObjectAnimator expand = ObjectAnimator.ofFloat(mLinExpand, "translationY", -mHeight, 0);
+        expand.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                mAnimating = true;
+                mLinExpand.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                mAnimating = false;
+                mIsExpand = !mIsExpand;
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
+        expand.setInterpolator(new BounceInterpolator());
+        expand.start();
+    }
+
+    private void collapseView() {
+        ObjectAnimator collapse = ObjectAnimator.ofFloat(mLinExpand, "translationY", 0, -mHeight);
+        collapse.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                mAnimating = true;
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                mAnimating = false;
+                mIsExpand = !mIsExpand;
+                mLinExpand.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
+        collapse.start();
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (mLinExpand != null) {
+            mHeight = mLinExpand.getHeight();
+        }
+
+        LogUtils.d("expand", "resume height:" + mHeight);
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+
+        if (mLinExpand != null) {
+            mHeight = mLinExpand.getHeight();
+        }
+
+        LogUtils.d("expand", "post resume height:" + mHeight);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btn_copy:
+            case R.id.tv_invite:
                 copyInviteCode();
                 break;
             case R.id.btn_submit:
                 submitCode();
                 break;
             case R.id.img_switch:
+                if (mLinExpand != null) {
+                    mHeight = mLinExpand.getHeight();
+                }
+
+                LogUtils.d("expand", "click height:" + mHeight);
+
                 if (!mAnimating) {
                     startAnim();
                 }

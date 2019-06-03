@@ -13,7 +13,7 @@ import okhttp3.RequestBody;
 
 public class CipherUtil {
     private static final String DES = "DES";
-    public static String defaultKey = "4942e826d55c12c9119afd6fb0bd79ae";
+    private static String defaultKey = "4942e826d55c12c9119afd6fb0bd79ae";
 
     /**
      * 加密 使用默认key

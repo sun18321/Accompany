@@ -102,7 +102,7 @@
     <string name="game">游戏</string>
     <string name="invite_code">我的邀请码</string>
     <string name="invite_tips">推荐朋友填写您的邀请码可参与运营活动领取礼品</string>
-    <string name="invite_copy">点击复制邀请码</string>
+    <string name="invite_copy">点击邀请码复制</string>
     <string name="input_invite">填写邀请码</string>
     <string name="submit_only">提交</string>
     <string name="invite_limit">每位用户只能填写一次邀请码，并且不能填写自己的哦^_^!</string>
