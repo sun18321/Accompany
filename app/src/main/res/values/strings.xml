@@ -190,6 +190,7 @@
     <string name="pay_success">支付成功</string>
     <string name="pay_failed">支付失败</string>
     <string name="pay_cancel">支付取消</string>
+    <string name="no_master">所选分类还没有大神</string>
 
 
     <string name="price_detail_place"><![CDATA[<font color="#000000"><small>%1$s</small></font>]]></string>

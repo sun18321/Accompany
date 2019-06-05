@@ -87,7 +87,10 @@ public class MasterActivity extends BaseActivity implements View.OnClickListener
         int type = SPUtils.getInstance().getInt(SpConstant.USER_TYPE, 1);
         if (type == OtherConstant.USER_TYPE_COMMON) {
             mRlWait.setVisibility(View.INVISIBLE);
-            getData();
+            mDataList = AccompanyApplication.getmGameList();
+            if (mDataList == null || mDataList.isEmpty()) {
+                getData();
+            }
         } else if (type == OtherConstant.USER_TYPE_WAIT) {
             mRlWait.setVisibility(View.VISIBLE);
         }

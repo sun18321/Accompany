@@ -4,6 +4,7 @@ import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
 
+import com.play.accompany.bean.TopGameBean;
 import com.play.accompany.bean.UserInfo;
 import com.play.accompany.bean.WeChatInfo;
 import com.play.accompany.chat.ChatClickListener;
@@ -13,14 +14,18 @@ import com.play.accompany.constant.AppConstant;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
 
+import java.util.List;
+
 import io.rong.imkit.RongIM;
 
 import static io.rong.imkit.utils.SystemUtils.getCurProcessName;
 
 public class AccompanyApplication extends Application {
     private static Context mContext;
+    //wechat login
     private static WeChatInfo mInfo;
     private static boolean mOrderPay = false;
+    private static List<TopGameBean> mGameList;
 
     public static Context getContext() {
         return mContext;
@@ -110,4 +115,11 @@ public class AccompanyApplication extends Application {
         mOrderPay = false;
     }
 
+    public static void setGameList(List<TopGameBean> list) {
+        mGameList = list;
+    }
+
+    public static List<TopGameBean> getmGameList() {
+        return mGameList;
+    }
 }

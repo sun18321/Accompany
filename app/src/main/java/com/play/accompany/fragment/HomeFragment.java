@@ -38,6 +38,7 @@ import com.play.accompany.utils.GsonUtils;
 import com.play.accompany.utils.SPUtils;
 import com.play.accompany.utils.ThreadPool;
 import com.play.accompany.utils.ToastUtils;
+import com.play.accompany.view.AccompanyApplication;
 import com.play.accompany.view.AccountActivity;
 import com.play.accompany.view.RankActivity;
 import com.play.accompany.view.UserCenterActivity;
@@ -46,6 +47,7 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -128,53 +130,6 @@ public class HomeFragment extends BaseFragment {
         String json = GsonUtils.toJson(requestToken);
         RequestBody body = EncodeUtils.encodeInBody(json);
         Observable<BaseResponse> observable = NetFactory.getNetRequest().getNetService().getHomePage(body);
-//        observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<BaseResponse>() {
-//            @Override
-//            public void onSubscribe(Disposable d) {
-//
-//            }
-//
-//            @Override
-//            public void onNext(BaseResponse baseResponse) {
-//                if (mRefreshLayout.isRefreshing()) {
-//                    mRefreshLayout.finishRefresh();
-//                }
-//                if (mLoadingView.getVisibility() == View.VISIBLE) {
-//                    mLoadingView.setVisibility(View.GONE);
-//                }
-//                String recEncode = baseResponse.getRecEncode();
-//                try {
-//                    String s = CipherUtil.desDecrypt(recEncode);
-//                    BaseDecodeBean bean = GsonUtils.fromJson(s, new TypeToken<BaseDecodeBean<ResponseHome>>() {
-//                    }.getType());
-//                    List<ResponseHome> msgList = bean.getMsgList();
-//                    if (msgList.isEmpty()) {
-//                        Toast.makeText(mContext, getResources().getString(R.string.data_error), Toast.LENGTH_SHORT).show();
-//                    } else {
-//                        if (mList.size() > 0) {
-//                            mList.clear();
-//                        }
-//                        mList.addAll(msgList);
-//                        showHome(mList);
-//                    }
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//
-//            @Override
-//            public void onError(Throwable e) {
-//
-//            }
-//
-//            @Override
-//            public void onComplete() {
-//                if (mLoadingView.getVisibility() == View.VISIBLE) {
-//                    mLoadingView.setVisibility(View.GONE);
-//                }
-//            }
-//        });
-
         AccompanyRequest request = new AccompanyRequest();
         request.requestBackString(observable, new StringListener() {
             @Override
@@ -208,7 +163,6 @@ public class HomeFragment extends BaseFragment {
                 }
             }
         });
-
     }
 
     private void showHome(String homeJson) {
@@ -251,7 +205,7 @@ public class HomeFragment extends BaseFragment {
         });
     }
 
-    private void queryType(int id) {
+    private void queryType(final int id) {
         if (isRequsting) {
             return;
         }
@@ -267,10 +221,11 @@ public class HomeFragment extends BaseFragment {
             @Override
             public void onSuccess(List<UserInfo> list) {
                 if (list.isEmpty()) {
+                    ToastUtils.showCommonToast(getResources().getString(R.string.no_master));
                     return;
                 }
                 if (mAdapter != null) {
-                    mAdapter.setContentList(list);
+                    mAdapter.setGameQuery(list, id);
                 }
                 isRequsting = false;
             }

@@ -15,6 +15,7 @@ import android.view.animation.BounceInterpolator;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.reflect.TypeToken;
@@ -44,16 +45,17 @@ public class InviteCodeActivity extends BaseActivity implements View.OnClickList
     private EditText mEditInvite;
     private String mInviteCode;
     private ImageView mImgSwitch;
-    private LinearLayout mLinExpand;
+    private RelativeLayout mLinExpand;
     private boolean mAnimating = false;
     private final long mAnimTime = 500;
-    private boolean mIsExpand;
+    private boolean mIsExpand = false;
     private int mCurrentAngle = 0;
     private final int mRotateAngle = 180;
     private Animator mAnimatorExpand;
     private Animator mAnimatorCollapse;
     private TextView mTvTest;
     private int mHeight = 0;
+    private TextView mTvSwitch;
 
     @Override
     protected int getLayout() {
@@ -78,6 +80,7 @@ public class InviteCodeActivity extends BaseActivity implements View.OnClickList
         findViewById(R.id.btn_submit).setOnClickListener(this);
         mImgSwitch = findViewById(R.id.img_switch);
         mLinExpand = findViewById(R.id.lin_expand);
+        mTvSwitch = findViewById(R.id.tv_switch);
         mTvTest = findViewById(R.id.test);
 
         if (SPUtils.getInstance().getBoolean(SpConstant.INVITE_FLAG)) {
@@ -89,6 +92,7 @@ public class InviteCodeActivity extends BaseActivity implements View.OnClickList
             mLinExpand.setVisibility(View.VISIBLE);
             mIsExpand = true;
         }
+        doAnimEnd();
         mImgSwitch.setOnClickListener(this);
         LogUtils.d("anim", "start expand:" + mIsExpand);
 
@@ -165,7 +169,7 @@ public class InviteCodeActivity extends BaseActivity implements View.OnClickList
     }
 
     private void expandView() {
-        ObjectAnimator expand = ObjectAnimator.ofFloat(mLinExpand, "translationY", -mHeight, 0);
+        ObjectAnimator expand = ObjectAnimator.ofFloat(mLinExpand, "translationY", -mHeight, 0).setDuration(1500);
         expand.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
@@ -177,6 +181,7 @@ public class InviteCodeActivity extends BaseActivity implements View.OnClickList
             public void onAnimationEnd(Animator animation) {
                 mAnimating = false;
                 mIsExpand = !mIsExpand;
+                doAnimEnd();
             }
 
             @Override
@@ -206,6 +211,7 @@ public class InviteCodeActivity extends BaseActivity implements View.OnClickList
                 mAnimating = false;
                 mIsExpand = !mIsExpand;
                 mLinExpand.setVisibility(View.INVISIBLE);
+                doAnimEnd();
             }
 
             @Override
@@ -219,6 +225,14 @@ public class InviteCodeActivity extends BaseActivity implements View.OnClickList
             }
         });
         collapse.start();
+    }
+
+    private void doAnimEnd() {
+        if (mIsExpand) {
+            mTvSwitch.setText("点击收起");
+        } else {
+            mTvSwitch.setText("显示隐藏");
+        }
     }
 
 

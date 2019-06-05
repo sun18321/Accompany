@@ -17,8 +17,10 @@ import com.play.accompany.bean.HomeBean;
 import com.play.accompany.bean.TopGameBean;
 import com.play.accompany.bean.UserInfo;
 import com.play.accompany.design.BannerImageLoader;
+import com.play.accompany.design.ColorfulTitle;
 import com.play.accompany.utils.GsonUtils;
 import com.play.accompany.utils.StringUtils;
+import com.play.accompany.view.AccompanyApplication;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
@@ -42,6 +44,7 @@ public class HomeAdapter extends RecyclerView.Adapter {
     private List<BannerBean> mBannerList = new ArrayList<>();
     private List<String> mBannerImgList = new ArrayList<>();
     private HomeListener mListener;
+    private int mSelectedGame = 0;
 
     public HomeAdapter(Context context, String json) {
         mContext = context;
@@ -65,12 +68,34 @@ public class HomeAdapter extends RecyclerView.Adapter {
         }
     }
 
-    public void setContentList(List<UserInfo> list) {
+    private TopGameBean getGameIndex() {
+        if (mSelectedGame == 0) {
+            return mGameList.get(0);
+        }
+        int index = 0;
+        List<TopGameBean> list = AccompanyApplication.getmGameList();
+        if (list == null || list.isEmpty()) {
+            list = mGameList;
+        }
+
+        for (int i = 0; i < list.size(); i++) {
+            int typeId = list.get(i).getTypeId();
+            if (typeId == mSelectedGame) {
+                index = i;
+                break;
+            }
+        }
+        return list.get(index);
+    }
+
+    public void setGameQuery(List<UserInfo> list, int gameId) {
         mContentList = list;
+        mSelectedGame = gameId;
         notifyDataSetChanged();
 
 //        notifyItemRangeChanged(mOtherTypeCount, 1);
     }
+
 
 
     @NonNull
@@ -106,7 +131,8 @@ public class HomeAdapter extends RecyclerView.Adapter {
                     }
                 }
             });
-
+            TopGameBean gameBean  = getGameIndex();
+            topViewHolder.colorfulTitle.setColor(gameBean.getTagFront(), gameBean.getTagBg(), gameBean.getName());
         } else {
             ContentViewHolder contentViewHolder = (ContentViewHolder) viewHolder;
             contentViewHolder.bindItem(mContentList.get(i - mOtherTypeCount));
@@ -165,11 +191,13 @@ public class HomeAdapter extends RecyclerView.Adapter {
 
     public static class TopViewHolder extends RecyclerView.ViewHolder {
         RecyclerView recyclerView;
+        ColorfulTitle colorfulTitle;
 
          TopViewHolder(@NonNull View itemView) {
             super(itemView);
              recyclerView = itemView.findViewById(R.id.recycler);
-        }
+             colorfulTitle = itemView.findViewById(R.id.color_title);
+         }
     }
 
     public class ContentViewHolder extends RecyclerView.ViewHolder{
@@ -204,7 +232,7 @@ public class HomeAdapter extends RecyclerView.Adapter {
             tvPrice.setText(info.getPrice() + mContext.getResources().getString(R.string.price));
             tvIntroduction.setText(info.getSign());
             Glide.with(itemView.getContext()).load(info.getUrl()).into(imgHead);
-            tvDistance.setText(StringUtils.m2Km(info.getLbs()));
+            tvDistance.setText(StringUtils.m2Km(info.getLbs(), info.getAddress()));
             tvGrade.setText(String.valueOf(info.getGrade()/2));
             tvCount.setText(String.valueOf(info.getOrderNum()) + "单");
         }

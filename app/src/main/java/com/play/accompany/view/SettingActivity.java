@@ -10,6 +10,7 @@ import com.play.accompany.R;
 import com.play.accompany.base.BaseActivity;
 import com.play.accompany.constant.SpConstant;
 import com.play.accompany.db.AccompanyDatabase;
+import com.play.accompany.design.ColorfulTitle;
 import com.play.accompany.utils.SPUtils;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
@@ -76,6 +77,7 @@ public class SettingActivity extends BaseActivity {
                 }).create().show();
             }
         }).addTo(mGroupListView);
+
     }
 
     private void quitLogin() {
@@ -84,4 +86,6 @@ public class SettingActivity extends BaseActivity {
         startActivity(new Intent(this, AccountActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
         this.finish();
     }
+
+
 }

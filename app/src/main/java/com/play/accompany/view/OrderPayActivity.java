@@ -150,6 +150,7 @@ public class OrderPayActivity extends BaseActivity implements View.OnClickListen
                 weChatPay();
                 break;
             case mAliPay:
+                alipay();
                 break;
         }
     }

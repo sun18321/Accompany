@@ -114,11 +114,13 @@ public class StringUtils {
         return s;
     }
 
-    public static String m2Km(double m) {
-        if (m == 0) {
-            return "<1km";
+    public static String m2Km(double instance, String city) {
+        if (instance == 0.1) {
+            return "<0.1km";
+        } else if (instance > 100) {
+            return city;
         }
-        return m + "km";
+        return instance + "km";
     }
 
     /**

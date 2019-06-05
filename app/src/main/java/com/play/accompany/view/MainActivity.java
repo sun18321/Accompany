@@ -23,9 +23,11 @@ import com.play.accompany.R;
 import com.play.accompany.base.BaseActivity;
 import com.play.accompany.base.BaseFragment;
 import com.play.accompany.bean.BaseDecodeBean;
+import com.play.accompany.bean.BaseResponse;
 import com.play.accompany.bean.ChatBean;
 import com.play.accompany.bean.ChatInfo;
 import com.play.accompany.bean.Token;
+import com.play.accompany.bean.TopGameBean;
 import com.play.accompany.constant.SpConstant;
 import com.play.accompany.db.AccompanyDatabase;
 import com.play.accompany.fragment.HomeFragment;
@@ -44,6 +46,7 @@ import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 
 import java.util.List;
 
+import io.reactivex.Observable;
 import io.rong.imkit.RongIM;
 import io.rong.imkit.fragment.ConversationFragment;
 import io.rong.imkit.fragment.ConversationListFragment;
@@ -116,6 +119,8 @@ public class MainActivity extends BaseActivity {
             MainActivityPermissionsDispatcher.requestPermissionWithPermissionCheck(this);
         }
 
+        requestCacheData();
+
         mNavigationView = findViewById(R.id.navigation);
         mNavigationView.setItemIconTintList(null);
         mHomeFragment = HomeFragment.newInstance();
@@ -161,6 +166,38 @@ public class MainActivity extends BaseActivity {
 
         switchFragment(mHomeFragment, TAG_HOME);
     }
+
+    private void requestCacheData() {
+        RequestBody body = EncodeUtils.encodeToken();
+        Observable<BaseResponse> observable = NetFactory.getNetRequest().getNetService().getAllGame(body);
+        AccompanyRequest request = new AccompanyRequest();
+        request.beginRequest(observable, new TypeToken<BaseDecodeBean<List<TopGameBean>>>() {}.getType(), new NetListener<List<TopGameBean>>() {
+            @Override
+            public void onSuccess(List<TopGameBean> list) {
+                if (list.isEmpty()) {
+                    return;
+                }
+                AccompanyApplication.setGameList(list);
+            }
+
+            @Override
+            public void onFailed(int errCode) {
+
+            }
+
+            @Override
+            public void onError() {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
+
+    }
+
 
     private void getChatToken() {
         if (mTokenRequest) {

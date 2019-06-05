@@ -16,9 +16,11 @@ import com.play.accompany.view.AccompanyApplication;
 import java.lang.reflect.Type;
 
 import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 public class AccompanyRequest{
@@ -198,6 +200,93 @@ public class AccompanyRequest{
             }
         });
     }
+
+    public void flatRequest(Observable<BaseResponse> observableOne, final NetListener listenerOne, final Observable<BaseResponse> observableTwo, final NetListener listenerTwo) {
+
+        if (!NetUtils.isNetworkConnected(AccompanyApplication.getContext())) {
+            Toast.makeText(AccompanyApplication.getContext(), AccompanyApplication.getContext().getResources().getString(R.string.no_net), Toast.LENGTH_SHORT).show();
+            return;
+        }
+            observableOne.flatMap(new Function<BaseResponse, ObservableSource<BaseResponse>>() {
+                @Override
+                public ObservableSource<BaseResponse> apply(BaseResponse baseResponse) throws Exception {
+                    String recEncode = baseResponse.getRecEncode();
+                    try {
+                        String desDecrypt = CipherUtil.desDecrypt(recEncode);
+                        LogUtils.d("request", "all:" + desDecrypt);
+                        OnlyCodeBean bean = GsonUtils.fromJson(desDecrypt, OnlyCodeBean.class);
+                        if (bean != null) {
+                            int code = bean.getCode();
+                            if (code == AppConstant.RESPONSE_SUCCESS) {
+                                if (listenerOne != null) {
+                                    listenerOne.onSuccess(desDecrypt);
+                                }
+                            } else {
+                                Toast.makeText(AccompanyApplication.getContext(), StringUtils.getErrorInfo(bean.getCode()),Toast.LENGTH_SHORT).show();
+                                if (listenerOne != null) {
+                                    listenerOne.onFailed(code);
+                                }
+                            }
+                        } else {
+                            if (listenerOne != null) {
+                                listenerOne.onError();
+                            }
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    return observableTwo;
+                }
+            }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<BaseResponse>() {
+                @Override
+                public void onSubscribe(Disposable d) {
+
+
+                }
+
+                @Override
+                public void onNext(BaseResponse baseResponse) {
+
+                    String recEncode = baseResponse.getRecEncode();
+                    try {
+                        String desDecrypt = CipherUtil.desDecrypt(recEncode);
+                        LogUtils.d("request", "all:" + desDecrypt);
+                        OnlyCodeBean bean = GsonUtils.fromJson(desDecrypt, OnlyCodeBean.class);
+                        if (bean != null) {
+                            int code = bean.getCode();
+                            if (code == AppConstant.RESPONSE_SUCCESS) {
+                                if (listenerTwo != null) {
+                                    listenerTwo.onSuccess(desDecrypt);
+                                }
+                            } else {
+                                Toast.makeText(AccompanyApplication.getContext(), StringUtils.getErrorInfo(bean.getCode()),Toast.LENGTH_SHORT).show();
+                                if (listenerTwo != null) {
+                                    listenerTwo.onFailed(code);
+                                }
+                            }
+                        } else {
+                            if (listenerTwo != null) {
+                                listenerTwo.onError();
+                            }
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onError(Throwable e) {
+
+                }
+
+                @Override
+                public void onComplete() {
+
+                }
+            });
+        }
 
     public void destroy() {
         if (mDisposable != null) {
