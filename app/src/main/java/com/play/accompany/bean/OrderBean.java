@@ -6,7 +6,7 @@ public class OrderBean implements Serializable {
     /*
     * "token"    : 客户端登录时，保存的token
    "targetId" : 陪玩的ID
-   "typeGame" : 游戏类型的ID
+   "gameType" : 游戏类型的ID
    "price"    : 陪玩单价
    "num"      : 数量
    "sale"     : 折扣，100：无折扣 90：九折
@@ -18,7 +18,7 @@ public class OrderBean implements Serializable {
 
     private String targetId;
 
-    private int typeGame;
+    private int gameType;
 
     private int price;
 
@@ -44,12 +44,12 @@ public class OrderBean implements Serializable {
         this.targetId = targetId;
     }
 
-    public int getTypeGame() {
-        return typeGame;
+    public int getgameType() {
+        return gameType;
     }
 
-    public void setTypeGame(int typeGame) {
-        this.typeGame = typeGame;
+    public void setgameType(int gameType) {
+        this.gameType = gameType;
     }
 
     public int getPrice() {

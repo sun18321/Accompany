@@ -118,6 +118,7 @@ public abstract class BaseActivity extends AppCompatActivity implements DialogIn
         overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
     }
 
+    //为了8.0.1这个系统bug
     private boolean fixOrientation(){
         try {
             Field field = Activity.class.getDeclaredField("mActivityInfo");
@@ -173,6 +174,30 @@ public abstract class BaseActivity extends AppCompatActivity implements DialogIn
                 }
             });
         }
+    }
+
+    protected void initToolbar(String title, String rightTitle, View.OnClickListener listener) {
+        Toolbar toolbar =  findViewById(R.id.toolbar);
+        TextView tvTitle = findViewById(R.id.tv_title);
+        tvTitle.setText(title);
+        setSupportActionBar(toolbar);
+        ActionBar supportActionBar = getSupportActionBar();
+        if (supportActionBar != null) {
+            supportActionBar.setDisplayHomeAsUpEnabled(true);
+            supportActionBar.setDisplayShowTitleEnabled(false);
+        }
+        if (toolbar != null) {
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    BaseActivity.this.finish();
+                }
+            });
+        }
+
+        TextView tvRight = findViewById(R.id.tv_right);
+        tvRight.setText(rightTitle);
+        tvRight.setOnClickListener(listener);
     }
 
     protected void showDialog() {

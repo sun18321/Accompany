@@ -2,11 +2,9 @@ package com.play.accompany.view;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -21,7 +19,6 @@ import com.play.accompany.R;
 import com.play.accompany.base.BaseActivity;
 import com.play.accompany.bean.AttentionBean;
 import com.play.accompany.bean.BaseDecodeBean;
-import com.play.accompany.bean.OnlyCodeBean;
 import com.play.accompany.bean.TopGameBean;
 import com.play.accompany.bean.UserInfo;
 import com.play.accompany.constant.AppConstant;
@@ -44,7 +41,6 @@ import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 
-import java.text.ParseException;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -66,7 +62,6 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     private ImageView mImgGender;
     private TextView mTvAge;
     private TextView mTvName;
-    private Button mBtnAttention;
     private TextView mTvFans;
     private TextView mTvBottomName;
     private TextView mTvId;
@@ -83,6 +78,9 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     private boolean mIsNet = false;
     private TextView mTvConstellation;
     private FlowLayout mFlowLayout;
+    private LinearLayout mLinAttention;
+    private TextView mTvAttention;
+    private ImageView mImgAttention;
 
     @Override
     protected int getLayout() {
@@ -123,7 +121,9 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         mImgGender = findViewById(R.id.img_gender);
         mTvAge = findViewById(R.id.tv_age);
         mTvName = findViewById(R.id.tv_name);
-        mBtnAttention = findViewById(R.id.btn_attention);
+        mLinAttention = findViewById(R.id.lin_attention);
+        mImgAttention = findViewById(R.id.img_attention);
+        mTvAttention = findViewById(R.id.tv_attention);
         mTvFans = findViewById(R.id.tv_fans);
         mTvBottomName = findViewById(R.id.tv_bottom_name);
         mTvId = findViewById(R.id.tv_id);
@@ -145,13 +145,13 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         });
 
         if (mIsMe) {
-            mBtnAttention.setVisibility(View.INVISIBLE);
+            mLinAttention.setVisibility(View.INVISIBLE);
             mLinOperation.setVisibility(View.INVISIBLE);
             mLinRate.setVisibility(View.INVISIBLE);
         }
 
         mBtnOrder.setOnClickListener(this);
-        mBtnAttention.setOnClickListener(this);
+        mLinAttention.setOnClickListener(this);
         mBtnChat.setOnClickListener(this);
 
         if (mUserInfo != null) {
@@ -189,10 +189,14 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
             Boolean attention = mUserInfo.getAttention();
             if (attention != null && attention) {
                 mAttention = true;
-                mBtnAttention.setText(getResources().getString(R.string.attention_already));
+                mTvAttention.setText(getResources().getString(R.string.attention_already));
+                mLinAttention.setBackgroundResource(R.drawable.shape_cancel_attention);
+                mImgAttention.setBackgroundResource(R.mipmap.cross);
             } else {
                 mAttention = false;
-                mBtnAttention.setText(getResources().getString(R.string.attention));
+                mTvAttention.setText(getResources().getString(R.string.attention));
+                mLinAttention.setBackgroundResource(R.drawable.shape_attention);
+                mImgAttention.setBackgroundResource(R.mipmap.plus);
             }
             displayGame();
         }
@@ -210,7 +214,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
 
     private void displayGame() {
         List<Integer> list = mUserInfo.getGameType();
-        List<TopGameBean> allList = AccompanyApplication.getmGameList();
+        List<TopGameBean> allList = AccompanyApplication.getGameList();
         if (allList == null || allList.isEmpty()) {
             return;
         }
@@ -230,6 +234,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
                     tv.setTextColor(wordColor);
                     tv.setText(topGameBean.getName());
                     tv.setBackground(drawable);
+                    tv.setTextSize(12);
                     tv.setPadding(QMUIDisplayHelper.dp2px(this, 12), QMUIDisplayHelper.dp2px(this, 2), QMUIDisplayHelper.dp2px(this, 12), QMUIDisplayHelper.dp2px(this, 2));
                     ViewGroup.LayoutParams layoutParams = tv.getLayoutParams();
                     if (layoutParams instanceof ViewGroup.MarginLayoutParams) {
@@ -332,10 +337,14 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
                         dismissDialog();
                         if (mAttention) {
                             ToastUtils.showCommonToast(getResources().getString(R.string.attention_cancel_success));
-                            mBtnAttention.setText(getResources().getString(R.string.attention));
+                            mTvAttention.setText(getResources().getString(R.string.attention));
+                            mLinAttention.setBackgroundResource(R.drawable.shape_attention);
+                            mImgAttention.setBackgroundResource(R.mipmap.plus);
                         } else {
                             ToastUtils.showCommonToast(getResources().getString(R.string.attention_success));
-                            mBtnAttention.setText(getResources().getString(R.string.attention_already));
+                            mTvAttention.setText(getResources().getString(R.string.attention_already));
+                            mLinAttention.setBackgroundResource(R.drawable.shape_cancel_attention);
+                            mImgAttention.setBackgroundResource(R.mipmap.cross);
                         }
                         mAttention = !mAttention;
                         Intent intent = new Intent(AppConstant.BROADCAST_ATTENTION);
@@ -376,7 +385,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
                     startActivity(intent);
                 }
                 break;
-            case R.id.btn_attention:
+            case R.id.lin_attention:
                 dealAttention();
                 break;
             case R.id.btn_chat:

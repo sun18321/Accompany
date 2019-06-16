@@ -44,4 +44,11 @@ public class OtherConstant {
 
     public static final String WALLET_RECEIVER = "wallet_receiver";
 
+    public static final String ORDER_RESPONSE_RECEIVER = "order_response_receiver";
+
+    public static final int ORDER_RESPONSE_AGREE_ADVANCE = 888;
+
+    public static final int ORDER_RESPONSE_NOTIFY_MASTER = 999;
+
+    public static final String OFFICE_NUMBER = "1000";
 }

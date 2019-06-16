@@ -114,7 +114,7 @@ public class CommentDialog extends Dialog implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if (mIsComplete) {
-            ToastUtils.showCommonToast("请到我的界面联系在线客服");
+            ToastUtils.showCommonToast(mContext.getResources().getString(R.string.go_service));
         } else {
             if (mListener != null) {
                 CommentBean bean = new CommentBean();

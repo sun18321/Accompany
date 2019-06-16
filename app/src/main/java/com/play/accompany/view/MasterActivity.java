@@ -81,16 +81,16 @@ public class MasterActivity extends BaseActivity implements View.OnClickListener
         mTvType = findViewById(R.id.tv_type);
         mRlRequest = findViewById(R.id.rl_request);
         mRlWait = findViewById(R.id.rl_wait);
+        mDataList = AccompanyApplication.getGameList();
+        if (mDataList == null || mDataList.isEmpty()) {
+            getData();
+        }
 
         initTip();
 
         int type = SPUtils.getInstance().getInt(SpConstant.USER_TYPE, 1);
         if (type == OtherConstant.USER_TYPE_COMMON) {
             mRlWait.setVisibility(View.INVISIBLE);
-            mDataList = AccompanyApplication.getmGameList();
-            if (mDataList == null || mDataList.isEmpty()) {
-                getData();
-            }
         } else if (type == OtherConstant.USER_TYPE_WAIT) {
             mRlWait.setVisibility(View.VISIBLE);
         }

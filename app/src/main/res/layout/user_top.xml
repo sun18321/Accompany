@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="horizontal"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_gravity="center"
+    >
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/head_image"
+        app:riv_corner_radius="40dp"
+        tools:src="@mipmap/head_default"
+        android:layout_width="80dp"
+        android:layout_height="80dp" />
+
+
+    <LinearLayout
+        android:layout_marginStart="10dp"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        >
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:textColor="@color/home_text"
+            tools:text="池鱼"
+            android:textSize="20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="3"
+            android:maxLines="1"
+            android:maxEms="5"
+            android:ellipsize="end"
+            />
+
+        <LinearLayout
+            android:layout_marginTop="4dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:src="@mipmap/star_home"
+                android:layout_width="14dp"
+                android:layout_height="14dp"/>
+
+            <TextView
+                android:id="@+id/tv_grade"
+                android:textColor="@color/home_location"
+                android:layout_marginStart="2dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/tv_count"
+                android:textColor="@color/home_location"
+                android:layout_marginStart="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:layout_marginTop="4dp"
+            >
+
+            <ImageView
+                android:src="@mipmap/sign"
+                android:layout_width="14dp"
+                android:layout_height="14dp" />
+
+            <TextView
+                android:id="@+id/tv_introduction"
+                tools:text="日常游戏"
+                android:textSize="14sp"
+                android:layout_marginStart="4dp"
+                android:gravity="center_vertical"
+                android:textColor="@color/color_gray"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:maxEms="10"
+                android:ellipsize="end"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

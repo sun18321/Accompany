@@ -341,7 +341,7 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
                 GoldBean bean = list.get(0);
                 SPUtils.getInstance().put(SpConstant.MY_GOLDEN, bean.getGold());
                 if (mTvGold != null) {
-                    mTvGold.setText(SPUtils.getInstance().getInt(SpConstant.MY_GOLDEN) + "");
+                    mTvGold.setText(bean.getGold());
                 }
             }
 

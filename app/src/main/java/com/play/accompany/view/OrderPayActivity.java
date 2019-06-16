@@ -185,6 +185,7 @@ public class OrderPayActivity extends BaseActivity implements View.OnClickListen
                     GoldBean goldBean = list.get(0);
                     SPUtils.getInstance().put(SpConstant.MY_GOLDEN, goldBean.getGold());
                 }
+                setResult(IntentConstant.INTENT_CODE_PAY_SUCCESS);
                 OrderPayActivity.this.finish();
             }
 

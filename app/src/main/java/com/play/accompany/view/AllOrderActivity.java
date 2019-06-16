@@ -1,6 +1,7 @@
 package com.play.accompany.view;
 
 import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -28,6 +29,8 @@ import com.play.accompany.utils.EncodeUtils;
 import com.play.accompany.utils.GsonUtils;
 import com.play.accompany.utils.SPUtils;
 import com.play.accompany.utils.ToastUtils;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
@@ -35,6 +38,7 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.rong.imkit.RongIM;
 import okhttp3.RequestBody;
 
 public class AllOrderActivity extends BaseActivity implements OrderAdapter.OrderListener {
@@ -72,17 +76,17 @@ public class AllOrderActivity extends BaseActivity implements OrderAdapter.Order
             }
         });
 
-//        requestData();
+        requestData();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        if (mRefreshLayout != null) {
-            mRefreshLayout.autoRefresh();
-        }
-    }
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//
+//        if (mRefreshLayout != null) {
+//            mRefreshLayout.autoRefresh();
+//        }
+//    }
 
     private void requestData() {
         Token token = new Token(SPUtils.getInstance().getString(SpConstant.APP_TOKEN));
@@ -97,6 +101,9 @@ public class AllOrderActivity extends BaseActivity implements OrderAdapter.Order
                 mList.clear();
                 if (list == null || list.isEmpty()) {
                     mTvNoOrder.setVisibility(View.VISIBLE);
+                    if (mAdapter != null) {
+                        mAdapter.notifyDataSetChanged();
+                    }
                     return;
                 }
                 if (mTvNoOrder != null && mTvNoOrder.getVisibility() == View.VISIBLE) {
@@ -185,11 +192,38 @@ public class AllOrderActivity extends BaseActivity implements OrderAdapter.Order
         });
     }
 
+    private void showConfirmDialog(final String id, final String success, final String failed) {
+        new QMUIDialog.MessageDialogBuilder(this).setMessage("确定要接受此订单吗？").addAction(getResources().getString(R.string.cancel),
+                new QMUIDialogAction.ActionListener() {
+                    @Override
+                    public void onClick(QMUIDialog dialog, int index) {
+                        dialog.dismiss();
+                    }
+                }).addAction(getResources().getString(R.string.confirm), new QMUIDialogAction.ActionListener() {
+            @Override
+            public void onClick(QMUIDialog dialog, int index) {
+                orderNext(id, success, failed);
+                dialog.dismiss();
+            }
+        }).create().show();
+    }
+
     @Override
-    public void onItemClick(IntentPayInfo info) {
-        Intent intent = new Intent(this, OrderPayActivity.class);
-        intent.putExtra(IntentConstant.INTENT_PAY_INFO, info);
-        startActivity(intent);
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == IntentConstant.INTENT_CODE_PAY_SUCCESS) {
+            if (mRefreshLayout != null) {
+                mRefreshLayout.autoRefresh();
+            }
+        }
+    }
+
+    @Override
+    public void onItemClick(AllOrderBean bean) {
+        Intent intent = new Intent(this, OrderDetailActivity.class);
+        intent.putExtra(IntentConstant.INTENT_ALL_ORDER, bean);
+        startActivityForResult(intent,1);
     }
 
     @Override
@@ -199,6 +233,14 @@ public class AllOrderActivity extends BaseActivity implements OrderAdapter.Order
 
     @Override
     public void onOrderNext(String id,String success,String failed) {
-        orderNext(id,success,failed);
+        showConfirmDialog(id, success, failed);
+//        orderNext(id,success,failed);
+    }
+
+    @Override
+    public void onPayClick(IntentPayInfo info) {
+        Intent intent = new Intent(this, OrderPayActivity.class);
+        intent.putExtra(IntentConstant.INTENT_PAY_INFO, info);
+        startActivityForResult(intent, 1);
     }
 }

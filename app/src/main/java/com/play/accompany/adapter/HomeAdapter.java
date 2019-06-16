@@ -73,7 +73,7 @@ public class HomeAdapter extends RecyclerView.Adapter {
             return mGameList.get(0);
         }
         int index = 0;
-        List<TopGameBean> list = AccompanyApplication.getmGameList();
+        List<TopGameBean> list = AccompanyApplication.getGameList();
         if (list == null || list.isEmpty()) {
             list = mGameList;
         }

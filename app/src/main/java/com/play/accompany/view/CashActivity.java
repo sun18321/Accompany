@@ -14,6 +14,7 @@ import com.play.accompany.R;
 import com.play.accompany.base.BaseActivity;
 import com.play.accompany.bean.BaseDecodeBean;
 import com.play.accompany.bean.CashBean;
+import com.play.accompany.bean.GoldBean;
 import com.play.accompany.bean.RequestCashBean;
 import com.play.accompany.constant.IntentConstant;
 import com.play.accompany.constant.SpConstant;
@@ -28,7 +29,10 @@ import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.util.List;
 
+import okhttp3.Request;
 import okhttp3.RequestBody;
 
 public class CashActivity extends BaseActivity {
@@ -56,7 +60,7 @@ public class CashActivity extends BaseActivity {
 
         initToolbar(getResources().getString(R.string.cash));
         mTvMoney = findViewById(R.id.tv_money);
-        mTvMoney.setText(String.valueOf(SPUtils.getInstance().getInt(SpConstant.MY_GOLDEN, 0)));
+        mTvMoney.setText(SPUtils.getInstance().getInt(SpConstant.MY_GOLDEN));
         TextView tvRule = findViewById(R.id.tv_rule);
         String s = getResources().getString(R.string.cash_rule_detail);
         if (mCashBean != null) {
@@ -90,6 +94,15 @@ public class CashActivity extends BaseActivity {
         if (extra != 0) {
             mMoney = mMoney / mBase * mBase;
         }
+
+        if (mMoney > mMax) {
+            mMoney = mMax;
+        }
+
+        if (mMoney < mMin && mMoney != 0) {
+            mMoney = mMin;
+        }
+
         mEditCash.setText(String.valueOf(mMoney));
         mEditCash.setSelection(String.valueOf(mMoney).length());
 
@@ -140,7 +153,7 @@ public class CashActivity extends BaseActivity {
 
             @Override
             public void onFailed(int errCode) {
-
+                isNet = false;
             }
 
             @Override
@@ -150,7 +163,7 @@ public class CashActivity extends BaseActivity {
 
             @Override
             public void onComplete() {
-
+                isNet = false;
             }
         });
     }

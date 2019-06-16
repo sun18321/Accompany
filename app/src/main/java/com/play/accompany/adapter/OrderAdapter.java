@@ -95,10 +95,10 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderHolder>
                 Glide.with(itemView.getContext()).load(url).into(imgHead);
             }
             tvName.setText(bean.getName());
-            tvType.setText(StringUtils.getGameString(bean.getTypeGame()));
+            tvType.setText(AccompanyApplication.getGmaeString(bean.getgameType()));
             tvTime.setText(DateUtils.time2Date(bean.getTime()));
             int price = bean.getPrice();
-            int num = bean.getNum();
+            final int num = bean.getNum();
             int all = price * num;
             String content = "(" + price + itemView.getContext().getResources().getString(R.string.price) + " * " + num + ")";
             String detail = itemView.getContext().getResources().getString(R.string.price_detail_place);
@@ -109,16 +109,23 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderHolder>
             int state = bean.getState();
             OrderState orderState = OrderConstant.getOrderState(bean.getStartTime(),state, isHost);
             if (orderState != null) {
-                tvState.setBackgroundResource(orderState.getStateBackground());
-                tvState.setText(orderState.getStateText());
                 final int stateAction = orderState.getStateAction();
-
                 String tip = orderState.getTip();
                 tvTips.setText(tip);
-                itemView.setOnClickListener(new View.OnClickListener() {
+                tvState.setBackgroundResource(orderState.getStateBackground());
+                tvState.setText(orderState.getStateText());
+                tvState.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         clickAction(itemView.getContext(),bean,stateAction);
+                    }
+                });
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (mListener != null) {
+                            mListener.onItemClick(bean);
+                        }
                     }
                 });
             }
@@ -162,10 +169,10 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderHolder>
         void goPay(AllOrderBean bean) {
             String detail = bean.getPrice() + AccompanyApplication.getContext().getResources().getString(R.string.price) + "*" + bean.getNum();
             int all = (bean.getPrice()) * (bean.getNum());
-            IntentPayInfo info = new IntentPayInfo(bean.getUrl(), bean.getName(), StringUtils.getGameString(bean.getTypeGame()),
+            IntentPayInfo info = new IntentPayInfo(bean.getUrl(), bean.getName(), AccompanyApplication.getGmaeString(bean.getgameType()),
                     detail, all, bean.getId());
             if (mListener != null) {
-                mListener.onItemClick(info);
+                mListener.onPayClick(info);
             }
         }
 
@@ -202,12 +209,13 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderHolder>
     }
 
     public interface OrderListener {
-        void onItemClick(IntentPayInfo info);
+        void onItemClick(AllOrderBean bean);
 
         void onCommentClick(CommentBean bean);
 
         void onOrderNext(String id, String success, String failed);
 
+        void onPayClick(IntentPayInfo info);
     }
 
 }

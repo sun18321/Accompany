@@ -36,8 +36,7 @@ public class LocationUtils {
                      LogUtils.d(mTag, address);
                      LogUtils.d(mTag, "区:" + aMapLocation.getDistrict());
                      LogUtils.d(mTag, "error:" + aMapLocation.getErrorCode() + "error info:" + aMapLocation.getErrorInfo());
-                     sendLocal(city, latitude, longitude);
-
+                     sendLocal(StringUtils.cutCityWord(city), latitude, longitude);
                      mLocationClient.onDestroy();
                      mLocationClient = null;
                  } else {

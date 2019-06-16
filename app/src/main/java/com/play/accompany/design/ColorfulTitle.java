@@ -6,12 +6,14 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.play.accompany.R;
+import com.play.accompany.utils.LogUtils;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 
 public class ColorfulTitle extends FrameLayout {
@@ -42,6 +44,10 @@ public class ColorfulTitle extends FrameLayout {
     }
 
     public void setColor(String lineColor, String solidColor,String word) {
+        LogUtils.d("color", "line:" + lineColor + "solid:" + solidColor + "word:" + word);
+        if (TextUtils.isEmpty(lineColor) || TextUtils.isEmpty(solidColor) || TextUtils.isEmpty(word)) {
+            return;
+        }
         int intLineColor = Color.parseColor(lineColor);
         int intSolidColor = Color.parseColor(solidColor);
         GradientDrawable gradientDrawable = (GradientDrawable) mTvTitle.getBackground();

@@ -12,11 +12,18 @@
     <color name="bottom_unselect">#818181</color>
 
     <color name="invite_text">#9899AD</color>
+    <color name="activity_background">#F8F8F8</color>
+    <color name="negative_gray">#7A7A7A</color>
 
-    
     <color name="color_white">#FFFFFF</color>
     <color name="color_main">#29A1F7</color>
     <color name="color_black">#000000</color>
+
+    <color name="gradient_red_start">#FE619F</color>
+    <color name="gradient_red_end">#FF86B5</color>
+    <color name="user_transparent_black">#99000000</color>
+    <color name="attention_bg">#52AFFF</color>
+    <color name="cancel_attention_bg">#DF6268</color>
 
     <color name="color_price_red">#F84048</color>
     <color name="color_title_orange">#FE7126</color>
@@ -28,7 +35,7 @@
     <color name="color_transparent">#00000000</color>
     <color name="color_order_gray">#9B9C9D</color>
     <color name="color_invite_gray">#A17568</color>
-    <color name="color_order_pay">#199513</color>
+    <color name="color_order_green">#199513</color>
     <color name="color_order_complete">#838383</color>
     <color name="color_order_tip">#E6843A</color>
     <color name="color_red">#FF0000</color>

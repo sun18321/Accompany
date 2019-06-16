@@ -10,6 +10,9 @@ import com.play.accompany.bean.WeChatInfo;
 import com.play.accompany.chat.ChatClickListener;
 import com.play.accompany.chat.ChatConnectListener;
 import com.play.accompany.chat.MessageReceiverListener;
+import com.play.accompany.chat.OrderMessage;
+import com.play.accompany.chat.OrderProvider;
+import com.play.accompany.chat.OrderResponseMessage;
 import com.play.accompany.constant.AppConstant;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
@@ -66,6 +69,12 @@ public class AccompanyApplication extends Application {
             RongIM.setOnReceiveMessageListener(new MessageReceiverListener());
             //会话点击
             RongIM.setConversationClickListener(new ChatClickListener());
+
+            //自定义
+            RongIM.registerMessageType(OrderMessage.class);
+            RongIM.registerMessageTemplate(new OrderProvider());
+
+            RongIM.registerMessageType(OrderResponseMessage.class);
         }
     }
 
@@ -119,7 +128,22 @@ public class AccompanyApplication extends Application {
         mGameList = list;
     }
 
-    public static List<TopGameBean> getmGameList() {
+    public static List<TopGameBean> getGameList() {
         return mGameList;
+    }
+
+    public static String getGmaeString(int type) {
+        String game = "";
+        if (mGameList == null || mGameList.isEmpty()) {
+            return game;
+        }
+        for (TopGameBean bean : mGameList) {
+            int typeId = bean.getTypeId();
+            if (typeId == type) {
+                game = bean.getName();
+                break;
+            }
+        }
+        return game;
     }
 }

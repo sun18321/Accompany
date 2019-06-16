@@ -70,7 +70,7 @@ public class MainActivity extends BaseActivity {
     private final String TAG_MESSAGE = "message";
     private final String TAG_MY = "my";
     private String mCurrentTag;
-    private final String mChatTag = "chat";
+    private final String mChatTag = "white_sign";
     private boolean mTokenRequest = false;
     private MessageFragment mMessageFragment;
 

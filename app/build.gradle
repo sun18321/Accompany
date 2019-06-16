@@ -75,5 +75,5 @@ dependencies {
         exclude group: "com.android.support"
     }
     implementation 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'
-    implementation (name: 'alipaySdk-15.6.2-20190416165036', ext: 'aar')
+    implementation(name: 'alipaySdk-15.6.2-20190416165036', ext: 'aar')
 }

@@ -19,14 +19,14 @@
     <string name="phone_error">手机号格式错误</string>
     <string name="phone_beyond">手机号位数超出限制!</string>
     <string name="attention">关注</string>
-    <string name="attention_already">已关注</string>
+    <string name="attention_already">取关</string>
     <string name="fans">粉丝</string>
     <string name="service">在线客服</string>
     <string name="master">申请大神</string>
     <string name="setting">设置</string>
     <string name="my_order">我的订单</string>
     <string name="wallet">我的钱包</string>
-    <string name="data">资料</string>
+    <string name="data">个人资料</string>
     <string name="nick_name">昵称</string>
     <string name="id">ID</string>
     <string name="interest">兴趣</string>
@@ -105,7 +105,7 @@
     <string name="invite_copy">点击邀请码复制</string>
     <string name="input_invite">填写邀请码</string>
     <string name="submit_only">提交</string>
-    <string name="invite_limit">每位用户只能填写一次邀请码，并且不能填写自己的哦^_^!</string>
+    <string name="invite_limit">每位用户只能填写一次邀请码，\n并且不能填写自己的哦^_^!</string>
     <string name="order_state_pay">已支付</string>
     <string name="order_state_no_pay">待支付</string>
     <string name="order_state_complete">已完成</string>
@@ -178,7 +178,7 @@
     <string name="wallet_now">立即充值</string>
     <string name="cash_rule">提现要求:</string>
     <string name="cash_rule_detail">①剩余果币必须高于%1$d币才能提现\n②单次提现的金额必须是%2$d的整倍数\n③单笔提现最大金额为%3$d元\n④单个账户每日最多提现%4$d次\n⑤提现成功会转至您指定的微信账户中\n</string>
-    <string name="cash_no_more">当前果币不足</string>
+    <string name="cash_no_more">仅限金额不可为0</string>
     <string name="cash_tip">请输入提现金额</string>
     <string name="cash_success">提现成功</string>
     <string name="wallet_tips_money">请先选择充值金额</string>
@@ -191,7 +191,10 @@
     <string name="pay_failed">支付失败</string>
     <string name="pay_cancel">支付取消</string>
     <string name="no_master">所选分类还没有大神</string>
-
+    <string name="go_service">请到我的界面联系在线客服</string>
+    <string name="advance_start">提前开始</string>
+    <string name="advance_finish">提前结束</string>
+    <string name="master_skill">大神技能:</string>
 
     <string name="price_detail_place"><![CDATA[<font color="#000000"><small>%1$s</small></font>]]></string>
 

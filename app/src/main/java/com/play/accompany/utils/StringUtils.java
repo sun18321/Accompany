@@ -115,10 +115,10 @@ public class StringUtils {
     }
 
     public static String m2Km(double instance, String city) {
-        if (instance == 0.1) {
+        if (instance == 0) {
             return "<0.1km";
-        } else if (instance > 100) {
-            return city;
+        } else if (instance > 100 || instance < 0) {
+            return cutCityWord(city);
         }
         return instance + "km";
     }
@@ -218,6 +218,27 @@ public class StringUtils {
                 break;
             case 421:
                 errorInfo = "提现金额过大";
+                break;
+            case 422:
+                errorInfo = "微信支付下单失败";
+                break;
+            case 423:
+                errorInfo = "支付金额超过限制";
+                break;
+            case 424:
+                errorInfo = "果币操作异常";
+                break;
+            case 425:
+                errorInfo = "订单已经无法取消";
+                break;
+            case 426:
+                errorInfo = "今天提现的次数已满";
+                break;
+            case 427:
+                errorInfo = "订单无法申请提前完成";
+                break;
+            case 428:
+                errorInfo = "未到提前结束时间";
                 break;
             case 600:
                 errorInfo = "聊天系统注册错误";
@@ -345,5 +366,16 @@ public class StringUtils {
             e.printStackTrace();
         }
         return sdf.format(parse);
+    }
+
+    public static String cutCityWord(String city) {
+        if (city == null || city.length() == 0) {
+            return "";
+        }
+        if (city.contains("市") && TextUtils.equals("市", city.substring(city.length() - 1))) {
+            return city.substring(0, city.length() - 1);
+        } else {
+            return city;
+        }
     }
 }

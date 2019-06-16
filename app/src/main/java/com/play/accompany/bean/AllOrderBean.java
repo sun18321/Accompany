@@ -1,29 +1,43 @@
 package com.play.accompany.bean;
 
-public class AllOrderBean {
+import java.io.Serializable;
+
+public class AllOrderBean implements Serializable {
     /**
-     * id : 5c9ce3ea75919022519a4c6c
-     * userId : 18555556688
-     * targetId : 10000000005
-     * price : 20
-     * num : 1
-     * typeGame : 1003
-     * startTime : 1553875200000
-     * sale : 0
-     * state : 4
-     * time : 1553787217141
-     * remainMin : 0
-     * remainSec : 0
-     * name : 果er
-     * showId : 10000000005
+     *"id"            : 订单ID
+     *"userId"        : 用户ID
+     *"targetId"      : 陪玩的ID
+     *"gameType"      : 陪玩游戏的类型
+     *"price"         : 陪玩单价
+     *"num"           : 数量
+     *"sale"          : 折扣，100：无折扣 90：九折
+     *"comment"       : 备注
+     *"startTime"     : 开始时间，毫秒
+     *"state"         : 订单流程: 1：完成下单，未付款 3:已经付款
+     *        5：已接单 7：开始服务 9：服务完成
+     *        11：确认完成 并且评价
+     *退单流程 2: 未付款 时间到自动取消 或 自己主动的取消 订单
+     *        4: 完成下单 未接单 或 主播主动取消订单
+     *        8：开始服务 后退款 10：服务完成 后退款
+     *"time"          : 订单创建时间
+     *"remainMin"     : 不同的订单状态 剩余的分钟 0：不需要显示剩余时间，不用显示
+     *"remainSec"     : 不同的订单状态 剩余的秒数 0：不需要显示剩余时间，不用显示
+     *"name"          : 显示订单对方的名字
+     *"url"           : 头像地址
+     *"evaluateGrade" : 订单评价 等级 1-10级
+     *"evaluate"      : 评价内容
+     *"grade"         : 评分
+     *"sign"          : 个人签名
+     *"date"          : 生日
      */
 
     private String id;
     private String userId;
     private String targetId;
+    private int gameType;
     private int price;
     private int num;
-    private int typeGame;
+    private String comment;
     private long startTime;
     private int sale;
     private int state;
@@ -35,6 +49,51 @@ public class AllOrderBean {
     private String url;
     private int evaluateGrade;
     private String evaluate;
+    private double grade;
+    private int gender;
+
+    public int getGender() {
+        return gender;
+    }
+
+    public void setGender(int gender) {
+        this.gender = gender;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public double getGrade() {
+        return grade;
+    }
+
+    public void setGrade(double grade) {
+        this.grade = grade;
+    }
+
+    public String getSign() {
+        return sign;
+    }
+
+    public void setSign(String sign) {
+        this.sign = sign;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    private String sign;
+    private String date;
 
     public int getEvaluateGrade() {
         return evaluateGrade;
@@ -92,12 +151,12 @@ public class AllOrderBean {
         this.num = num;
     }
 
-    public int getTypeGame() {
-        return typeGame;
+    public int getgameType() {
+        return gameType;
     }
 
-    public void setTypeGame(int typeGame) {
-        this.typeGame = typeGame;
+    public void setgameType(int gameType) {
+        this.gameType = gameType;
     }
 
     public long getStartTime() {
@@ -172,25 +231,6 @@ public class AllOrderBean {
         this.url = url;
     }
 
-    /**
-     * "id"        : 订单ID
-     *                   "userId"    : 用户ID
-     *                   "targetId"  : 陪玩的ID
-     *                   "typeGame"  : 陪玩游戏的类型
-     *                   "price"     : 陪玩单价
-     *                   "num"       : 数量
-     *                   "sale"      : 折扣，100：无折扣 90：九折
-     *                   "comment"   : 备注
-     *                   "startTime" : 开始时间，毫秒
-     *                   "state"     : 订单状态 1：完成下单，未付款 3:已经付款 5：开始服务 7：服务完成 9：确认完成 未评价 11：评价完成
-     *                                 退单状态 2:未付款 时间到自动取消 订单 4:完成下单 后退款 6：开始服务 后退款 8：服务完成 后退款
-     *                   "time"      : 订单创建时间
-     *                   "remainMin" : 不同的订单状态 剩余的分钟 0：不需要显示剩余时间，不用显示
-     *                   "remainSec" : 不同的订单状态 剩余的秒数 0：不需要显示剩余时间，不用显示
-     *                   "name"      : 显示订单对方的名字
-     *                   "showId"    : 显示订单对方的ID,显示头像使用
-     *
-     */
 
 
 }

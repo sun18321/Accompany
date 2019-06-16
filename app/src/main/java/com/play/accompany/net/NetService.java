@@ -95,5 +95,17 @@ public interface NetService {
 
     @POST("ali_order")
     Observable<BaseResponse> requestAlipay(@Body RequestBody body);
+
+    @POST("orderCancel")
+    Observable<BaseResponse> cancelOrder(@Body RequestBody body);
+
+    @POST("orderApplyForward")
+    Observable<BaseResponse> orderApplyEarly(@Body RequestBody body);
+
+    @POST("orderForwardAgree")
+    Observable<BaseResponse> orderAgreeEarly(@Body RequestBody body);
+
+    @POST("orderChat")
+    Observable<BaseResponse> orderStateCheck(@Body RequestBody body);
 }
 

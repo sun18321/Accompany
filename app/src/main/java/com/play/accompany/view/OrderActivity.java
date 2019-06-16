@@ -64,7 +64,7 @@ public class OrderActivity extends BaseActivity implements View.OnClickListener 
     private String[] mMinuteArray;
     private long mServiceTime = 0;
     private String mTargetId;
-    private int mTypeGame = 0;
+    private int mgameType = 0;
     private String mGameName = null;
 
 
@@ -194,7 +194,7 @@ public class OrderActivity extends BaseActivity implements View.OnClickListener 
                     }
                     mGameName = listGame.get(index);
                     mTvType.setText(mGameName);
-                    mTypeGame = gameType.get(index);
+                    mgameType = gameType.get(index);
                     mTypeDialog.dismiss();
                 }
             });
@@ -254,7 +254,7 @@ public class OrderActivity extends BaseActivity implements View.OnClickListener 
     }
 
     private void submitOrder() {
-        if (mTypeGame == 0) {
+        if (mgameType == 0) {
             Toast.makeText(this, getResources().getString(R.string.skill_please), Toast.LENGTH_SHORT).show();
             return;
         }
@@ -276,7 +276,7 @@ public class OrderActivity extends BaseActivity implements View.OnClickListener 
         bean.setTargetId(mTargetId);
         String marks = mEditMarks.getText().toString();
         bean.setComment(marks);
-        bean.setTypeGame(mTypeGame);
+        bean.setgameType(mgameType);
         bean.setStartTime(mServiceTime);
         String json = GsonUtils.toJson(bean);
         LogUtils.d(getTag(), "json:" + json);

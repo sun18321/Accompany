@@ -78,6 +78,7 @@ public class InviteCodeActivity extends BaseActivity implements View.OnClickList
 
         mEditInvite = findViewById(R.id.edit_invite);
         findViewById(R.id.btn_submit).setOnClickListener(this);
+        findViewById(R.id.lin_switch).setOnClickListener(this);
         mImgSwitch = findViewById(R.id.img_switch);
         mLinExpand = findViewById(R.id.lin_expand);
         mTvSwitch = findViewById(R.id.tv_switch);
@@ -93,7 +94,7 @@ public class InviteCodeActivity extends BaseActivity implements View.OnClickList
             mIsExpand = true;
         }
         doAnimEnd();
-        mImgSwitch.setOnClickListener(this);
+//        mImgSwitch.setOnClickListener(this);
         LogUtils.d("anim", "start expand:" + mIsExpand);
 
 
@@ -192,6 +193,9 @@ public class InviteCodeActivity extends BaseActivity implements View.OnClickList
             @Override
             public void onAnimationRepeat(Animator animation) {
 
+
+
+
             }
         });
         expand.setInterpolator(new BounceInterpolator());
@@ -268,6 +272,17 @@ public class InviteCodeActivity extends BaseActivity implements View.OnClickList
                 submitCode();
                 break;
             case R.id.img_switch:
+//                if (mLinExpand != null) {
+//                    mHeight = mLinExpand.getHeight();
+//                }
+//
+//                LogUtils.d("expand", "click height:" + mHeight);
+//
+//                if (!mAnimating) {
+//                    startAnim();
+//                }
+                break;
+            case R.id.lin_switch:
                 if (mLinExpand != null) {
                     mHeight = mLinExpand.getHeight();
                 }

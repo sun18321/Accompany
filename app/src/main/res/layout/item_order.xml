@@ -1,24 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_marginTop="5dp"
-    android:layout_marginLeft="5dp"
-    android:layout_marginRight="5dp"
-    android:layout_marginBottom="10dp"
-    app:cardElevation="8dp"
-    app:cardCornerRadius="8dp"
-    android:foreground="?android:attr/selectableItemBackground"
-    android:focusable="true"
-    android:clickable="true"
-    xmlns:tools="http://schemas.android.com/tools"
-    >
+<!--<android.support.v7.widget.CardView android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+    <!--android:layout_marginTop="5dp"-->
+    <!--android:layout_marginLeft="5dp"-->
+    <!--android:layout_marginRight="5dp"-->
+    <!--android:layout_marginBottom="10dp"-->
+    <!--app:cardElevation="8dp"-->
+    <!--app:cardCornerRadius="8dp"-->
+    <!--android:foreground="?android:attr/selectableItemBackground"-->
+    <!--android:focusable="true"-->
+    <!--android:clickable="true"-->
+    <!--xmlns:tools="http://schemas.android.com/tools"-->
+    <!--&gt;-->
 
 <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="5dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     >
 
     <com.makeramen.roundedimageview.RoundedImageView
@@ -26,7 +29,7 @@
         android:id="@+id/img_head"
         android:layout_width="64dp"
         android:layout_height="64dp"
-        app:riv_corner_radius="5dp"
+        app:riv_corner_radius="32dp"
         android:layout_marginStart="5dp"
         android:src="@mipmap/head_default"
         />
@@ -111,4 +114,4 @@
 
     </LinearLayout>
 </RelativeLayout>
-</android.support.v7.widget.CardView>
+<!--</android.support.v7.widget.CardView>-->

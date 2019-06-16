@@ -98,5 +98,20 @@
         <item name="android:background">@drawable/selector_wallet</item>
     </style>
 
+    <style name="user_introduce_text">
+        <item name="android:layout_width">40dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/color_gray</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="user_data_text">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">20dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/color_black</item>
+    </style>
+
 
 </resources>

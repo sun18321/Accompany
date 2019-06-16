@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <LinearLayout
+        android:id="@+id/lin_gender"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        android:layout_gravity="center"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:background="@drawable/male_bg"
+        android:gravity="center"
+        >
+        <ImageView
+            android:id="@+id/img_gender"
+            tools:src="@drawable/male"
+            android:layout_width="12dp"
+            android:layout_height="12dp" />
+        <TextView
+            android:id="@+id/tv_age"
+            tools:text="29"
+            android:textSize="16sp"
+            android:layout_gravity="center_vertical"
+            android:textColor="@color/color_white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+
+</FrameLayout>

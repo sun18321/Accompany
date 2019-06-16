@@ -3,10 +3,12 @@ package com.play.accompany.chat;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
-import android.net.Uri;
+import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 
 import com.play.accompany.bean.OrderNotifyBean;
+import com.play.accompany.constant.IntentConstant;
+import com.play.accompany.constant.OtherConstant;
 import com.play.accompany.constant.SpConstant;
 import com.play.accompany.utils.GsonUtils;
 import com.play.accompany.utils.LogUtils;
@@ -18,17 +20,16 @@ import com.play.accompany.view.AccompanyApplication;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
-import io.rong.imlib.model.MessageContent;
-import io.rong.imlib.model.UserInfo;
 import io.rong.message.TextMessage;
 
 public class MessageReceiverListener implements RongIMClient.OnReceiveMessageListener {
     @Override
     public boolean onReceived(Message message, int i) {
 
+
 //
-        LogUtils.d("conversation", "新的消息:" + message.getConversationType());
-        LogUtils.d("conversation", "extra:" + message.getExtra());
+        LogUtils.d("message", "新的消息:" + message.getConversationType());
+        LogUtils.d("message", "extra:" + message.getExtra());
 //
 //        LogUtils.d("conversation", "message:" + message.toString());
 //
@@ -61,6 +62,22 @@ public class MessageReceiverListener implements RongIMClient.OnReceiveMessageLis
             Notification build = builder.build();
             build.flags = Notification.FLAG_AUTO_CANCEL;
             manager.notify(id, build);
+        }
+
+        //收到提前的客户回馈
+        if (message.getContent() instanceof OrderResponseMessage) {
+            OrderResponseMessage content = (OrderResponseMessage) message.getContent();
+            String response = content.getResponse();
+            String uid = content.getUid();
+            String tip = content.getContent();
+            String sendId = content.getSendId();
+            Intent intent = new Intent(OtherConstant.ORDER_RESPONSE_RECEIVER);
+            intent.putExtra(IntentConstant.INTENT_ORDER_RESPONSE_TYPE, OtherConstant.ORDER_RESPONSE_NOTIFY_MASTER);
+            intent.putExtra(IntentConstant.INTENT_ORDER_UID, uid);
+            intent.putExtra(IntentConstant.INTENT_ORDER_RESPONSE, response);
+            intent.putExtra(IntentConstant.INTENT_ORDER_CONTENT, tip);
+            intent.putExtra(IntentConstant.INTENT_ORDER_SEND_ID, sendId);
+            AccompanyApplication.getContext().sendBroadcast(intent);
         }
         return false;
     }

@@ -8,7 +8,7 @@
         android:drawable="@mipmap/star_empty"/>
     <item
         android:id="@android:id/progress"
-        android:drawable="@mipmap/star_full"/>
+        android:drawable="@mipmap/rate_star"/>
 
 </layer-list>
 
