@@ -229,7 +229,6 @@ public class WheelView extends ScrollView {
 
         }
 
-
     }
 
     private void refreshItemView(int y) {

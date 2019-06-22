@@ -82,6 +82,7 @@ public class MyFragment extends BaseFragment {
             public void onClick(View v) {
                 if (mUserInfo != null) {
                     Intent intent = new Intent(mContext, UserCenterActivity.class);
+                    mUserInfo.setFromChat(false);
                     intent.putExtra(IntentConstant.INTENT_USER, mUserInfo);
                     mContext.startActivity(intent);
                 } else {
@@ -119,8 +120,8 @@ public class MyFragment extends BaseFragment {
         }
 
         if (mItemWallet != null) {
-            String money = StringUtils.moneyExchange(SPUtils.getInstance().getInt(SpConstant.MY_GOLDEN)) + getResources().getString(R.string.money);
-            mItemWallet.setDetailText(money);
+//            String money = StringUtils.moneyExchange(SPUtils.getInstance().getDouble(SpConstant.MY_GOLDEN)) + getResources().getString(R.string.money);
+            mItemWallet.setDetailText(SPUtils.getInstance().getDouble(SpConstant.MY_GOLDEN) + getResources().getString(R.string.money));
         }
 
         boolean isEdit = SPUtils.getInstance().getBoolean(SpConstant.IS_USER_EDIT, false);
@@ -204,8 +205,8 @@ public class MyFragment extends BaseFragment {
         mItemWallet.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
         TextView detailTextView = mItemWallet.getDetailTextView();
         detailTextView.setTextColor(ContextCompat.getColor(mContext, R.color.color_red));
-        String money = StringUtils.moneyExchange(SPUtils.getInstance().getInt(SpConstant.MY_GOLDEN)) + getResources().getString(R.string.money);
-        mItemWallet.setDetailText(money);
+        mItemWallet.setDetailText(SPUtils.getInstance().getDouble(SpConstant.MY_GOLDEN) + getResources().getString(R.string.money));
+//        mItemWallet.setDetailText(money);
 
         QMUICommonListItemView itemOrder = mGroupListView.createItemView(getResources().getString(R.string.my_order));
         itemOrder.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.order));

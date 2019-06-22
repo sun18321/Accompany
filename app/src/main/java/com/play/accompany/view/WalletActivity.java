@@ -187,7 +187,7 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
         }
 
         if (mTvGold != null) {
-            mTvGold.setText(SPUtils.getInstance().getInt(SpConstant.MY_GOLDEN) + "");
+            mTvGold.setText(SPUtils.getInstance().getDouble(SpConstant.MY_GOLDEN) + "");
         }
     }
 
@@ -210,6 +210,9 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
                     return;
                 }
                 CashBean cashBean = list.get(0);
+                double gold = cashBean.getGold();
+                SPUtils.getInstance().put(SpConstant.MY_GOLDEN, gold);
+                mTvGold.setText(String.valueOf(gold));
                 if (cashBean.getIsCash() == OtherConstant.MONEY_CAN_CASH) {
                     mCashBean = cashBean;
                     mButtonCash.setVisibility(View.VISIBLE);
@@ -341,7 +344,7 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
                 GoldBean bean = list.get(0);
                 SPUtils.getInstance().put(SpConstant.MY_GOLDEN, bean.getGold());
                 if (mTvGold != null) {
-                    mTvGold.setText(bean.getGold());
+                    mTvGold.setText(String.valueOf(bean.getGold()));
                 }
             }
 

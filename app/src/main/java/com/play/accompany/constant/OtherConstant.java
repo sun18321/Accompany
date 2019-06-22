@@ -44,11 +44,21 @@ public class OtherConstant {
 
     public static final String WALLET_RECEIVER = "wallet_receiver";
 
-    public static final String ORDER_RESPONSE_RECEIVER = "order_response_receiver";
+    public static final String CONVERSATION_ACTIVITY_RECEIVER = "order_response_receiver";
 
-    public static final int ORDER_RESPONSE_AGREE_ADVANCE = 888;
+    public static final int CONVERSATION_AGREE_ADVANCE = 888;
 
-    public static final int ORDER_RESPONSE_NOTIFY_MASTER = 999;
+    public static final int CONVERSATION_NOTIFY_MASTER = 999;
+
+    public static final int CONVERSATION_GO_USER = 777;
 
     public static final String OFFICE_NUMBER = "1000";
+
+    public static final String FILE_GAME = "file_game";
+
+    public static final String FILE_ATTENTION = "file_attention";
+
+    public static final String FILE_PROVIDER_NAME = ".FileProvider";
+
+    public static final String TEST_DOWNLOAD_URL = "https://imtt.dd.qq.com/16891/4DFBF7007D9690DB18FA8B50D08F3922.apk?fsname=com.xunmeng.pinduoduo_4.61.0_46100.apk&amp;csr=1bbd";
 }

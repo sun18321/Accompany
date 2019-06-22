@@ -195,6 +195,8 @@
     <string name="advance_start">提前开始</string>
     <string name="advance_finish">提前结束</string>
     <string name="master_skill">大神技能:</string>
+    <string name="official_tips">这是官方大大!</string>
+    <string name="official_number">1000</string>
 
     <string name="price_detail_place"><![CDATA[<font color="#000000"><small>%1$s</small></font>]]></string>
 

@@ -10,6 +10,8 @@ import static com.play.accompany.utils.CipherUtil.desEncrypt;
 
 public class EncodeUtils {
     public static RequestBody encodeInBody(String data) {
+        LogUtils.d("request", "json:" + data);
+
         RequestBody body = null;
         try {
             String encrypt = desEncrypt(data);

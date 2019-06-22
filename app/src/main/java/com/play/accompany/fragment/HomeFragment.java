@@ -65,8 +65,7 @@ public class HomeFragment extends BaseFragment {
     private boolean isRequsting = false;
     private List<String> mAttentionList = new ArrayList<>();
     private List<FavoriteInfo> mInfoList = new ArrayList<>();
-    private boolean mLoad = false;
-    private AttentionReceiver mReceiver;
+//    private AttentionReceiver mReceiver;
 
     public static HomeFragment newInstance() {
         if (sHomeFragment == null) {
@@ -80,9 +79,9 @@ public class HomeFragment extends BaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        IntentFilter filter = new IntentFilter(AppConstant.BROADCAST_ATTENTION);
-        mReceiver = new AttentionReceiver();
-        mContext.registerReceiver(mReceiver, filter);
+//        IntentFilter filter = new IntentFilter(AppConstant.BROADCAST_ATTENTION);
+//        mReceiver = new AttentionReceiver();
+//        mContext.registerReceiver(mReceiver, filter);
     }
 
     @Override
@@ -92,18 +91,18 @@ public class HomeFragment extends BaseFragment {
 
     @Override
     protected void initViews(View view) {
-        ThreadPool.newInstance().add(new Runnable() {
-            @Override
-            public void run() {
-                mInfoList = AccompanyDatabase.getInstance(mContext).getFavriteDao().getAllFavoriteByUserId(SPUtils.getInstance().getString(SpConstant.MY_USER_ID));
-                if (!mInfoList.isEmpty()) {
-                    for (FavoriteInfo favoriteInfo : mInfoList) {
-                        mAttentionList.add(favoriteInfo.getFavoriteId());
-                    }
-                }
-                mLoad = true;
-            }
-        });
+//        ThreadPool.newInstance().add(new Runnable() {
+//            @Override
+//            public void run() {
+//                mInfoList = AccompanyDatabase.getInstance(mContext).getFavriteDao().getAllFavoriteByUserId(SPUtils.getInstance().getString(SpConstant.MY_USER_ID));
+//                if (!mInfoList.isEmpty()) {
+//                    for (FavoriteInfo favoriteInfo : mInfoList) {
+//                        mAttentionList.add(favoriteInfo.getFavoriteId());
+//                    }
+//                }
+//                mLoad = true;
+//            }
+//        });
 
         mRecyclerView = view.findViewById(R.id.recycler);
         mLoadingView = view.findViewById(R.id.loading_view);
@@ -184,12 +183,8 @@ public class HomeFragment extends BaseFragment {
 
             @Override
             public void onItemClick(UserInfo info) {
-                if (!mLoad) {
-                    ToastUtils.showCommonToast(mContext.getResources().getString(R.string.data_loading));
-                    return;
-                }
-                boolean attention = mAttentionList.contains(info.getUserId());
-                info.setAttention(attention);
+//                boolean attention = mAttentionList.contains(info.getUserId());
+                info.setFromChat(false);
                 Intent intent = new Intent(mContext, UserCenterActivity.class);
                 intent.putExtra(IntentConstant.INTENT_USER, info);
                 mContext.startActivity(intent);
@@ -323,20 +318,20 @@ public class HomeFragment extends BaseFragment {
     public void onDestroy() {
         super.onDestroy();
 
-        if (getActivity() != null) {
-            getActivity().unregisterReceiver(mReceiver);
-        }
+//        if (getActivity() != null) {
+//            getActivity().unregisterReceiver(mReceiver);
+//        }
     }
 
-    class AttentionReceiver extends BroadcastReceiver {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent != null) {
-                String id = intent.getStringExtra(IntentConstant.INTENT_USER_ID);
-                attentionChange(id);
-            }
-        }
-    }
+//    class AttentionReceiver extends BroadcastReceiver {
+//
+//        @Override
+//        public void onReceive(Context context, Intent intent) {
+//            if (intent != null) {
+//                String id = intent.getStringExtra(IntentConstant.INTENT_USER_ID);
+//                attentionChange(id);
+//            }
+//        }
+//    }
 
 }

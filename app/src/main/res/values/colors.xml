@@ -45,6 +45,12 @@
     <color name="wallet_select_blue">#E9F5FF</color>
     <color name="no_order_text">#686161</color>
 
+    <color name="gradient_blue_start">#3F9Dff</color>
+    <color name="gradient_blue_end">#6BC4FE</color>
+    <color name="gradient_green_start">#01FF6E</color>
+    <color name="gradient_green_end">#81FF6E</color>
+
+
     <color name="white">#FFFFFF</color> <!--白色 -->
     <color name="ivory">#FFFFF0</color> <!--象牙色 -->
     <color name="light_yellow">#FFFFE0</color> <!--亮黄色 -->

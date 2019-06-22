@@ -6,7 +6,8 @@
     <!--&lt;!&ndash;files-path  相当于 getFilesDir（）&ndash;&gt;-->
     <external-path
         name="accompany_images"
-        path="accompany" />
+        path="accompany"
+        />
     <!--external-path  相当于 Environment.getExternalStorageDirectory()-->
     <!--<external-files-path-->
         <!--name="images"-->

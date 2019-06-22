@@ -3,10 +3,16 @@ package com.play.accompany.chat;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.text.TextUtils;
 import android.view.View;
 
+import com.play.accompany.R;
 import com.play.accompany.bean.OrderNotifyBean;
+import com.play.accompany.constant.IntentConstant;
+import com.play.accompany.constant.OtherConstant;
 import com.play.accompany.utils.GsonUtils;
+import com.play.accompany.utils.LogUtils;
+import com.play.accompany.utils.ToastUtils;
 import com.play.accompany.view.AccompanyApplication;
 
 import java.util.Locale;
@@ -19,9 +25,23 @@ import io.rong.imlib.model.UserInfo;
 import io.rong.message.TextMessage;
 
 public class ChatClickListener implements RongIM.ConversationClickListener {
+
     @Override
     public boolean onUserPortraitClick(Context context, Conversation.ConversationType conversationType, UserInfo userInfo, String s) {
-        return false;
+
+        String userId = userInfo.getUserId();
+        LogUtils.d("conversation", "userid:" + userId);
+        String officialNumber = AccompanyApplication.getContext().getResources().getString(R.string.official_number);
+        String tips = AccompanyApplication.getContext().getResources().getString(R.string.official_tips);
+        if (TextUtils.equals(userId, officialNumber) || userId.length() < 8) {
+            ToastUtils.showCommonToast(tips);
+            return false;
+        }
+        Intent intent = new Intent(OtherConstant.CONVERSATION_ACTIVITY_RECEIVER);
+        intent.putExtra(IntentConstant.INTENT_USER_ID, userId);
+        intent.putExtra(IntentConstant.INTENT_CONVERSATION_RECEIVER_TYPE, OtherConstant.CONVERSATION_GO_USER);
+        AccompanyApplication.getContext().sendBroadcast(intent);
+        return true;
     }
 
     @Override

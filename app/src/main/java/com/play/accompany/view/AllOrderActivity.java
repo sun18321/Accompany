@@ -20,6 +20,7 @@ import com.play.accompany.bean.CommentBean;
 import com.play.accompany.bean.IntentPayInfo;
 import com.play.accompany.bean.OnlyCodeBean;
 import com.play.accompany.bean.Token;
+import com.play.accompany.bean.UserInfo;
 import com.play.accompany.constant.IntentConstant;
 import com.play.accompany.constant.SpConstant;
 import com.play.accompany.net.AccompanyRequest;
@@ -243,4 +244,14 @@ public class AllOrderActivity extends BaseActivity implements OrderAdapter.Order
         intent.putExtra(IntentConstant.INTENT_PAY_INFO, info);
         startActivityForResult(intent, 1);
     }
+
+    @Override
+    public void onHeadClick(String uid) {
+        UserInfo info = new UserInfo();
+        info.setFromChat(true);
+        Intent intent = new Intent(AllOrderActivity.this, UserCenterActivity.class);
+        intent.putExtra(IntentConstant.INTENT_USER, info);
+        startActivity(intent);
+    }
+
 }

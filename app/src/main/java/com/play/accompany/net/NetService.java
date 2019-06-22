@@ -107,5 +107,8 @@ public interface NetService {
 
     @POST("orderChat")
     Observable<BaseResponse> orderStateCheck(@Body RequestBody body);
+
+    @POST("findUser")
+    Observable<BaseResponse> getUserInfo(@Body RequestBody body);
 }
 

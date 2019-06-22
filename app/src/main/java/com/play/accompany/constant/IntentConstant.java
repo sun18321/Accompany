@@ -37,6 +37,7 @@ public class IntentConstant {
 
     public static final String INTENT_ORDER_SEND_ID = "intent_order_send_id";
 
-    public static final String INTENT_ORDER_RESPONSE_TYPE = "intent_order_response_type";
+    public static final String INTENT_CONVERSATION_RECEIVER_TYPE = "intent_order_response_type";
+
 
 }

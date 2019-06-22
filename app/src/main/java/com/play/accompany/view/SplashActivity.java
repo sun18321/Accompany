@@ -77,6 +77,7 @@ public class SplashActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
+
         SplashActivityPermissionsDispatcher.requestPermissionWithPermissionCheck(this);
     }
 
@@ -158,7 +159,7 @@ public class SplashActivity extends BaseActivity {
                         startActivity(intent);
                         SplashActivity.this.finish();
                     } else {
-                        UserInfoDatabaseUtils.saveUserInfo(list.get(0));
+                        UserInfoDatabaseUtils.getInstance().saveUserInfo(list.get(0));
                         delay();
                     }
                 }

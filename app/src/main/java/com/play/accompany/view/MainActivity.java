@@ -5,13 +5,16 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
@@ -28,6 +31,7 @@ import com.play.accompany.bean.ChatBean;
 import com.play.accompany.bean.ChatInfo;
 import com.play.accompany.bean.Token;
 import com.play.accompany.bean.TopGameBean;
+import com.play.accompany.constant.OtherConstant;
 import com.play.accompany.constant.SpConstant;
 import com.play.accompany.db.AccompanyDatabase;
 import com.play.accompany.fragment.HomeFragment;
@@ -36,7 +40,9 @@ import com.play.accompany.fragment.MyFragment;
 import com.play.accompany.net.AccompanyRequest;
 import com.play.accompany.net.NetFactory;
 import com.play.accompany.net.NetListener;
+import com.play.accompany.utils.DownloadUtils;
 import com.play.accompany.utils.EncodeUtils;
+import com.play.accompany.utils.FileSaveUtils;
 import com.play.accompany.utils.GsonUtils;
 import com.play.accompany.utils.LocationUtils;
 import com.play.accompany.utils.LogUtils;
@@ -44,6 +50,7 @@ import com.play.accompany.utils.SPUtils;
 import com.play.accompany.utils.ThreadPool;
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 
+import java.io.File;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -73,6 +80,7 @@ public class MainActivity extends BaseActivity {
     private final String mChatTag = "white_sign";
     private boolean mTokenRequest = false;
     private MessageFragment mMessageFragment;
+    private File mInstallPath = null;
 
     public static void launch(Context context) {
         context.startActivity(new Intent(context, MainActivity.class));
@@ -118,9 +126,27 @@ public class MainActivity extends BaseActivity {
         if (SPUtils.getInstance().getBoolean(SpConstant.SHOW_LOCATION, true)) {
             MainActivityPermissionsDispatcher.requestPermissionWithPermissionCheck(this);
         }
-
         requestCacheData();
+        initFragment();
 
+//        testDownload();
+    }
+
+    private void testDownload() {
+        DownloadUtils.getInstance().downloadFile(OtherConstant.TEST_DOWNLOAD_URL, this, new DownloadUtils.DownloadListener() {
+            @Override
+            public void downloadFailed() {
+
+            }
+
+            @Override
+            public void downloadComplete(File filePath) {
+                willInstall(filePath);
+            }
+        });
+    }
+
+    private void initFragment() {
         mNavigationView = findViewById(R.id.navigation);
         mNavigationView.setItemIconTintList(null);
         mHomeFragment = HomeFragment.newInstance();
@@ -355,4 +381,43 @@ public class MainActivity extends BaseActivity {
         MainActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
     }
 
+    private void willInstall(File path) {
+        mInstallPath = path;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            if (getPackageManager().canRequestPackageInstalls()) {
+                installApp();
+            } else {
+                Intent intent = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES,Uri.parse("package:" + getPackageName()));
+                startActivityForResult(intent, 1001);
+            }
+        } else {
+            installApp();
+        }
+    }
+
+    private void installApp() {
+        if (mInstallPath == null) {
+            return;
+        }
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Uri uriForFile = FileProvider.getUriForFile(this, getPackageName() + OtherConstant.FILE_PROVIDER_NAME, mInstallPath);
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.setDataAndType(uriForFile, "application/vnd.android.package-archive");
+        } else {
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.setDataAndType(Uri.fromFile(mInstallPath), "application/vnd.android.package-archive");
+        }
+        startActivity(intent);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK) {
+            installApp();
+        }
+    }
 }

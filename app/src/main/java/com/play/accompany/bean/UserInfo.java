@@ -51,7 +51,7 @@ public class UserInfo implements Serializable {
     private Integer price;
 
     @ColumnInfo(name = "user_gold")
-    private Integer gold;
+    private Double gold;
 
     @Ignore
     private int gameZone;
@@ -108,7 +108,7 @@ public class UserInfo implements Serializable {
     private List<String> favorList;
 
     @Ignore
-    private Boolean attention;
+    private Boolean fromChat;
 
     @Ignore
     private String wxOpenId;
@@ -178,12 +178,12 @@ public class UserInfo implements Serializable {
         this.favorListSize = favorListSize;
     }
 
-    public Boolean getAttention() {
-        return attention;
+    public Boolean getFromChat() {
+        return fromChat;
     }
 
-    public void setAttention(Boolean attention) {
-        this.attention = attention;
+    public void setFromChat(Boolean fromChat) {
+        this.fromChat = fromChat;
     }
 
     public String getInterest() {
@@ -290,11 +290,11 @@ public class UserInfo implements Serializable {
         this.price = price;
     }
 
-    public Integer getGold() {
+    public Double getGold() {
         return gold;
     }
 
-    public void setGold(Integer gold) {
+    public void setGold(Double gold) {
         this.gold = gold;
     }
 

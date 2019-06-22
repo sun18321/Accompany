@@ -3,7 +3,9 @@ package com.play.accompany.view;
 import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
+import android.os.Looper;
 
+import com.google.gson.reflect.TypeToken;
 import com.play.accompany.bean.TopGameBean;
 import com.play.accompany.bean.UserInfo;
 import com.play.accompany.bean.WeChatInfo;
@@ -14,6 +16,10 @@ import com.play.accompany.chat.OrderMessage;
 import com.play.accompany.chat.OrderProvider;
 import com.play.accompany.chat.OrderResponseMessage;
 import com.play.accompany.constant.AppConstant;
+import com.play.accompany.constant.OtherConstant;
+import com.play.accompany.utils.FileSaveUtils;
+import com.play.accompany.utils.GsonUtils;
+import com.play.accompany.utils.ThreadPool;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
 
@@ -28,11 +34,11 @@ public class AccompanyApplication extends Application {
     //wechat login
     private static WeChatInfo mInfo;
     private static boolean mOrderPay = false;
-    private static List<TopGameBean> mGameList;
-
     public static Context getContext() {
         return mContext;
     }
+    private static List<TopGameBean> mGameList;
+    private static List<String> mAttentionList;
 
 
     @Override
@@ -124,26 +130,47 @@ public class AccompanyApplication extends Application {
         mOrderPay = false;
     }
 
-    public static void setGameList(List<TopGameBean> list) {
+    public static void setGameList(final List<TopGameBean> list) {
         mGameList = list;
+        ThreadPool.newInstance().add(new Runnable() {
+            @Override
+            public void run() {
+                FileSaveUtils.getInstance().saveData(OtherConstant.FILE_GAME, list);
+            }
+        });
     }
 
     public static List<TopGameBean> getGameList() {
         return mGameList;
     }
 
-    public static String getGmaeString(int type) {
-        String game = "";
+    public static void setAttentionList(final List<String> list) {
+        mAttentionList = list;
+
+        ThreadPool.newInstance().add(new Runnable() {
+            @Override
+            public void run() {
+                FileSaveUtils.getInstance().saveData(OtherConstant.FILE_ATTENTION, list);
+            }
+        });
+    }
+
+    public static List<String> getAttentionList() {
+        return mAttentionList;
+    }
+
+    public static String getGameString(int type) {
         if (mGameList == null || mGameList.isEmpty()) {
-            return game;
+            return "";
         }
-        for (TopGameBean bean : mGameList) {
-            int typeId = bean.getTypeId();
-            if (typeId == type) {
-                game = bean.getName();
+        String game = "";
+        for (TopGameBean topGameBean : mGameList) {
+            if (topGameBean.getTypeId() == type) {
+                game = topGameBean.getName();
                 break;
             }
         }
         return game;
     }
+
 }

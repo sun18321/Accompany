@@ -19,6 +19,8 @@
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"/> <!-- 用于申请获取蓝牙信息进行室内定位 -->
     <uses-permission android:name="android.permission.BLUETOOTH"/>
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <!--8.0a安装apk-->
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
 
     <application
         android:name=".view.AccompanyApplication"
@@ -47,7 +49,7 @@
             android:theme="@style/NoActionBarStatus"/>
         <activity
             android:name=".view.ConversationActivity"
-            android:launchMode="singleTop"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBarStatus"
             android:windowSoftInputMode="stateHidden|adjustResize">
@@ -160,7 +162,7 @@
 
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.play.accompany.FileProvider"
+            android:authorities="${applicationId}.FileProvider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

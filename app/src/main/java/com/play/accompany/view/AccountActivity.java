@@ -274,7 +274,7 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
                 UserInfo bean = list.get(0);
                 String token = bean.getToken();
                 if (!TextUtils.isEmpty(token)) {
-                    UserInfoDatabaseUtils.saveUserInfo(bean);
+                    UserInfoDatabaseUtils.getInstance().saveUserInfo(bean);
                     String name = bean.getName();
                     if (name == null || TextUtils.isEmpty(name)) {
                         Intent intent = new Intent(AccountActivity.this, EditUserActivity.class);
@@ -487,7 +487,7 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
                         intent.putExtra(IntentConstant.INTENT_CODE, EditUserActivity.INTENT_REGISTER);
                         startActivity(intent);
                     } else {
-                        UserInfoDatabaseUtils.saveUserInfo(list.get(0));
+                        UserInfoDatabaseUtils.getInstance().saveUserInfo(list.get(0));
                         MainActivity.launch(AccountActivity.this);
                     }
                     AccountActivity.this.finish();

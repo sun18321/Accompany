@@ -22,9 +22,7 @@ import com.play.accompany.constant.OrderConstant;
 import com.play.accompany.constant.SpConstant;
 import com.play.accompany.design.CommentDialog;
 import com.play.accompany.utils.DateUtils;
-import com.play.accompany.utils.LogUtils;
 import com.play.accompany.utils.SPUtils;
-import com.play.accompany.utils.StringUtils;
 import com.play.accompany.view.AccompanyApplication;
 
 import java.util.List;
@@ -93,9 +91,17 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderHolder>
             String url = bean.getUrl();
             if (!TextUtils.isEmpty(url)) {
                 Glide.with(itemView.getContext()).load(url).into(imgHead);
+                imgHead.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (mListener != null) {
+                            mListener.onHeadClick(bean.getTargetId());
+                        }
+                    }
+                });
             }
             tvName.setText(bean.getName());
-            tvType.setText(AccompanyApplication.getGmaeString(bean.getgameType()));
+            tvType.setText(AccompanyApplication.getGameString(bean.getgameType()));
             tvTime.setText(DateUtils.time2Date(bean.getTime()));
             int price = bean.getPrice();
             final int num = bean.getNum();
@@ -169,7 +175,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderHolder>
         void goPay(AllOrderBean bean) {
             String detail = bean.getPrice() + AccompanyApplication.getContext().getResources().getString(R.string.price) + "*" + bean.getNum();
             int all = (bean.getPrice()) * (bean.getNum());
-            IntentPayInfo info = new IntentPayInfo(bean.getUrl(), bean.getName(), AccompanyApplication.getGmaeString(bean.getgameType()),
+            IntentPayInfo info = new IntentPayInfo(bean.getUrl(), bean.getName(), AccompanyApplication.getGameString(bean.getgameType()),
                     detail, all, bean.getId());
             if (mListener != null) {
                 mListener.onPayClick(info);
@@ -216,6 +222,8 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderHolder>
         void onOrderNext(String id, String success, String failed);
 
         void onPayClick(IntentPayInfo info);
+
+        void onHeadClick(String uid);
     }
 
 }

@@ -18,6 +18,7 @@ import com.play.accompany.bean.BaseDecodeBean;
 import com.play.accompany.bean.OnlyCodeBean;
 import com.play.accompany.bean.StateBean;
 import com.play.accompany.bean.StateResponseBean;
+import com.play.accompany.bean.UserInfo;
 import com.play.accompany.chat.OrderMessage;
 import com.play.accompany.constant.IntentConstant;
 import com.play.accompany.constant.OrderConstant;
@@ -182,7 +183,7 @@ public class ConversationActivity extends BaseActivity {
 
     private void registerResponseReceiver() {
         mReceiver = new OrderResponseReceiver();
-        IntentFilter intentFilter = new IntentFilter(OtherConstant.ORDER_RESPONSE_RECEIVER);
+        IntentFilter intentFilter = new IntentFilter(OtherConstant.CONVERSATION_ACTIVITY_RECEIVER);
         registerReceiver(mReceiver, intentFilter);
     }
 
@@ -344,18 +345,29 @@ public class ConversationActivity extends BaseActivity {
         return EncodeUtils.encodeInBody(json);
     }
 
+    private void goUserCenter(String userId) {
+        UserInfo info = new UserInfo();
+        info.setUserId(userId);
+        info.setFromChat(true);
+        Intent intent = new Intent(this, UserCenterActivity.class).putExtra(IntentConstant.INTENT_USER, info);
+        startActivity(intent);
+    }
+
     class OrderResponseReceiver extends BroadcastReceiver{
 
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent != null) {
                 //大神
-                int extra = intent.getIntExtra(IntentConstant.INTENT_ORDER_RESPONSE_TYPE, -1);
-                if (extra == OtherConstant.ORDER_RESPONSE_NOTIFY_MASTER) {
+                int extra = intent.getIntExtra(IntentConstant.INTENT_CONVERSATION_RECEIVER_TYPE, -1);
+                if (extra == OtherConstant.CONVERSATION_NOTIFY_MASTER) {
                     getMessageId(intent);
-                } else if (extra == OtherConstant.ORDER_RESPONSE_AGREE_ADVANCE) {
+                } else if (extra == OtherConstant.CONVERSATION_AGREE_ADVANCE) {
                     //玩家
                     agreeAdvance();
+                } else if (extra == OtherConstant.CONVERSATION_GO_USER) {
+                    String id = intent.getStringExtra(IntentConstant.INTENT_USER_ID);
+                    goUserCenter(id);
                 }
             }
         }

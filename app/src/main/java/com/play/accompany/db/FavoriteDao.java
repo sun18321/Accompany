@@ -32,3 +32,4 @@ public interface FavoriteDao {
     List<FavoriteInfo> getAllFavoriteByUserId(String userId);
 
 }
+

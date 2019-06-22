@@ -71,8 +71,8 @@ public class MessageReceiverListener implements RongIMClient.OnReceiveMessageLis
             String uid = content.getUid();
             String tip = content.getContent();
             String sendId = content.getSendId();
-            Intent intent = new Intent(OtherConstant.ORDER_RESPONSE_RECEIVER);
-            intent.putExtra(IntentConstant.INTENT_ORDER_RESPONSE_TYPE, OtherConstant.ORDER_RESPONSE_NOTIFY_MASTER);
+            Intent intent = new Intent(OtherConstant.CONVERSATION_ACTIVITY_RECEIVER);
+            intent.putExtra(IntentConstant.INTENT_CONVERSATION_RECEIVER_TYPE, OtherConstant.CONVERSATION_NOTIFY_MASTER);
             intent.putExtra(IntentConstant.INTENT_ORDER_UID, uid);
             intent.putExtra(IntentConstant.INTENT_ORDER_RESPONSE, response);
             intent.putExtra(IntentConstant.INTENT_ORDER_CONTENT, tip);

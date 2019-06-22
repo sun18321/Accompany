@@ -56,7 +56,7 @@ public class OrderPayActivity extends BaseActivity implements View.OnClickListen
     private IntentPayInfo mInfo;
     private String mOrderId;
     private TextView mTvGold;
-    private int mCurrentGold;
+    private double mCurrentGold;
     private PayReceiver mPayReceiver;
 
     @Override
@@ -126,7 +126,7 @@ public class OrderPayActivity extends BaseActivity implements View.OnClickListen
         mTvDetail.setText(detail);
         mOrderId = mInfo.getId();
         mAll = mInfo.getAll();
-        mCurrentGold = SPUtils.getInstance().getInt(SpConstant.MY_GOLDEN);
+        mCurrentGold = SPUtils.getInstance().getDouble(SpConstant.MY_GOLDEN);
         if (mAll > mCurrentGold) {
             mImgAppCheck.setVisibility(View.INVISIBLE);
             mBtnPay.setText(getResources().getString(R.string.button_pay));

@@ -18,7 +18,7 @@ public class CashBean implements Serializable {
     private int cashMax;
     private int cashInteger;
     private int cashDailyNum;
-    private int gold;
+    private double gold;
 
     public int getIsCash() {
         return isCash;
@@ -60,11 +60,11 @@ public class CashBean implements Serializable {
         this.cashDailyNum = cashDailyNum;
     }
 
-    public int getGold() {
+    public double getGold() {
         return gold;
     }
 
-    public void setGold(int gold) {
+    public void setGold(double gold) {
         this.gold = gold;
     }
 }

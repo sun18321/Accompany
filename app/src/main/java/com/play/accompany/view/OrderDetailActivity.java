@@ -1,10 +1,7 @@
 package com.play.accompany.view;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -39,13 +36,10 @@ import com.play.accompany.utils.GlideUtils;
 import com.play.accompany.utils.GsonUtils;
 import com.play.accompany.utils.LogUtils;
 import com.play.accompany.utils.SPUtils;
-import com.play.accompany.utils.StringUtils;
 import com.play.accompany.utils.ToastUtils;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 
-import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import io.rong.imkit.RongIM;
@@ -116,7 +110,7 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
         }
         tvRating.setText(String.valueOf(mBean.getGrade()/2));
         tvIntroduction.setText(mBean.getSign());
-        tvType.setText(AccompanyApplication.getGmaeString(mBean.getgameType()));
+        tvType.setText(AccompanyApplication.getGameString(mBean.getgameType()));
         tvTime.setText(DateUtils.time2Date(mBean.getStartTime()));
         int money = mBean.getPrice() * mBean.getNum();
         tvMoney.setText(String.valueOf(mBean.getPrice()));
@@ -152,7 +146,7 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
                     public void onClick(View v) {
                         String detail = mBean.getPrice() + AccompanyApplication.getContext().getResources().getString(R.string.price) + "*" + mBean.getNum();
                         int all = (mBean.getPrice()) * (mBean.getNum());
-                        IntentPayInfo info = new IntentPayInfo(mBean.getUrl(), mBean.getName(), AccompanyApplication.getGmaeString(mBean.getgameType()),
+                        IntentPayInfo info = new IntentPayInfo(mBean.getUrl(), mBean.getName(), AccompanyApplication.getGameString(mBean.getgameType()),
                                 detail, all, mBean.getId());
                         Intent intent = new Intent(OrderDetailActivity.this, OrderPayActivity.class);
                         intent.putExtra(IntentConstant.INTENT_PAY_INFO, info);

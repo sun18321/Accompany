@@ -6,13 +6,13 @@ public class GoldBean {
      * gold : 100
      */
 
-    private int gold;
+    private double gold;
 
-    public int getGold() {
+    public double getGold() {
         return gold;
     }
 
-    public void setGold(int gold) {
+    public void setGold(double gold) {
         this.gold = gold;
     }
 }

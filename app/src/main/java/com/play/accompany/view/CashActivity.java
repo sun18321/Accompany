@@ -60,7 +60,7 @@ public class CashActivity extends BaseActivity {
 
         initToolbar(getResources().getString(R.string.cash));
         mTvMoney = findViewById(R.id.tv_money);
-        mTvMoney.setText(SPUtils.getInstance().getInt(SpConstant.MY_GOLDEN));
+        mTvMoney.setText(String.valueOf(SPUtils.getInstance().getDouble(SpConstant.MY_GOLDEN)));
         TextView tvRule = findViewById(R.id.tv_rule);
         String s = getResources().getString(R.string.cash_rule_detail);
         if (mCashBean != null) {
@@ -86,9 +86,9 @@ public class CashActivity extends BaseActivity {
             return;
         }
         mMoney = Integer.parseInt(s);
-        int currentMoney = SPUtils.getInstance().getInt(SpConstant.MY_GOLDEN);
+        double currentMoney = SPUtils.getInstance().getDouble(SpConstant.MY_GOLDEN);
         if (mMoney > currentMoney ) {
-            mMoney = currentMoney;
+            mMoney = (int) currentMoney;
         }
         int extra = mMoney % mBase;
         if (extra != 0) {
@@ -145,7 +145,7 @@ public class CashActivity extends BaseActivity {
             public void onSuccess(String s) {
                 isNet = false;
                 ToastUtils.showCommonToast(getResources().getString(R.string.cash_success));
-                int gold = SPUtils.getInstance().getInt(SpConstant.MY_GOLDEN);
+                double gold = SPUtils.getInstance().getDouble(SpConstant.MY_GOLDEN);
                 gold -= mMoney;
                 mTvMoney.setText(String.valueOf(gold));
                 SPUtils.getInstance().put(SpConstant.MY_GOLDEN, gold);

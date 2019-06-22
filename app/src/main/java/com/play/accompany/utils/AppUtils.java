@@ -1,6 +1,11 @@
 package com.play.accompany.utils;
 
+import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.text.TextUtils;
+
+import com.play.accompany.view.AccompanyApplication;
 
 import java.util.regex.PatternSyntaxException;
 
@@ -21,5 +26,34 @@ public class AppUtils {
     public static boolean isMobileNumber(String mobiles) throws PatternSyntaxException {
         String telRegex = "^((13[0-9])|(15[^4])|(18[0-9])|(17[0-8])|(147,145))\\d{8}$";
         return !TextUtils.isEmpty(mobiles) && mobiles.matches(telRegex);
+    }
+
+    /**
+     * 返回当前程序版本号
+     */
+    public static String getAppVersionCode() {
+        int versioncode = 0;
+        try {
+            PackageManager pm = AccompanyApplication.getContext().getPackageManager();
+            PackageInfo pi = pm.getPackageInfo(AccompanyApplication.getContext().getPackageName(), 0);
+            // versionName = pi.versionName;
+            versioncode = pi.versionCode;
+        } catch (Exception e) {
+        }
+        return versioncode + "";
+    }
+
+    /**
+     * 返回当前程序版本名
+     */
+    public static String getAppVersionName() {
+        String versionName=null;
+        try {
+            PackageManager pm = AccompanyApplication.getContext().getPackageManager();
+            PackageInfo pi = pm.getPackageInfo(AccompanyApplication.getContext().getPackageName(), 0);
+            versionName = pi.versionName;
+        } catch (Exception e) {
+        }
+        return versionName;
     }
 }

@@ -50,6 +50,21 @@ public final class SPUtils {
         sp = AccompanyApplication.getContext().getSharedPreferences(spName, mode);
     }
 
+
+    /**
+     * 存储double类型
+     * @param key
+     * @param value
+     */
+    public void put(String key, double value) {
+        sp.edit().putLong(key, Double.doubleToRawLongBits(value)).apply();
+    }
+
+
+    public double getDouble(String key) {
+        return Double.longBitsToDouble(sp.getLong(key, -1L));
+    }
+
     /**
      * Put the string value in sp.
      *

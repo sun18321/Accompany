@@ -75,9 +75,9 @@ public class OrderProvider extends IContainerItemProvider.MessageProvider<OrderM
         String targetId = orderMessage.getTargetId();
 
         //是否为玩家
+        int orderType = orderMessage.getOrderType();
         if (TextUtils.equals(targetId, SPUtils.getInstance().getString(SpConstant.MY_USER_ID))) {
             holder.tvResult.setVisibility(View.GONE);
-            int orderType = orderMessage.getOrderType();
             if (orderType == OrderMessage.ORDER_EARLY_START) {
                 holder.tvTitle.setText("大神请求提前开始服务");
                 holder.tvPositive.setOnClickListener(new View.OnClickListener() {
@@ -112,6 +112,11 @@ public class OrderProvider extends IContainerItemProvider.MessageProvider<OrderM
                 });
             }
         } else {
+            if (orderType == OrderMessage.ORDER_EARLY_START) {
+                holder.tvTitle.setText("大神请求提前开始服务");
+            } else {
+                holder.tvTitle.setText("大神请求提前结束服务");
+            }
             LogUtils.d("message","i am master");
             holder.linOperation.setVisibility(View.GONE);
             holder.tvResult.setText("等待玩家操作");
@@ -121,7 +126,7 @@ public class OrderProvider extends IContainerItemProvider.MessageProvider<OrderM
         RongIMClient.getInstance().getMessage(uiMessage.getMessageId(), new RongIMClient.ResultCallback<Message>() {
             @Override
             public void onSuccess(Message message) {
-                ToastUtils.showCommonToast("读取成功");
+//                ToastUtils.showCommonToast("读取成功");
                 String extra = message.getExtra();
                 LogUtils.d("message", message.getMessageId() + "----" + extra + "---" + message.getUId());
 
@@ -214,8 +219,8 @@ public class OrderProvider extends IContainerItemProvider.MessageProvider<OrderM
     }
 
     private void sendAgreeBroadcast() {
-        Intent intent = new Intent(OtherConstant.ORDER_RESPONSE_RECEIVER);
-        intent.putExtra(IntentConstant.INTENT_ORDER_RESPONSE_TYPE, OtherConstant.ORDER_RESPONSE_AGREE_ADVANCE);
+        Intent intent = new Intent(OtherConstant.CONVERSATION_ACTIVITY_RECEIVER);
+        intent.putExtra(IntentConstant.INTENT_CONVERSATION_RECEIVER_TYPE, OtherConstant.CONVERSATION_AGREE_ADVANCE);
         AccompanyApplication.getContext().sendBroadcast(intent);
     }
 

@@ -238,9 +238,9 @@ public class EditUserActivity extends BaseActivity implements View.OnClickListen
             public void onSuccess(String s) {
                 Toast.makeText(EditUserActivity.this, getResources().getString(R.string.user_update), Toast.LENGTH_SHORT).show();
                 //写入数据库
-                UserInfoDatabaseUtils.updateUserInfo(userInfo);
+                UserInfoDatabaseUtils.getInstance().updateUserInfo(userInfo);
                 if (AccompanyApplication.getWeChatInfo() != null) {
-                    UserInfoDatabaseUtils.updateUrl(AccompanyApplication.getWeChatInfo().getHeadimgurl());
+                    UserInfoDatabaseUtils.getInstance().updateUrl(AccompanyApplication.getWeChatInfo().getHeadimgurl());
                     AccompanyApplication.clearWeChatInfo();
                 }
                 if (mIntentCode == INTENT_REGISTER) {
@@ -306,7 +306,7 @@ public class EditUserActivity extends BaseActivity implements View.OnClickListen
 
             String imagePath = getImagePath(data.getData());
             LogUtils.d(getTag(),"string2uri:" + Uri.parse(imagePath));
-            Uri uriForFile = FileProvider.getUriForFile(this, (getPackageName() + ".FileProvider"), new File(imagePath));
+            Uri uriForFile = FileProvider.getUriForFile(this, (getPackageName() + OtherConstant.FILE_PROVIDER_NAME), new File(imagePath));
             LogUtils.d(getTag(), "file_provider:" + uriForFile.toString());
             goCrop(data.getData());
 
@@ -325,10 +325,10 @@ public class EditUserActivity extends BaseActivity implements View.OnClickListen
             uploadImage(sb.toString());
         } else if (requestCode == request_code_camera) {
             LogUtils.d(getTag(), "camera result");
-//            LogUtils.d(getTag(),"uri:" + FileProvider.getUriForFile(this, getPackageName() + ".FileProvider", mFile));
-            LogUtils.d(getTag(), "uri string:" + FileProvider.getUriForFile(this, getPackageName() + ".FileProvider", mFile).toString());
+//            LogUtils.d(getTag(),"uri:" + FileProvider.getUriForFile(this, getPackageName() + OtherConstant.FILE_PROVIDER_NAME, mFile));
+            LogUtils.d(getTag(), "uri string:" + FileProvider.getUriForFile(this, getPackageName() + OtherConstant.FILE_PROVIDER_NAME, mFile).toString());
             if (mFile.exists()) {
-                goCrop(FileProvider.getUriForFile(this, getPackageName() + ".FileProvider", mFile));
+                goCrop(FileProvider.getUriForFile(this, getPackageName() + OtherConstant.FILE_PROVIDER_NAME, mFile));
             } else {
                 LogUtils.d(getTag(), "no photo");
             }
@@ -346,7 +346,7 @@ public class EditUserActivity extends BaseActivity implements View.OnClickListen
         LogUtils.d(getTag(), "file path:" + Environment.getExternalStorageDirectory().getAbsolutePath() + "/accompany");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             //步骤二：Android 7.0及以上获取文件 Uri
-            uri = FileProvider.getUriForFile(this, getPackageName() + ".FileProvider", mFile);
+            uri = FileProvider.getUriForFile(this, getPackageName() + OtherConstant.FILE_PROVIDER_NAME, mFile);
 
             LogUtils.d(getTag(), "uri path:" + uri.toString());
 
@@ -381,7 +381,7 @@ public class EditUserActivity extends BaseActivity implements View.OnClickListen
                 Toast.makeText(EditUserActivity.this, getResources().getString(R.string.upload_image_success), Toast.LENGTH_SHORT).show();
                 mUrl = url;
                 Glide.with(EditUserActivity.this).load(url).into(mHeadImg);
-                UserInfoDatabaseUtils.updateUrl(url);
+                UserInfoDatabaseUtils.getInstance().updateUrl(url);
             }
 
 
