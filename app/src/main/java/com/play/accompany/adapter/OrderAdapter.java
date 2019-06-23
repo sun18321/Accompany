@@ -101,7 +101,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderHolder>
                 });
             }
             tvName.setText(bean.getName());
-            tvType.setText(AccompanyApplication.getGameString(bean.getgameType()));
+            tvType.setText(bean.getGameTypeName());
             tvTime.setText(DateUtils.time2Date(bean.getTime()));
             int price = bean.getPrice();
             final int num = bean.getNum();
@@ -175,8 +175,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderHolder>
         void goPay(AllOrderBean bean) {
             String detail = bean.getPrice() + AccompanyApplication.getContext().getResources().getString(R.string.price) + "*" + bean.getNum();
             int all = (bean.getPrice()) * (bean.getNum());
-            IntentPayInfo info = new IntentPayInfo(bean.getUrl(), bean.getName(), AccompanyApplication.getGameString(bean.getgameType()),
-                    detail, all, bean.getId());
+            IntentPayInfo info = new IntentPayInfo(bean.getUrl(), bean.getName(), bean.getGameTypeName(), detail, all, bean.getId());
             if (mListener != null) {
                 mListener.onPayClick(info);
             }

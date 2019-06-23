@@ -61,4 +61,15 @@ public class OtherConstant {
     public static final String FILE_PROVIDER_NAME = ".FileProvider";
 
     public static final String TEST_DOWNLOAD_URL = "https://imtt.dd.qq.com/16891/4DFBF7007D9690DB18FA8B50D08F3922.apk?fsname=com.xunmeng.pinduoduo_4.61.0_46100.apk&amp;csr=1bbd";
+
+    public static final String FIRST_MASTER_FRAGMENT_TYPE = "first_master_fragment_type";
+
+    public static final int PICTURE_REQUEST_CODE = 1001;
+
+    //申请中
+    public static final int MASTER_CHECKING = 0;
+
+    //申请完成
+    public static final int MATSER_CHECKED = 1;
+
 }

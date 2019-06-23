@@ -51,6 +51,15 @@ public class AllOrderBean implements Serializable {
     private String evaluate;
     private double grade;
     private int gender;
+    private String gameTypeName;
+
+    public String getGameTypeName() {
+        return gameTypeName;
+    }
+
+    public void setGameTypeName(String gameTypeName) {
+        this.gameTypeName = gameTypeName;
+    }
 
     public int getGender() {
         return gender;

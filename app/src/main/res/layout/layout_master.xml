@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
     >
 
     <LinearLayout
-        android:padding="10dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <LinearLayout
+        android:id="@+id/lin_detail"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -14,32 +17,72 @@
 
         <TextView
             android:text="@string/master_skill"
+            android:padding="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <TextView
+            android:padding="10dp"
             android:id="@+id/tv_skill"
             android:textColor="@color/colorPrimary"
-            android:text="王者荣耀"
             android:layout_marginStart="30dp"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"/>
 
-        <TextView
-            android:id="@+id/tv_price"
-            android:text="12334"
-            android:textColor="@color/color_price_red"
+        <RelativeLayout
+            android:padding="10dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/img_edit"
-            android:src="@mipmap/price_edit"
-            android:layout_marginStart="20dp"
-            android:layout_width="20dp"
-            android:layout_height="20dp"/>
+            <LinearLayout
+                android:id="@+id/lin_edit"
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_price"
+                    android:textColor="@color/color_price_red"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <ImageView
+                    android:src="@mipmap/price_edit"
+                    android:layout_marginStart="10dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_check"
+                android:visibility="invisible"
+                android:text="正在审核..."
+                android:textColor="@color/red"
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+
+        </RelativeLayout>
 
     </LinearLayout>
 
-</LinearLayout>
+        <View
+            android:layout_marginTop="2dp"
+            android:background="@color/gray"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_add"
+        android:visibility="gone"
+        android:text="添加新的技能"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+</RelativeLayout>

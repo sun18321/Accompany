@@ -72,7 +72,7 @@ public class UserInfo implements Serializable {
     private String inviteCode;
 
     @Ignore
-    private List<Integer> gameType;
+    private List<GameProperty> gameType;
 
     @Ignore
     private List<String> GameTypeName;
@@ -338,11 +338,11 @@ public class UserInfo implements Serializable {
         this.inviteCode = inviteCode;
     }
 
-    public List<Integer> getGameType() {
+    public List<GameProperty> getGameType() {
         return gameType;
     }
 
-    public void setGameType(List<Integer> gameType) {
+    public void setGameType(List<GameProperty> gameType) {
         this.gameType = gameType;
     }
 

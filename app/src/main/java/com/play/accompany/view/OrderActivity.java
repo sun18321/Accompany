@@ -17,6 +17,7 @@ import com.makeramen.roundedimageview.RoundedImageView;
 import com.play.accompany.R;
 import com.play.accompany.base.BaseActivity;
 import com.play.accompany.bean.BaseDecodeBean;
+import com.play.accompany.bean.GameProperty;
 import com.play.accompany.bean.IntentPayInfo;
 import com.play.accompany.bean.OrderBean;
 import com.play.accompany.bean.ResponseCreateOrder;
@@ -177,7 +178,7 @@ public class OrderActivity extends BaseActivity implements View.OnClickListener 
             final WheelView wheelView = view.findViewById(R.id.wheel);
             TextView tvConfirm = view.findViewById(R.id.tv_confirm);
             final List<String> listGame = mHome.getGameTypeName();
-            final List<Integer> gameType = mHome.getGameType();
+            final List<GameProperty> gameType = mHome.getGameType();
             if (listGame.size() > 2) {
                 wheelView.setOffset(1);
             } else {
@@ -194,7 +195,7 @@ public class OrderActivity extends BaseActivity implements View.OnClickListener 
                     }
                     mGameName = listGame.get(index);
                     mTvType.setText(mGameName);
-                    mgameType = gameType.get(index);
+                    mgameType = gameType.get(index).getType();
                     mTypeDialog.dismiss();
                 }
             });

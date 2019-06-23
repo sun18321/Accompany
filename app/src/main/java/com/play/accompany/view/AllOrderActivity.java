@@ -248,6 +248,7 @@ public class AllOrderActivity extends BaseActivity implements OrderAdapter.Order
     @Override
     public void onHeadClick(String uid) {
         UserInfo info = new UserInfo();
+        info.setUserId(uid);
         info.setFromChat(true);
         Intent intent = new Intent(AllOrderActivity.this, UserCenterActivity.class);
         intent.putExtra(IntentConstant.INTENT_USER, info);

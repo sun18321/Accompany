@@ -110,7 +110,7 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
         }
         tvRating.setText(String.valueOf(mBean.getGrade()/2));
         tvIntroduction.setText(mBean.getSign());
-        tvType.setText(AccompanyApplication.getGameString(mBean.getgameType()));
+        tvType.setText(mBean.getGameTypeName());
         tvTime.setText(DateUtils.time2Date(mBean.getStartTime()));
         int money = mBean.getPrice() * mBean.getNum();
         tvMoney.setText(String.valueOf(mBean.getPrice()));
@@ -146,8 +146,7 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
                     public void onClick(View v) {
                         String detail = mBean.getPrice() + AccompanyApplication.getContext().getResources().getString(R.string.price) + "*" + mBean.getNum();
                         int all = (mBean.getPrice()) * (mBean.getNum());
-                        IntentPayInfo info = new IntentPayInfo(mBean.getUrl(), mBean.getName(), AccompanyApplication.getGameString(mBean.getgameType()),
-                                detail, all, mBean.getId());
+                        IntentPayInfo info = new IntentPayInfo(mBean.getUrl(), mBean.getName(), mBean.getGameTypeName(), detail, all, mBean.getId());
                         Intent intent = new Intent(OrderDetailActivity.this, OrderPayActivity.class);
                         intent.putExtra(IntentConstant.INTENT_PAY_INFO, info);
                         startActivity(intent);

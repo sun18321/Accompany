@@ -1,61 +1,43 @@
 package com.play.accompany.view;
 
-import android.content.DialogInterface;
+import android.Manifest;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.TextPaint;
-import android.text.TextUtils;
-import android.text.method.LinkMovementMethod;
-import android.text.style.ClickableSpan;
+import android.support.annotation.Nullable;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+import android.widget.FrameLayout;
 
 import com.google.gson.reflect.TypeToken;
 import com.play.accompany.R;
 import com.play.accompany.base.BaseActivity;
 import com.play.accompany.bean.BaseDecodeBean;
-import com.play.accompany.bean.MasterBean;
-import com.play.accompany.bean.OnlyCodeBean;
 import com.play.accompany.bean.Token;
 import com.play.accompany.bean.TopGameBean;
-import com.play.accompany.constant.IntentConstant;
 import com.play.accompany.constant.OtherConstant;
 import com.play.accompany.constant.SpConstant;
-import com.play.accompany.design.TypeDialog;
+import com.play.accompany.fragment.FirstMasterFragment;
+import com.play.accompany.fragment.SecondMasterFragment;
 import com.play.accompany.net.AccompanyRequest;
 import com.play.accompany.net.NetFactory;
 import com.play.accompany.net.NetListener;
+import com.play.accompany.utils.AppUtils;
 import com.play.accompany.utils.EncodeUtils;
 import com.play.accompany.utils.GsonUtils;
 import com.play.accompany.utils.SPUtils;
 import com.play.accompany.utils.StringUtils;
-import com.play.accompany.utils.ToastUtils;
+import com.yalantis.ucrop.UCrop;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import okhttp3.RequestBody;
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.RuntimePermissions;
 
-public class MasterActivity extends BaseActivity implements View.OnClickListener {
+@RuntimePermissions
+public class MasterActivity extends BaseActivity {
 
-    private EditText mEditName;
-    private EditText mEditId;
-    private EditText mEditWeChat;
-    private TextView mTvType;
-    private RelativeLayout mRlRequest;
-    private RelativeLayout mRlWait;
-    private List<TopGameBean> mDataList;
-    private Set<Integer> mSelectSet = new HashSet<>();
-    private List<Integer> mTypeList = new ArrayList<>();
-    private List<String> mDisplayList = new ArrayList<>();
-    private EditText mEditPhone;
-    private TextView mTvMaster;
+    private PictureListener mListener;
 
     @Override
     protected int getLayout() {
@@ -71,55 +53,65 @@ public class MasterActivity extends BaseActivity implements View.OnClickListener
     protected void initViews() {
         initToolbar(getResources().getString(R.string.master));
 
-        findViewById(R.id.btn_submit).setOnClickListener(this);
-        findViewById(R.id.lin_type).setOnClickListener(this);
-        mTvMaster = findViewById(R.id.tv_master);
-        mEditName = findViewById(R.id.edit_name);
-        mEditId = findViewById(R.id.edit_id);
-        mEditWeChat = findViewById(R.id.edit_wechat);
-        mEditPhone = findViewById(R.id.edit_phone);
-        mTvType = findViewById(R.id.tv_type);
-        mRlRequest = findViewById(R.id.rl_request);
-        mRlWait = findViewById(R.id.rl_wait);
-        mDataList = AccompanyApplication.getGameList();
-        if (mDataList == null || mDataList.isEmpty()) {
-            getData();
-        }
+        initFragment();
+    }
 
-        initTip();
+    private void initFragment() {
+        int userType = SPUtils.getInstance().getInt(SpConstant.USER_TYPE);
 
-        int type = SPUtils.getInstance().getInt(SpConstant.USER_TYPE, 1);
-        if (type == OtherConstant.USER_TYPE_COMMON) {
-            mRlWait.setVisibility(View.INVISIBLE);
-        } else if (type == OtherConstant.USER_TYPE_WAIT) {
-            mRlWait.setVisibility(View.VISIBLE);
+//        getSupportFragmentManager().beginTransaction().add(R.id.frame,firstFragment, "first").commitNowAllowingStateLoss();
+//        getSupportFragmentManager().beginTransaction().add(R.id.frame,secondMasterFragment, "second").commitNowAllowingStateLoss();
+
+        if (userType == OtherConstant.USER_TYPE_ACCOMPANY) {
+            SecondMasterFragment secondMasterFragment = SecondMasterFragment.getInstance();
+            getSupportFragmentManager().beginTransaction().replace(R.id.frame,secondMasterFragment).commitAllowingStateLoss();
+        } else {
+            FirstMasterFragment firstFragment = FirstMasterFragment.getInstance(userType);
+            getSupportFragmentManager().beginTransaction().replace(R.id.frame,firstFragment).commitAllowingStateLoss();
         }
     }
 
-    private void initTip() {
-        String stringAll = getResources().getString(R.string.tips_master);
-        final String stringIndex = getResources().getString(R.string.master_index);
-        int index = stringAll.indexOf(stringIndex);
-        ClickableSpan span = new ClickableSpan() {
-            @Override
-            public void onClick(@NonNull View widget) {
-                Intent intent = new Intent(MasterActivity.this, RuleActivity.class);
-                intent.putExtra(IntentConstant.INTENT_TITLE, getResources().getString(R.string.master_index));
-                startActivity(intent);
-            }
-
-            @Override
-            public void updateDrawState(@NonNull TextPaint ds) {
-                super.updateDrawState(ds);
-
-                ds.setColor(getResources().getColor(R.color.colorPrimary));
-            }
-        };
-        SpannableString spannableString = new SpannableString(stringAll);
-        spannableString.setSpan(span, index, index + stringIndex.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        mTvMaster.setText(spannableString);
-        mTvMaster.setMovementMethod(LinkMovementMethod.getInstance());
+    public void getPicture(PictureListener listener) {
+        mListener = listener;
+        checkPermission();
     }
+
+    @NeedsPermission({Manifest.permission.WRITE_EXTERNAL_STORAGE})
+    public void checkPermission() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        startActivityForResult(intent, OtherConstant.PICTURE_REQUEST_CODE);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        MasterActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK) {
+            if (requestCode == OtherConstant.PICTURE_REQUEST_CODE) {
+                if (data != null) {
+                    AppUtils.goCrop(data.getData(), this);
+                }
+            } else if (requestCode == UCrop.REQUEST_CROP) {
+                if (data == null) {
+                    return;
+                }
+                Uri output = UCrop.getOutput(data);
+                String path = StringUtils.uri2Path(output);
+                if (mListener != null) {
+                    mListener.picturePath(path);
+                }
+            }
+        }
+    }
+
 
     private void getData() {
         showDialog();
@@ -135,7 +127,6 @@ public class MasterActivity extends BaseActivity implements View.OnClickListener
                 if (list.isEmpty()) {
                     return;
                 }
-                mDataList = list;
             }
 
             @Override
@@ -155,113 +146,7 @@ public class MasterActivity extends BaseActivity implements View.OnClickListener
         });
     }
 
-    private void setData() {
-        mTypeList.clear();
-        mDisplayList.clear();
-        for (Integer integer : mSelectSet) {
-            mTypeList.add(mDataList.get(integer).getTypeId());
-            mDisplayList.add(mDataList.get(integer).getName());
-        }
-        mTvType.setText(StringUtils.GameList2String(mDisplayList));
-    }
-
-    private void upData() {
-        String name = mEditName.getText().toString();
-        String phone = mEditPhone.getText().toString();
-        String weChat = mEditWeChat.getText().toString();
-        String id = mEditId.getText().toString();
-
-        if (mTypeList.isEmpty()) {
-            ToastUtils.showCommonToast(getResources().getString(R.string.game_type_first));
-            return;
-        }
-
-        if (TextUtils.isEmpty(name)) {
-            ToastUtils.showCommonToast(getResources().getString(R.string.real_name_first));
-            return;
-        }
-
-        if (TextUtils.isEmpty(phone)) {
-            ToastUtils.showCommonToast(getResources().getString(R.string.phone_first));
-            return;
-        }
-
-        if (TextUtils.isEmpty(weChat)) {
-            ToastUtils.showCommonToast(getResources().getString(R.string.wechat_first));
-            return;
-        }
-
-        if (TextUtils.isEmpty(id)) {
-            ToastUtils.showCommonToast(getResources().getString(R.string.id_first));
-            return;
-        }
-
-        MasterBean bean = new MasterBean();
-        bean.setToken(SPUtils.getInstance().getString(SpConstant.APP_TOKEN));
-        bean.setApplyName(name);
-        bean.setApplyAccount(weChat);
-        bean.setApplyIdentity(id);
-        bean.setApplyPhone(phone);
-        bean.setGameType(mTypeList);
-        String json = GsonUtils.toJson(bean);
-        RequestBody body = EncodeUtils.encodeInBody(json);
-        AccompanyRequest request = new AccompanyRequest();
-        request.beginRequest(NetFactory.getNetRequest().getNetService().applyMaster(body), new TypeToken<BaseDecodeBean<List<OnlyCodeBean>>>() {
-                }.getType(),
-                new NetListener<List<OnlyCodeBean>>() {
-                    @Override
-                    public void onSuccess(List<OnlyCodeBean> list) {
-                        ToastUtils.showCommonToast(MasterActivity.this.getResources().getString(R.string.submit_success));
-                        SPUtils.getInstance().put(SpConstant.USER_TYPE, OtherConstant.USER_TYPE_WAIT);
-                        mRlRequest.setVisibility(View.VISIBLE);
-                        mRlWait.setVisibility(View.VISIBLE);
-                    }
-
-                    @Override
-                    public void onFailed(int errCode) {
-                        ToastUtils.showCommonToast(MasterActivity.this.getResources().getString(R.string.submit_failed));
-                    }
-
-                    @Override
-                    public void onError() {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
-    }
-
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.lin_type:
-                if (mDataList == null || mDataList.isEmpty()) {
-                    ToastUtils.showCommonToast(getResources().getString(R.string.data_error));
-                    return;
-                }
-                final TypeDialog dialogBuild = new TypeDialog(this, mDataList,mSelectSet);
-                dialogBuild.setPositiveButton(getResources().getString(R.string.confirm), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        mSelectSet = dialogBuild.getSelectSet();
-                        setData();
-                    }
-                });
-
-                dialogBuild.setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                });
-                dialogBuild.create().show();
-                break;
-            case R.id.btn_submit:
-                upData();
-                break;
-        }
+    public interface PictureListener {
+        void picturePath(String path);
     }
 }

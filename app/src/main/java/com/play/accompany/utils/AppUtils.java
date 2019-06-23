@@ -3,10 +3,17 @@ package com.play.accompany.utils;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 
+import com.play.accompany.R;
 import com.play.accompany.view.AccompanyApplication;
+import com.yalantis.ucrop.UCrop;
 
+import java.io.File;
 import java.util.regex.PatternSyntaxException;
 
 public class AppUtils {
@@ -55,5 +62,20 @@ public class AppUtils {
         } catch (Exception e) {
         }
         return versionName;
+    }
+
+    public static void goCrop(Uri imgUri, AppCompatActivity activity) {
+        UCrop.Options options = new UCrop.Options();
+        options.setToolbarTitle(AccompanyApplication.getContext().getResources().getString(R.string.crop_image));
+        options.setToolbarColor(ActivityCompat.getColor(AccompanyApplication.getContext(), R.color.colorPrimary));
+        options.setStatusBarColor(ActivityCompat.getColor(AccompanyApplication.getContext(), R.color.colorPrimary));
+//        options.setHideBottomControls(true);
+        File outDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        if (!outDir.exists()) {
+            outDir.mkdirs();
+        }
+        File outFile = new File(outDir, System.currentTimeMillis() + ".png");
+        Uri destinationUri = Uri.fromFile(outFile);
+        UCrop.of(imgUri,destinationUri).withOptions(options).withAspectRatio(1,1).start(activity);
     }
 }

@@ -88,6 +88,7 @@
     <string name="gender_first">请先选择性别</string>
     <string name="birthday_first">请先选择生日</string>
     <string name="head_image_first">请先上传头像</string>
+    <string name="master_image_first">请先选择大神图片</string>
     <string name="user_update">个人信息已更新</string>
     <string name="app_copy_right">Copyright©2019</string>
     <string name="company_name">上海羽迹网络科技有限公司 版权所有</string>
@@ -197,6 +198,9 @@
     <string name="master_skill">大神技能:</string>
     <string name="official_tips">这是官方大大!</string>
     <string name="official_number">1000</string>
+    <string name="tip_add">上传充分说明技能水平的截图，jpg，png均可</string>
+    <string name="edit_success">修改成功</string>
+    <string name="master_wait">等待审核</string>
 
     <string name="price_detail_place"><![CDATA[<font color="#000000"><small>%1$s</small></font>]]></string>
 

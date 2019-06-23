@@ -1,9 +1,16 @@
 package com.play.accompany.utils;
 
+import android.content.ContentUris;
+import android.database.Cursor;
+import android.net.Uri;
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Base64;
+import android.widget.Toast;
 
 import com.play.accompany.R;
+import com.play.accompany.constant.OtherConstant;
 import com.play.accompany.view.AccompanyApplication;
 
 import org.w3c.dom.Text;
@@ -11,6 +18,7 @@ import org.w3c.dom.Text;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.Provider;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -333,6 +341,13 @@ public class StringUtils {
         return result;
     }
 
+    public static String imageChangeUpload(String image) {
+        StringBuilder sb = new StringBuilder();
+        String s = imageToBase64(image);
+        sb.append(OtherConstant.IMAGE_HEAD).append(s);
+        return sb.toString();
+    }
+
     public static String moneyExchange(int money) {
         DecimalFormat df = new DecimalFormat("#,###");
         return df.format(money);
@@ -382,5 +397,41 @@ public class StringUtils {
         } else {
             return city;
         }
+    }
+
+    public static String uri2Path(Uri uri) {
+        String imagePath = null;
+        if (uri == null) {
+            ToastUtils.showCommonToast(AccompanyApplication.getContext().getResources().getString(R.string.data_error));
+            return null;
+        }
+        if (DocumentsContract.isDocumentUri(AccompanyApplication.getContext(),uri)) {
+            String docId = DocumentsContract.getDocumentId(uri);
+            if ("com.android.providers.media.documents".equals(uri.getAuthority())) {
+                String id = docId.split(":")[1];
+                String selection = MediaStore.Images.Media._ID + "=" + id;
+                imagePath = getImagePath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, selection);
+            } else if ("com.android.providers.downloads.documents".equals(uri.getAuthority())) {
+                Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), Long.valueOf(docId));
+                imagePath = getImagePath(contentUri, null);
+            }
+        } else if ("content".equalsIgnoreCase(uri.getScheme())) {
+            imagePath = getImagePath(uri, null);
+        } else if ("file".equalsIgnoreCase(uri.getScheme())) {
+            imagePath = uri.getPath();
+        }
+        return imagePath;
+    }
+
+    private static String getImagePath(Uri uri, String selection) {
+        String path = null;
+        Cursor cursor = AccompanyApplication.getContext().getContentResolver().query(uri, null, selection, null, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+            }
+            cursor.close();
+        }
+        return path;
     }
 }

@@ -2,6 +2,7 @@ package com.play.accompany.design;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
@@ -9,7 +10,9 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.play.accompany.R;
+import com.play.accompany.bean.GameProperty;
 import com.play.accompany.bean.TopGameBean;
+import com.play.accompany.view.AccompanyApplication;
 import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
 import com.zhy.view.flowlayout.TagFlowLayout;
@@ -20,16 +23,17 @@ import java.util.Set;
 
 public class TypeDialog extends AlertDialog.Builder {
     private Context mContext;
-    private Set<Integer> mSelectSet;
     private List<String> mAllList = new ArrayList<>();
     private TagFlowLayout mFlowLayout;
+    private List<TopGameBean> mOriginList;
+    private SelectListenr mListener;
 
-    public TypeDialog(@NonNull Context context, List<TopGameBean> allList, Set<Integer> selectSet) {
+    public TypeDialog(@NonNull Context context, List<TopGameBean> allList, SelectListenr listener) {
         super(context);
 
+        mListener = listener;
         mContext = context;
-        mSelectSet = selectSet;
-
+        mOriginList = allList;
         mAllList.clear();
         for (TopGameBean topGameBean : allList) {
             mAllList.add(topGameBean.getName());
@@ -49,18 +53,38 @@ public class TypeDialog extends AlertDialog.Builder {
                 return tv;
             }
         };
-        if (!mSelectSet.isEmpty()) {
-            adapter.setSelectedList(mSelectSet);
-        }
+        mFlowLayout.setMaxSelectCount(1);
         mFlowLayout.setAdapter(adapter);
         setView(view);
+
+        setNegativeButton(AccompanyApplication.getContext().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        setPositiveButton(AccompanyApplication.getContext().getString(R.string.confirm), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (mListener != null) {
+                    mListener.onSelect(getSelectSet());
+                }
+            }
+        });
     }
 
-
-    public Set<Integer> getSelectSet() {
-        if (mFlowLayout != null) {
-            return mFlowLayout.getSelectedList();
+    private TopGameBean getSelectSet() {
+        TopGameBean bean = new TopGameBean();
+        Set<Integer> set = mFlowLayout.getSelectedList();
+        for (Integer integer : set) {
+            bean.setName(mOriginList.get(integer).getName());
+            bean.setTypeId(mOriginList.get(integer).getTypeId());
         }
-        return null;
+        return bean;
+    }
+
+    public interface SelectListenr{
+        void onSelect(TopGameBean bean);
     }
 }

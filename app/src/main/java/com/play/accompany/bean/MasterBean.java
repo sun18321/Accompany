@@ -18,14 +18,28 @@ public class MasterBean {
     private String applyIdentity;
     private String applyPhone;
     private String applyAccount;
-    private List<Integer> gameType;
+    private int gameType;
+    private String urlGameType;
+    private String gameTypeName;
 
-    public List<Integer> getGameType() {
-        return gameType;
+    public void setGameType(int gameType) {
+        this.gameType = gameType;
     }
 
-    public void setGameType(List<Integer> gameType) {
-        this.gameType = gameType;
+    public String getGameTypeName() {
+        return gameTypeName;
+    }
+
+    public void setGameTypeName(String gameTypeName) {
+        this.gameTypeName = gameTypeName;
+    }
+
+    public String getUrlGameType() {
+        return urlGameType;
+    }
+
+    public void setUrlGameType(String urlGameType) {
+        this.urlGameType = urlGameType;
     }
 
     public String getToken() {

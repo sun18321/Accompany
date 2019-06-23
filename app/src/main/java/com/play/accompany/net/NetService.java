@@ -110,5 +110,21 @@ public interface NetService {
 
     @POST("findUser")
     Observable<BaseResponse> getUserInfo(@Body RequestBody body);
+
+    @POST("getApplyAnchor")
+    Observable<BaseResponse> getCheckMasterInfo(@Body RequestBody body);
+
+    @POST("getAnchorGameType")
+    Observable<BaseResponse> getAfterMasterInfo(@Body RequestBody body);
+
+    @POST("getAnchorGameTypeApply")
+    Observable<BaseResponse> getCheckMaterDetail(@Body RequestBody body);
+
+    @POST("saveAnchorGameType")
+    Observable<BaseResponse> editMasterPrice(@Body RequestBody body);
+
+    @POST("addAnchorGameType")
+    Observable<BaseResponse> addMasterItem(@Body RequestBody body);
+
 }
 

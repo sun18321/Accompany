@@ -21,6 +21,7 @@ import com.play.accompany.base.BaseActivity;
 import com.play.accompany.bean.AttentionBean;
 import com.play.accompany.bean.BaseDecodeBean;
 import com.play.accompany.bean.FindUserBean;
+import com.play.accompany.bean.GameProperty;
 import com.play.accompany.bean.TopGameBean;
 import com.play.accompany.bean.UserInfo;
 import com.play.accompany.constant.AppConstant;
@@ -221,15 +222,15 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     }
 
     private void displayGame(List<TopGameBean> allList) {
-        List<Integer> list = mUserInfo.getGameType();
+        List<GameProperty> list = mUserInfo.getGameType();
 //        List<TopGameBean> allList = AccompanyApplication.getGameList();
         if (list == null || list.isEmpty() || allList == null || allList.isEmpty()) {
             return;
         }
         ViewGroup.MarginLayoutParams marginLayoutParams;
-        for (Integer integer : list) {
+        for (GameProperty property : list) {
             for (TopGameBean topGameBean : allList) {
-                if (integer == topGameBean.getTypeId()) {
+                if (property.getType() == topGameBean.getTypeId()) {
                     TextView tv = new TextView(this);
                     int frameColor = Color.parseColor(topGameBean.getTagBg());
                     int wordColor = Color.parseColor(topGameBean.getTagFront());
@@ -259,7 +260,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     }
 
     private void getAllGameList() {
-        List<Integer> list = mUserInfo.getGameType();
+        List<GameProperty> list = mUserInfo.getGameType();
         if (list == null || list.isEmpty()) {
             return;
         }
