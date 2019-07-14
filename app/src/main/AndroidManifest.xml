@@ -18,8 +18,8 @@
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/> <!-- 用于申请调用A-GPS模块 -->
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"/> <!-- 用于申请获取蓝牙信息进行室内定位 -->
     <uses-permission android:name="android.permission.BLUETOOTH"/>
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/> <!-- 8.0a安装apk -->
-    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/> <!-- 8.0a安装apk -->
 
     <application
         android:name=".view.AccompanyApplication"
@@ -87,7 +87,9 @@
         <activity
             android:name=".view.EditUserActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/NoActionBarStatus"/>
+            android:theme="@style/NoActionBarStatus"
+            android:windowSoftInputMode="adjustPan"
+            />
         <activity
             android:name=".view.WebViewActivity"
             android:screenOrientation="portrait"
@@ -111,7 +113,9 @@
         <activity
             android:name=".view.SplashActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/FullscreenTheme">
+            android:theme="@style/SplashTheme"
+            android:launchMode="singleTop"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -130,7 +134,7 @@
         <activity
             android:name=".view.AccountActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/NoActionBarStatus"/>
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"

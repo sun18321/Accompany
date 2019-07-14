@@ -28,11 +28,13 @@ import com.play.accompany.constant.SpConstant;
 import com.play.accompany.net.AccompanyRequest;
 import com.play.accompany.net.NetFactory;
 import com.play.accompany.net.NetListener;
+import com.play.accompany.present.CommonListener;
 import com.play.accompany.utils.EncodeUtils;
 import com.play.accompany.utils.GsonUtils;
 import com.play.accompany.utils.PayUtils;
 import com.play.accompany.utils.SPUtils;
 import com.play.accompany.utils.ToastUtils;
+import com.play.accompany.utils.UpdateUtils;
 
 import java.util.List;
 
@@ -126,15 +128,21 @@ public class OrderPayActivity extends BaseActivity implements View.OnClickListen
         mTvDetail.setText(detail);
         mOrderId = mInfo.getId();
         mAll = mInfo.getAll();
-        mCurrentGold = SPUtils.getInstance().getDouble(SpConstant.MY_GOLDEN);
-        if (mAll > mCurrentGold) {
-            mImgAppCheck.setVisibility(View.INVISIBLE);
-            mBtnPay.setText(getResources().getString(R.string.button_pay));
-        } else {
-            mBtnPay.setText(getResources().getString(R.string.button_pay) + mAll + getResources().getString(R.string.money));
-            mPayType = mAppPay;
-        }
-        mTvGold.setText(String.valueOf(mCurrentGold));
+
+        UpdateUtils.getInstance().updateGold(new CommonListener.BooleanListener() {
+            @Override
+            public void onListener(boolean b) {
+                    mCurrentGold = SPUtils.getInstance().getDouble(SpConstant.MY_GOLDEN);
+                    if (mAll > mCurrentGold) {
+                        mImgAppCheck.setVisibility(View.INVISIBLE);
+                        mBtnPay.setText(getResources().getString(R.string.button_pay));
+                    } else {
+                        mBtnPay.setText(getResources().getString(R.string.button_pay) + mAll + getResources().getString(R.string.money));
+                        mPayType = mAppPay;
+                    }
+                    mTvGold.setText(String.valueOf(mCurrentGold));
+            }
+        });
     }
 
     private void goPay() {

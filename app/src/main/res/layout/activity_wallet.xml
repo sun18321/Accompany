@@ -38,6 +38,8 @@
                     android:layout_height="wrap_content">
                     <TextView
                         android:text="@string/wallet_remain"
+                        android:gravity="center"
+                        android:textSize="@dimen/sp_16"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
 
@@ -45,6 +47,8 @@
                         android:id="@+id/tv_gold"
                         android:textColor="@color/red"
                         tools:text="10099999"
+                        android:gravity="center"
+                        android:textSize="@dimen/sp_16"
                         android:layout_marginStart="20dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
@@ -58,8 +62,8 @@
                     android:textColor="@color/white"
                     android:text="@string/cash"
                     android:layout_alignParentEnd="true"
-                    android:background="@drawable/ripple_button"
-                    android:layout_width="60dp"
+                    android:background="@drawable/ripple_blue_button"
+                    android:layout_width="80dp"
                     android:layout_height="30dp"/>
 
             </RelativeLayout>
@@ -284,7 +288,7 @@
                     android:id="@+id/lin_input"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:padding="10dp"
+                    android:padding="5dp"
                     android:layout_marginBottom="10dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginStart="10dp"
@@ -334,14 +338,14 @@
                 <LinearLayout
                     android:id="@+id/lin_wechat"
                     android:orientation="horizontal"
-                    android:padding="10dp"
+                    android:padding="5dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
                     <ImageView
                         android:src="@mipmap/wechat"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_width="@dimen/dp_30"
+                        android:layout_height="@dimen/dp_30" />
 
                     <TextView
                         android:text="@string/wechat"
@@ -365,14 +369,14 @@
                 <LinearLayout
                     android:id="@+id/lin_alipay"
                     android:orientation="horizontal"
-                    android:padding="10dp"
+                    android:padding="5dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
                     <ImageView
                         android:src="@mipmap/alipay"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_width="@dimen/dp_30"
+                        android:layout_height="@dimen/dp_30" />
 
                     <TextView
                         android:text="@string/alipay"
@@ -400,7 +404,8 @@
             android:layout_below="@id/lin_place"
             android:layout_marginTop="60dp"
             android:textColor="@color/white"
-            android:background="@drawable/ripple_button"
+            android:textSize="@dimen/sp_18"
+            android:background="@drawable/ripple_blue_button"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="20dp"

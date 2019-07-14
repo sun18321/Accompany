@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/top_lin"
-    android:layout_marginTop="10dp"
+    android:layout_marginTop="@dimen/dp_10"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:gravity="center_horizontal"
@@ -10,10 +10,11 @@
     <ImageView
         android:id="@+id/img_game"
         android:layout_width="wrap_content"
-        android:layout_height="40dp" />
+        android:layout_height="@dimen/dp_53" />
 
     <TextView
         android:id="@+id/tv_game"
+        android:textSize="@dimen/sp_12"
         android:textColor="@color/color_black"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />

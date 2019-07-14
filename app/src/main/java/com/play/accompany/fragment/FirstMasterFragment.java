@@ -28,10 +28,12 @@ import com.play.accompany.design.TypeDialog;
 import com.play.accompany.net.AccompanyRequest;
 import com.play.accompany.net.NetFactory;
 import com.play.accompany.net.NetListener;
+import com.play.accompany.utils.AppUtils;
 import com.play.accompany.utils.EncodeUtils;
 import com.play.accompany.utils.FileSaveUtils;
 import com.play.accompany.utils.GlideUtils;
 import com.play.accompany.utils.GsonUtils;
+import com.play.accompany.utils.LogUtils;
 import com.play.accompany.utils.SPUtils;
 import com.play.accompany.utils.StringUtils;
 import com.play.accompany.utils.ThreadPool;
@@ -39,6 +41,7 @@ import com.play.accompany.utils.ToastUtils;
 import com.play.accompany.view.AccompanyApplication;
 import com.play.accompany.view.MasterActivity;
 import com.play.accompany.view.RuleActivity;
+import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 
 import java.util.List;
 import okhttp3.RequestBody;
@@ -62,10 +65,10 @@ public class FirstMasterFragment extends BaseFragment implements View.OnClickLis
     public static FirstMasterFragment getInstance(int type) {
         if (mFragment == null) {
             mFragment = new FirstMasterFragment();
-            Bundle bundle = new Bundle();
-            bundle.putInt(OtherConstant.FIRST_MASTER_FRAGMENT_TYPE, type);
-            mFragment.setArguments(bundle);
         }
+        Bundle bundle = new Bundle();
+        bundle.putInt(OtherConstant.FIRST_MASTER_FRAGMENT_TYPE, type);
+        mFragment.setArguments(bundle);
         return mFragment;
     }
 
@@ -97,6 +100,7 @@ public class FirstMasterFragment extends BaseFragment implements View.OnClickLis
         getData();
         initTip();
 
+        LogUtils.d("master", "type:" + mType);
         if (mType == OtherConstant.USER_TYPE_WAIT) {
             getCheckInfo();
         }
@@ -198,7 +202,7 @@ public class FirstMasterFragment extends BaseFragment implements View.OnClickLis
             return;
         }
 
-        if (TextUtils.isEmpty(phone)) {
+        if (!AppUtils.isMobileNumber(phone)) {
             ToastUtils.showCommonToast(getResources().getString(R.string.phone_first));
             return;
         }
@@ -208,7 +212,7 @@ public class FirstMasterFragment extends BaseFragment implements View.OnClickLis
             return;
         }
 
-        if (TextUtils.isEmpty(id)) {
+        if (!AppUtils.isIdentity(id)) {
             ToastUtils.showCommonToast(getResources().getString(R.string.id_first));
             return;
         }
@@ -289,7 +293,6 @@ public class FirstMasterFragment extends BaseFragment implements View.OnClickLis
 
                     @Override
                     public void onComplete() {
-
                     }
                 });
     }
@@ -305,6 +308,10 @@ public class FirstMasterFragment extends BaseFragment implements View.OnClickLis
                 if (mDataList == null || mDataList.isEmpty()) {
                     ToastUtils.showCommonToast(getResources().getString(R.string.data_error));
                     return;
+                }
+                TopGameBean bean = mDataList.get(mDataList.size() - 1);
+                if (bean.getTypeId() == OtherConstant.TYPE_OTHER) {
+                    mDataList.remove(mDataList.size() - 1);
                 }
                 final TypeDialog dialogBuild = new TypeDialog(mContext, mDataList, new TypeDialog.SelectListenr() {
                     @Override
@@ -322,4 +329,5 @@ public class FirstMasterFragment extends BaseFragment implements View.OnClickLis
                 break;
         }
     }
+
 }

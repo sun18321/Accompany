@@ -12,8 +12,10 @@ import com.google.gson.reflect.TypeToken;
 import com.play.accompany.R;
 import com.play.accompany.base.BaseActivity;
 import com.play.accompany.bean.BaseDecodeBean;
+import com.play.accompany.bean.FindUserBean;
 import com.play.accompany.bean.Token;
 import com.play.accompany.bean.TopGameBean;
+import com.play.accompany.bean.UserInfo;
 import com.play.accompany.constant.OtherConstant;
 import com.play.accompany.constant.SpConstant;
 import com.play.accompany.fragment.FirstMasterFragment;
@@ -24,8 +26,10 @@ import com.play.accompany.net.NetListener;
 import com.play.accompany.utils.AppUtils;
 import com.play.accompany.utils.EncodeUtils;
 import com.play.accompany.utils.GsonUtils;
+import com.play.accompany.utils.LogUtils;
 import com.play.accompany.utils.SPUtils;
 import com.play.accompany.utils.StringUtils;
+import com.play.accompany.utils.ToastUtils;
 import com.yalantis.ucrop.UCrop;
 
 import java.util.List;
@@ -52,21 +56,18 @@ public class MasterActivity extends BaseActivity {
     @Override
     protected void initViews() {
         initToolbar(getResources().getString(R.string.master));
-
-        initFragment();
+        getUserType();
     }
 
-    private void initFragment() {
-        int userType = SPUtils.getInstance().getInt(SpConstant.USER_TYPE);
+    private void initFragment(int type) {
 
-//        getSupportFragmentManager().beginTransaction().add(R.id.frame,firstFragment, "first").commitNowAllowingStateLoss();
-//        getSupportFragmentManager().beginTransaction().add(R.id.frame,secondMasterFragment, "second").commitNowAllowingStateLoss();
+        SPUtils.getInstance().put(SpConstant.USER_TYPE, type);
 
-        if (userType == OtherConstant.USER_TYPE_ACCOMPANY) {
+        if (type == OtherConstant.USER_TYPE_ACCOMPANY) {
             SecondMasterFragment secondMasterFragment = SecondMasterFragment.getInstance();
             getSupportFragmentManager().beginTransaction().replace(R.id.frame,secondMasterFragment).commitAllowingStateLoss();
         } else {
-            FirstMasterFragment firstFragment = FirstMasterFragment.getInstance(userType);
+            FirstMasterFragment firstFragment = FirstMasterFragment.getInstance(type);
             getSupportFragmentManager().beginTransaction().replace(R.id.frame,firstFragment).commitAllowingStateLoss();
         }
     }
@@ -74,6 +75,43 @@ public class MasterActivity extends BaseActivity {
     public void getPicture(PictureListener listener) {
         mListener = listener;
         checkPermission();
+    }
+
+    private void getUserType() {
+        FindUserBean bean = new FindUserBean();
+        bean.setFindId(SPUtils.getInstance().getString(SpConstant.MY_USER_ID));
+        bean.setToken(SPUtils.getInstance().getString(SpConstant.APP_TOKEN));
+        RequestBody body = EncodeUtils.encodeInBody(GsonUtils.toJson(bean));
+        AccompanyRequest request = new AccompanyRequest();
+        request.beginRequest(NetFactory.getNetRequest().getNetService().getUserInfo(body), new TypeToken<BaseDecodeBean<List<UserInfo>>>() {
+        }.getType(), new NetListener<List<UserInfo>>() {
+            @Override
+            public void onSuccess(List<UserInfo> list) {
+                if (list.isEmpty()) {
+                    ToastUtils.showCommonToast(getResources().getString(R.string.data_error));
+                    MasterActivity.this.finish();
+                    return;
+                }
+                UserInfo info = list.get(0);
+                Integer type = info.getType();
+                initFragment(type);
+            }
+
+            @Override
+            public void onFailed(int errCode) {
+
+            }
+
+            @Override
+            public void onError() {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
     }
 
     @NeedsPermission({Manifest.permission.WRITE_EXTERNAL_STORAGE})
@@ -127,6 +165,7 @@ public class MasterActivity extends BaseActivity {
                 if (list.isEmpty()) {
                     return;
                 }
+
             }
 
             @Override

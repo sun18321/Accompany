@@ -34,6 +34,17 @@ public abstract class BaseActivity extends AppCompatActivity implements DialogIn
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
+            try {
+                Class decorViewClazz = Class.forName("com.android.internal.policy.DecorView");
+                Field field = decorViewClazz.getDeclaredField("mSemiTransparentStatusBarColor");
+                field.setAccessible(true);
+                field.setInt(getWindow().getDecorView(), Color.TRANSPARENT);  //改为透明
+            } catch (Exception e) {
+
+            }
+        }
+
 
         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.O && isTranslucentOrFloating()) {
             fixOrientation();
@@ -57,9 +68,9 @@ public abstract class BaseActivity extends AppCompatActivity implements DialogIn
     @Override
     protected void onPause() {
         super.onPause();
-        if (isFinishing()) {
-            overridePendingTransition(0, 0);
-        }
+//        if (isFinishing() && isTaskRoot()) {
+//            overridePendingTransition(0, 0);
+//        }
 
         if (mDialog != null && mDialog.isShowing()) {
             mDialog.dismiss();
@@ -174,6 +185,7 @@ public abstract class BaseActivity extends AppCompatActivity implements DialogIn
                 }
             });
         }
+
     }
 
     protected void initToolbar(String title, String rightTitle, View.OnClickListener listener) {
@@ -199,6 +211,28 @@ public abstract class BaseActivity extends AppCompatActivity implements DialogIn
         tvRight.setText(rightTitle);
         tvRight.setOnClickListener(listener);
     }
+
+    protected void initToolbarNoBack(String title) {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        TextView tvTitle = findViewById(R.id.tv_title);
+        tvTitle.setText(title);
+        setSupportActionBar(toolbar);
+        ActionBar supportActionBar = getSupportActionBar();
+        if (supportActionBar != null) {
+            supportActionBar.setDisplayHomeAsUpEnabled(false);
+            supportActionBar.setDisplayShowTitleEnabled(false);
+        }
+//        if (toolbar != null) {
+//            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    BaseActivity.this.finish();
+//                }
+//            });
+//        }
+
+    }
+
 
     protected void showDialog() {
         if (mDialog == null) {

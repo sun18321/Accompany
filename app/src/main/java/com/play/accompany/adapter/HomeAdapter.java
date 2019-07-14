@@ -18,7 +18,10 @@ import com.play.accompany.bean.TopGameBean;
 import com.play.accompany.bean.UserInfo;
 import com.play.accompany.design.BannerImageLoader;
 import com.play.accompany.design.ColorfulTitle;
+import com.play.accompany.present.ApplicationListener;
+import com.play.accompany.present.CommonListener;
 import com.play.accompany.utils.GsonUtils;
+import com.play.accompany.utils.LogUtils;
 import com.play.accompany.utils.StringUtils;
 import com.play.accompany.view.AccompanyApplication;
 import com.youth.banner.Banner;
@@ -29,22 +32,26 @@ import com.youth.banner.listener.OnBannerListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.umeng.analytics.pro.k.a.s;
+
 
 public class HomeAdapter extends RecyclerView.Adapter {
     //除了陪玩列表，其他都算other 总共3个条目，other为2，以此类推
     private final int mOtherTypeCount = 2;
-
     private Context mContext;
     private final int mTypeTop = 1001;
     private final int mTypeContent = 1002;
     private final int mTypeBanner = 1003;
     private final int mGridCount = 5;
+    //顶部选择集合
     private List<TopGameBean> mGameList = new ArrayList<>();
     private List<UserInfo> mContentList = new ArrayList<>();
     private List<BannerBean> mBannerList = new ArrayList<>();
     private List<String> mBannerImgList = new ArrayList<>();
     private HomeListener mListener;
-    private int mSelectedGame = 0;
+    //当前选择游戏在mallList里面的index
+    private int mSelectedIndex = 0;
+    private List<TopGameBean> mAllList;
 
     public HomeAdapter(Context context, String json) {
         mContext = context;
@@ -68,29 +75,39 @@ public class HomeAdapter extends RecyclerView.Adapter {
         }
     }
 
-    private TopGameBean getGameIndex() {
-        if (mSelectedGame == 0) {
-            return mGameList.get(0);
+    private void getGameIndex(@NonNull final CommonListener.BooleanListener listener) {
+        if (mAllList == null || mAllList.isEmpty()) {
+            AccompanyApplication.getGameList(new ApplicationListener.GameListListener() {
+                @Override
+                public void onGameListener(List<TopGameBean> list) {
+                    mAllList = list;
+                    if (mAllList != null && !mAllList.isEmpty()) {
+                        listener.onListener(true);
+                    } else {
+                        listener.onListener(false);
+                    }
+                }
+            });
+        } else {
+            listener.onListener(true);
         }
-        int index = 0;
-        List<TopGameBean> list = AccompanyApplication.getGameList();
-        if (list == null || list.isEmpty()) {
-            list = mGameList;
-        }
+    }
 
-        for (int i = 0; i < list.size(); i++) {
-            int typeId = list.get(i).getTypeId();
-            if (typeId == mSelectedGame) {
-                index = i;
+    private void setGameIndex(int gameType) {
+        if (mAllList == null) {
+            return;
+        }
+        for (int i = 0; i < mAllList.size(); i++) {
+            if (gameType == mAllList.get(i).getTypeId()) {
+                mSelectedIndex = i;
                 break;
             }
         }
-        return list.get(index);
     }
 
     public void setGameQuery(List<UserInfo> list, int gameId) {
         mContentList = list;
-        mSelectedGame = gameId;
+        setGameIndex(gameId);
         notifyDataSetChanged();
 
 //        notifyItemRangeChanged(mOtherTypeCount, 1);
@@ -119,7 +136,7 @@ public class HomeAdapter extends RecyclerView.Adapter {
             BannerHolder bannerHolder = (BannerHolder) viewHolder;
             bannerHolder.bindItem();
         } else if (viewHolder instanceof TopViewHolder) {
-            TopViewHolder topViewHolder = (TopViewHolder) viewHolder;
+            final TopViewHolder topViewHolder = (TopViewHolder) viewHolder;
             topViewHolder.recyclerView.setLayoutManager(new GridLayoutManager(mContext, mGridCount, GridLayoutManager.VERTICAL, false));
             TopAdapter topAdapter = new TopAdapter(mContext, mGameList);
             topViewHolder.recyclerView.setAdapter(topAdapter);
@@ -131,11 +148,18 @@ public class HomeAdapter extends RecyclerView.Adapter {
                     }
                 }
             });
-            TopGameBean gameBean  = getGameIndex();
-            topViewHolder.colorfulTitle.setColor(gameBean.getTagFront(), gameBean.getTagBg(), gameBean.getName());
+            getGameIndex(new CommonListener.BooleanListener() {
+                @Override
+                public void onListener(boolean b) {
+                    if (b) {
+                        TopGameBean gameBean = mAllList.get(mSelectedIndex);
+                        topViewHolder.colorfulTitle.setColor(gameBean.getTagFront(), gameBean.getTagBg(), gameBean.getName());
+                    }
+                }
+            });
         } else {
             ContentViewHolder contentViewHolder = (ContentViewHolder) viewHolder;
-            contentViewHolder.bindItem(mContentList.get(i - mOtherTypeCount));
+            contentViewHolder.bindItem(mContentList.get(i - mOtherTypeCount), i - mOtherTypeCount);
         }
     }
 
@@ -219,7 +243,21 @@ public class HomeAdapter extends RecyclerView.Adapter {
              tvCount = itemView.findViewById(R.id.tv_count);
         }
 
-        void bindItem(final UserInfo info) {
+        void bindItem(final UserInfo info, int position) {
+            if (position == 0) {
+                ViewGroup.MarginLayoutParams marginLayoutParams;
+                ViewGroup.LayoutParams params = itemView.getLayoutParams();
+                if (params instanceof ViewGroup.MarginLayoutParams) {
+                    marginLayoutParams = (ViewGroup.MarginLayoutParams) params;
+                } else {
+                    marginLayoutParams = new ViewGroup.MarginLayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                }
+                float bottom = itemView.getContext().getResources().getDimension(R.dimen.dp_25);
+                float top = itemView.getContext().getResources().getDimension(R.dimen.dp_11);
+                marginLayoutParams.setMargins(0, (int) top, 0, (int) bottom);
+                itemView.setLayoutParams(params);
+            }
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -229,11 +267,19 @@ public class HomeAdapter extends RecyclerView.Adapter {
                 }
             });
             tvName.setText(info.getName());
-            tvPrice.setText(info.getPrice() + mContext.getResources().getString(R.string.price));
+            getGameIndex(new CommonListener.BooleanListener() {
+                @Override
+                public void onListener(boolean b) {
+                    if (b) {
+                        int typeId = mAllList.get(mSelectedIndex).getTypeId();
+                        tvPrice.setText(info.getGamePrice(typeId));
+                    }
+                }
+            });
             tvIntroduction.setText(info.getSign());
             Glide.with(itemView.getContext()).load(info.getUrl()).into(imgHead);
             tvDistance.setText(StringUtils.m2Km(info.getLbs(), info.getAddress()));
-            tvGrade.setText(String.valueOf(info.getGrade()/2));
+            tvGrade.setText(String.valueOf(info.getGrade()));
             tvCount.setText(String.valueOf(info.getOrderNum()) + "单");
         }
     }

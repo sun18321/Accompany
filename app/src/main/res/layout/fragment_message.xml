@@ -2,15 +2,33 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     >
 
-    <include layout="@layout/toolbar_title"/>
+    <View
+        android:id="@+id/view_status"
+        android:background="@color/colorPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_30"/>
+
+    <RelativeLayout
+        android:background="@color/colorPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="?android:actionBarSize">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_centerInParent="true"
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
 
 
     <fragment
         android:id="@+id/conversationlist"
-        android:name="io.rong.imkit.fragment.ConversationListFragment"
+        android:name="com.play.accompany.chat.AccompanyListFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

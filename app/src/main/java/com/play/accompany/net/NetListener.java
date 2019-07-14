@@ -1,10 +1,9 @@
 package com.play.accompany.net;
 
-import java.io.UnsupportedEncodingException;
 
 public interface NetListener<T> {
 
-    void onSuccess(T t) throws UnsupportedEncodingException;
+    void onSuccess(T t);
 
     void onFailed(int errCode);
 

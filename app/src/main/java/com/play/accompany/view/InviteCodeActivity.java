@@ -12,6 +12,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.view.animation.BounceInterpolator;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -56,6 +57,7 @@ public class InviteCodeActivity extends BaseActivity implements View.OnClickList
     private TextView mTvTest;
     private int mHeight = 0;
     private TextView mTvSwitch;
+    private Button mButton;
 
     @Override
     protected int getLayout() {
@@ -77,7 +79,8 @@ public class InviteCodeActivity extends BaseActivity implements View.OnClickList
         tvInviteCode.setOnClickListener(this);
 
         mEditInvite = findViewById(R.id.edit_invite);
-        findViewById(R.id.btn_submit).setOnClickListener(this);
+        mButton = findViewById(R.id.btn_submit);
+        mButton.setOnClickListener(this);
         findViewById(R.id.lin_switch).setOnClickListener(this);
         mImgSwitch = findViewById(R.id.img_switch);
         mLinExpand = findViewById(R.id.lin_expand);
@@ -87,6 +90,10 @@ public class InviteCodeActivity extends BaseActivity implements View.OnClickList
         if (SPUtils.getInstance().getBoolean(SpConstant.INVITE_FLAG)) {
             mImgSwitch.setImageResource(R.drawable.invite_arrow_up);
             mLinExpand.setVisibility(View.INVISIBLE);
+            mEditInvite.setVisibility(View.INVISIBLE);
+            mButton.setText("已提交");
+            mButton.setBackgroundResource(R.drawable.gray_background);
+            mButton.setClickable(false);
             mIsExpand = false;
         } else {
             mImgSwitch.setImageResource(R.drawable.invite_arrow_down);
@@ -328,18 +335,16 @@ public class InviteCodeActivity extends BaseActivity implements View.OnClickList
         String json = GsonUtils.toJson(bean);
         RequestBody body = EncodeUtils.encodeInBody(json);
         AccompanyRequest request = new AccompanyRequest();
-        request.beginRequest(NetFactory.getNetRequest().getNetService().inviteCode(body), new TypeToken<BaseDecodeBean<List<OnlyCodeBean>>>() {
-        }.getType(), new NetListener<List<OnlyCodeBean>>() {
+        request.beginRequest(NetFactory.getNetRequest().getNetService().inviteCode(body), new TypeToken<BaseDecodeBean<OnlyCodeBean>>() {
+        }.getType(), new NetListener() {
             @Override
-            public void onSuccess(List<OnlyCodeBean> list) {
-                if (list.isEmpty()) {
-                    return;
-                }
-                OnlyCodeBean codeBean = list.get(0);
-                if (codeBean.getCode() == AppConstant.RESPONSE_SUCCESS) {
-                    ToastUtils.showCommonToast(getResources().getString(R.string.invite_success));
-                    SPUtils.getInstance().put(SpConstant.INVITE_FLAG, true);
-                }
+            public void onSuccess(Object o) {
+                ToastUtils.showCommonToast(getResources().getString(R.string.invite_success));
+                SPUtils.getInstance().put(SpConstant.INVITE_FLAG, true);
+                mEditInvite.setVisibility(View.INVISIBLE);
+                mButton.setText("已提交");
+                mButton.setBackgroundResource(R.drawable.gray_background);
+                mButton.setClickable(false);
             }
 
             @Override

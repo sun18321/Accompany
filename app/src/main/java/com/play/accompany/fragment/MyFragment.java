@@ -9,18 +9,27 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.gson.reflect.TypeToken;
 import com.play.accompany.R;
 import com.play.accompany.base.BaseFragment;
+import com.play.accompany.bean.BaseDecodeBean;
+import com.play.accompany.bean.OrderUnreadBean;
 import com.play.accompany.bean.UserInfo;
 import com.play.accompany.constant.IntentConstant;
 import com.play.accompany.constant.SpConstant;
 import com.play.accompany.db.AccompanyDatabase;
+import com.play.accompany.net.AccompanyRequest;
+import com.play.accompany.net.NetFactory;
+import com.play.accompany.net.NetListener;
+import com.play.accompany.utils.EncodeUtils;
 import com.play.accompany.utils.LogUtils;
 import com.play.accompany.utils.SPUtils;
 import com.play.accompany.utils.StringUtils;
+import com.play.accompany.utils.ToastUtils;
 import com.play.accompany.view.AllOrderActivity;
 import com.play.accompany.view.EditUserActivity;
 import com.play.accompany.view.InviteCodeActivity;
+import com.play.accompany.view.MainActivity;
 import com.play.accompany.view.MasterActivity;
 import com.play.accompany.view.ServiceActivity;
 import com.play.accompany.view.SettingActivity;
@@ -28,6 +37,9 @@ import com.play.accompany.view.UserCenterActivity;
 import com.play.accompany.view.WalletActivity;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
 import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
+
+import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -39,19 +51,18 @@ import io.reactivex.schedulers.Schedulers;
 import jp.wasabeef.glide.transformations.BlurTransformation;
 
 
-public class MyFragment extends BaseFragment {
+public class MyFragment extends BaseFragment implements View.OnClickListener {
     private static MyFragment sMyFragment;
-    private QMUIGroupListView mGroupListView;
     private TextView mTvId;
     private TextView mTvName;
     private TextView mTvAttention;
     private TextView mTvFans;
     private ImageView mImgHead;
-    private ImageView mImgBg;
     private boolean mFirst = true;
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
     private UserInfo mUserInfo;
-    private QMUICommonListItemView mItemWallet;
+    private TextView mTvOrder;
+    private MainActivity mMainActivity;
 
     public static MyFragment newInstance() {
         if (sMyFragment == null) {
@@ -69,20 +80,27 @@ public class MyFragment extends BaseFragment {
 
     @Override
     protected void initViews(View view) {
-        mGroupListView = view.findViewById(R.id.group_list);
-        mImgBg = view.findViewById(R.id.img_bg);
+        getRedPoint();
+
         mTvId = view.findViewById(R.id.tv_id);
         mTvName = view.findViewById(R.id.tv_name);
         mTvAttention = view.findViewById(R.id.tv_attention);
         mTvFans = view.findViewById(R.id.tv_fans);
         mImgHead = view.findViewById(R.id.img_head);
+        view.findViewById(R.id.lin_wallet).setOnClickListener(this);
+        view.findViewById(R.id.lin_master).setOnClickListener(this);
+        view.findViewById(R.id.lin_service).setOnClickListener(this);
+        view.findViewById(R.id.lin_invite).setOnClickListener(this);
+        view.findViewById(R.id.lin_setting).setOnClickListener(this);
+        view.findViewById(R.id.rl_order).setOnClickListener(this);
+        mTvOrder = view.findViewById(R.id.tv_order);
 
         mImgHead.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mUserInfo != null) {
                     Intent intent = new Intent(mContext, UserCenterActivity.class);
-                    mUserInfo.setFromChat(false);
+                    mUserInfo.setFromChat(true);
                     intent.putExtra(IntentConstant.INTENT_USER, mUserInfo);
                     mContext.startActivity(intent);
                 } else {
@@ -102,7 +120,6 @@ public class MyFragment extends BaseFragment {
             }
         });
 
-        initItems();
     }
 
     @Override
@@ -117,11 +134,6 @@ public class MyFragment extends BaseFragment {
         //关注需要时刻刷新
         if (mTvAttention != null) {
             mTvAttention.setText(SPUtils.getInstance().getInt(SpConstant.ATTENTION_COUNT, 0) + "");
-        }
-
-        if (mItemWallet != null) {
-//            String money = StringUtils.moneyExchange(SPUtils.getInstance().getDouble(SpConstant.MY_GOLDEN)) + getResources().getString(R.string.money);
-            mItemWallet.setDetailText(SPUtils.getInstance().getDouble(SpConstant.MY_GOLDEN) + getResources().getString(R.string.money));
         }
 
         boolean isEdit = SPUtils.getInstance().getBoolean(SpConstant.IS_USER_EDIT, false);
@@ -152,8 +164,10 @@ public class MyFragment extends BaseFragment {
                 mUserInfo = AccompanyDatabase.getInstance(mContext).getUserDao().getUserInfo(SPUtils.getInstance().getString(SpConstant.MY_USER_ID));
                 if (mUserInfo == null) {
                     emitter.onNext(false);
+                    LogUtils.d(getTag(),"没有读取到数据");
                 } else {
                     emitter.onNext(true);
+                    LogUtils.d(getTag(),"读取到数据了！");
                 }
             }
         }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<Boolean>() {
@@ -161,6 +175,9 @@ public class MyFragment extends BaseFragment {
             public void accept(Boolean b) throws Exception {
                 if (b) {
                     displayUser();
+//                    ToastUtils.showCommonToast("有名字");
+                } else {
+//                    ToastUtils.showCommonToast("名字是空的");
                 }
             }
         }));
@@ -173,7 +190,7 @@ public class MyFragment extends BaseFragment {
         }
         String name = mUserInfo.getName();
         String userId = mUserInfo.getUserId();
-        mTvName.setText(getResources().getString(R.string.nick_name) + ":" + name);
+        mTvName.setText(name);
         mTvId.setText(getResources().getString(R.string.id) + ":" + userId);
         Integer attention_followed = mUserInfo.getFavor();
         if (attention_followed != null) {
@@ -184,83 +201,101 @@ public class MyFragment extends BaseFragment {
     private void glideFuzzy(String url) {
         LogUtils.d("glide", "url:" + url);
         Glide.with(mContext).load(url).into(mImgHead);
-        Glide.with(mContext)
-                .load(url)
-                .apply(RequestOptions.bitmapTransform(new BlurTransformation(50, 5)))
-                .into(mImgBg);
     }
 
-    private void initItems() {
-//        QMUICommonListItemView item_member = mGroupListView.createItemView(ContextCompat.getDrawable(mContext, R.drawable.invite), getResources().getString(R.string.invite), "",
-//                QMUICommonListItemView.HORIZONTAL, QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
-//        QMUICommonListItemView item_service = mGroupListView.createItemView(ContextCompat.getDrawable(mContext, R.drawable.service), getResources().getString(R.string.service), "",
-//                QMUICommonListItemView.HORIZONTAL, QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
-//        QMUICommonListItemView item_master = mGroupListView.createItemView(ContextCompat.getDrawable(mContext, R.drawable.master), getResources().getString(R.string.master), "",
-//                QMUICommonListItemView.HORIZONTAL, QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
-//        QMUICommonListItemView item_setting = mGroupListView.createItemView(ContextCompat.getDrawable(mContext, R.drawable.setting), getResources().getString(R.string.setting), "",
-//                QMUICommonListItemView.HORIZONTAL, QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
+    private void showRedPoint(int count) {
+        if (mTvOrder != null) {
+            mTvOrder.setVisibility(View.VISIBLE);
+            String unReadCount = StringUtils.unReadCount(count);
+            mTvOrder.setText(unReadCount);
+        }
 
-        mItemWallet = mGroupListView.createItemView(getResources().getString(R.string.wallet));
-        mItemWallet.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.money));
-        mItemWallet.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
-        TextView detailTextView = mItemWallet.getDetailTextView();
-        detailTextView.setTextColor(ContextCompat.getColor(mContext, R.color.color_red));
-        mItemWallet.setDetailText(SPUtils.getInstance().getDouble(SpConstant.MY_GOLDEN) + getResources().getString(R.string.money));
-//        mItemWallet.setDetailText(money);
+        if (mMainActivity == null) {
+            mMainActivity = (MainActivity) mActivity;
+        }
+        mMainActivity.showRedPoint(count);
+    }
 
-        QMUICommonListItemView itemOrder = mGroupListView.createItemView(getResources().getString(R.string.my_order));
-        itemOrder.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.order));
-        itemOrder.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
-        itemOrder.setRedDotPosition(QMUICommonListItemView.REDDOT_POSITION_RIGHT);
-        itemOrder.showRedDot(true);
+    private void clearRedPoint() {
+        if (mTvOrder != null) {
+            mTvOrder.setText("");
+            mTvOrder.setVisibility(View.GONE);
+        }
 
-        QMUICommonListItemView itemServices = mGroupListView.createItemView(getResources().getString(R.string.service));
-        itemServices.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.service));
-        itemServices.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
+        if (mMainActivity == null) {
+            mMainActivity = (MainActivity) mActivity;
+        }
+        mMainActivity.clearMyPoint();
+    }
 
-        QMUICommonListItemView itemMaster = mGroupListView.createItemView(getResources().getString(R.string.master));
-        itemMaster.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.master));
-        itemMaster.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
+    private void getRedPoint() {
+        AccompanyRequest request = new AccompanyRequest();
+        request.beginRequest(NetFactory.getNetRequest().getNetService().getRedPointCount(EncodeUtils.encodeToken()), new TypeToken<BaseDecodeBean<List<OrderUnreadBean>>>() {
+                }.getType(), new NetListener<List<OrderUnreadBean>>() {
+                    @Override
+                    public void onSuccess(List<OrderUnreadBean> list) {
+                        if (list.isEmpty()) {
+                            return;
+                        }
+                        OrderUnreadBean bean = list.get(0);
+                        if (bean != null) {
+                            int num = bean.getOrderNewNum();
+                            if (num > 0) {
+                                showRedPoint(num);
+                            }
+                        }
+                    }
 
-        QMUICommonListItemView itemAdvice = mGroupListView.createItemView(getResources().getString(R.string.invite_code));
-        itemAdvice.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.invite));
-        itemAdvice.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
+                    @Override
+                    public void onFailed(int errCode) {
 
-        QMUICommonListItemView itemSetting = mGroupListView.createItemView(getResources().getString(R.string.setting));
-        itemSetting.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.setting));
-        itemSetting.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
+                    }
 
-        QMUIGroupListView.newSection(mContext).addItemView(mItemWallet, new View.OnClickListener() {
+                    @Override
+                    public void onError() {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    private void readRedPoint() {
+        clearRedPoint();
+        AccompanyRequest request = new AccompanyRequest();
+        request.beginRequest(NetFactory.getNetRequest().getNetService().clearRedPoint(EncodeUtils.encodeToken()), new TypeToken<BaseDecodeBean<List<OrderUnreadBean>>>() {
+                }.getType(), new NetListener<List<OrderUnreadBean>>() {
             @Override
-            public void onClick(View v) {
-                startActivity(new Intent(mContext,WalletActivity.class));
+            public void onSuccess(List<OrderUnreadBean> list) {
+
             }
-        }).addItemView(itemOrder, new View.OnClickListener() {
+
             @Override
-            public void onClick(View v) {
-                startActivity(new Intent(mContext, AllOrderActivity.class));
+            public void onFailed(int errCode) {
+
             }
-        }).addItemView(itemServices, new View.OnClickListener() {
+
             @Override
-            public void onClick(View v) {
-                startActivity(new Intent(mContext, ServiceActivity.class));
+            public void onError() {
+
             }
-        }).addItemView(itemMaster, new View.OnClickListener() {
+
             @Override
-            public void onClick(View v) {
-                startActivity(new Intent(mContext, MasterActivity.class));
+            public void onComplete() {
+
             }
-        }).addItemView(itemAdvice, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(mContext, InviteCodeActivity.class));
-            }
-        }).addItemView(itemSetting, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(mContext, SettingActivity.class));
-            }
-        }).addTo(mGroupListView);
+                });
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) {
+            getRedPoint();
+        }
     }
 
     @Override
@@ -268,6 +303,33 @@ public class MyFragment extends BaseFragment {
         super.onDestroy();
         if (mCompositeDisposable != null) {
             mCompositeDisposable.clear();
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.lin_wallet:
+                startActivity(new Intent(mContext, WalletActivity.class));
+                break;
+            case R.id.rl_order:
+                if (mTvOrder != null && mTvOrder.getVisibility() == View.VISIBLE) {
+                    readRedPoint();
+                }
+                startActivity(new Intent(mContext,AllOrderActivity.class));
+                break;
+            case R.id.lin_master:
+                startActivity(new Intent(mContext,MasterActivity.class));
+                break;
+            case R.id.lin_service:
+                startActivity(new Intent(mContext,ServiceActivity.class));
+                break;
+            case R.id.lin_invite:
+                startActivity(new Intent(mContext,InviteCodeActivity.class));
+                break;
+            case R.id.lin_setting:
+                startActivity(new Intent(mContext,SettingActivity.class));
+                break;
         }
     }
 }

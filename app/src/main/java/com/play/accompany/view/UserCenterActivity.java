@@ -3,6 +3,7 @@ package com.play.accompany.view;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.net.Uri;
 import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
 import android.view.View;
@@ -29,7 +30,6 @@ import com.play.accompany.constant.IntentConstant;
 import com.play.accompany.constant.OtherConstant;
 import com.play.accompany.constant.SpConstant;
 import com.play.accompany.db.AccompanyDatabase;
-import com.play.accompany.design.FlowLayout;
 import com.play.accompany.net.AccompanyRequest;
 import com.play.accompany.net.NetFactory;
 import com.play.accompany.net.NetListener;
@@ -45,6 +45,7 @@ import com.play.accompany.utils.ToastUtils;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
+import com.zhy.view.flowlayout.FlowLayout;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -89,6 +90,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     private TextView mTvAttention;
     private ImageView mImgAttention;
     private List<String> mAttentionList = new ArrayList<>();
+    private LinearLayout mLinGame;
 
     @Override
     protected int getLayout() {
@@ -144,6 +146,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         mTvProfession = findViewById(R.id.tv_profession);
         mTvConstellation = findViewById(R.id.tv_constellation);
         mFlowLayout = findViewById(R.id.flowlayout);
+        mLinGame = findViewById(R.id.lin_game);
 
         findViewById(R.id.rl_back).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -262,6 +265,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     private void getAllGameList() {
         List<GameProperty> list = mUserInfo.getGameType();
         if (list == null || list.isEmpty()) {
+            mLinGame.setVisibility(View.GONE);
             return;
         }
         List<TopGameBean> allList = AccompanyApplication.getGameList();
@@ -513,6 +517,8 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
                 }
                 mUserInfo = list.get(0);
                 setViews();
+                //刷新聊天头像
+                updateChatUser();
             }
 
             @Override
@@ -530,6 +536,22 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
                 dismissDialog();
             }
         });
+    }
+
+    private void updateChatUser() {
+        if (mUserInfo == null) {
+            return;
+        }
+        if (TextUtils.equals((SPUtils.getInstance().getString(SpConstant.MY_USER_ID)),mUserInfo.getUserId())) {
+            return;
+        }
+        io.rong.imlib.model.UserInfo chatInfo = new io.rong.imlib.model.UserInfo(mUserInfo.getUserId(), mUserInfo.getName(), Uri.parse(mUserInfo.getUrl()));
+        RongIM.getInstance().refreshUserInfoCache(chatInfo);
+
+        Intent intent = new Intent(OtherConstant.CONVERSATION_ACTIVITY_RECEIVER);
+        intent.putExtra(IntentConstant.INTENT_CONVERSATION_RECEIVER_TYPE, OtherConstant.CONVERSATION_UPDATE_NAME);
+        intent.putExtra(IntentConstant.INTENT_USER_NAME, mUserInfo.getName());
+        sendBroadcast(intent);
     }
 
     @Override

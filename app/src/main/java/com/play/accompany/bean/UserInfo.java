@@ -4,6 +4,11 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
+import android.text.TextUtils;
+
+import com.play.accompany.R;
+import com.play.accompany.constant.OtherConstant;
+import com.play.accompany.view.AccompanyApplication;
 
 import java.io.Serializable;
 import java.util.List;
@@ -73,9 +78,6 @@ public class UserInfo implements Serializable {
 
     @Ignore
     private List<GameProperty> gameType;
-
-    @Ignore
-    private List<String> GameTypeName;
 
     @ColumnInfo(name = "user_token")
     private String token;
@@ -346,14 +348,6 @@ public class UserInfo implements Serializable {
         this.gameType = gameType;
     }
 
-    public List<String> getGameTypeName() {
-        return GameTypeName;
-    }
-
-    public void setGameTypeName(List<String> GameTypeName) {
-        this.GameTypeName = GameTypeName;
-    }
-
     public String getToken() {
         return token;
     }
@@ -368,5 +362,22 @@ public class UserInfo implements Serializable {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getGamePrice(int type) {
+        String text = "";
+        if (type < 0) {
+            return text;
+        }
+        if (gameType == null || gameType.isEmpty()) {
+            return text;
+        }
+        for (GameProperty property : gameType) {
+            if (property.getType() == type) {
+                text = property.getPrice() + AccompanyApplication.getContext().getResources().getString(R.string.money) + "/" + (TextUtils.isEmpty(property.getUnit()) ? OtherConstant.DEFAULT_UNIT : property.getUnit());
+                break;
+            }
+        }
+        return text;
     }
 }

@@ -1,11 +1,17 @@
 package com.play.accompany.chat;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.support.v4.app.NotificationCompat;
+import android.text.TextUtils;
+import android.util.Log;
 
+import com.play.accompany.bean.MainReceiverMessage;
+import com.play.accompany.bean.MessageBean;
 import com.play.accompany.bean.OrderNotifyBean;
 import com.play.accompany.constant.IntentConstant;
 import com.play.accompany.constant.OtherConstant;
@@ -17,9 +23,11 @@ import com.play.accompany.utils.SPUtils;
 import com.play.accompany.view.AccompanyApplication;
 
 
+import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
+import io.rong.message.InformationNotificationMessage;
 import io.rong.message.TextMessage;
 
 public class MessageReceiverListener implements RongIMClient.OnReceiveMessageListener {
@@ -27,9 +35,7 @@ public class MessageReceiverListener implements RongIMClient.OnReceiveMessageLis
     public boolean onReceived(Message message, int i) {
 
 
-//
         LogUtils.d("message", "新的消息:" + message.getConversationType());
-        LogUtils.d("message", "extra:" + message.getExtra());
 //
 //        LogUtils.d("conversation", "message:" + message.toString());
 //
@@ -45,27 +51,48 @@ public class MessageReceiverListener implements RongIMClient.OnReceiveMessageLis
 //            LogUtils.d("conversation", "content is not text");
 //        }
 
-        int id = 0;
-        if (SPUtils.getInstance().getBoolean(SpConstant.ACCEPT_NEW_NOTICE) && message.getConversationType() == Conversation.ConversationType.SYSTEM) {
+        if (SPUtils.getInstance().getBoolean(SpConstant.ACCEPT_NEW_NOTICE,true) && message.getConversationType() == Conversation.ConversationType.SYSTEM) {
             if (message.getContent() instanceof TextMessage) {
+
+                LogUtils.d("message", "thread:" + Thread.currentThread().getName());
+
                 TextMessage content = (TextMessage) message.getContent();
                 String extra = content.getExtra();
-                OrderNotifyBean bean = GsonUtils.fromJson(extra, OrderNotifyBean.class);
+                LogUtils.d("message", "extra:" + extra);
+                MessageBean bean = GsonUtils.fromJson(extra, MessageBean.class);
                 if (bean != null) {
-                    long num = Long.parseLong(bean.getId());
-                    id = (int) num;
-                    LogUtils.d("conversation", "id:" + id);
+                    LogUtils.d("message", "bean:" + bean);
+                    String push = bean.getPush();
+                    LogUtils.d("message", "push:" + push);
+                    if (!TextUtils.isEmpty(push)) {
+                        createNotification(bean.getType(), push);
+                    }
+
+                    String chat = bean.getChat();
+                    if (!TextUtils.isEmpty(chat)) {
+                        insertMessage(bean.getTargetId(), chat);
+                    }
+                    int num = bean.getOrderNum();
+                    if (num > 0) {
+                        Intent intent = new Intent(OtherConstant.FILTER_MAIN_RECEIVER);
+                        MainReceiverMessage mainReceiverMessage = new MainReceiverMessage();
+                        mainReceiverMessage.setMessageType(MainReceiverMessage.TYPE_REMAIN);
+                        mainReceiverMessage.setRemainMessage(num);
+                        intent.putExtra(OtherConstant.MAIN_RECEIVER, mainReceiverMessage);
+                        AccompanyApplication.getContext().sendBroadcast(intent);
+                    }
+                    return true;
+                } else {
+                    LogUtils.d("message", "bean is null");
                 }
+
             }
-            NotificationManager manager = (NotificationManager) AccompanyApplication.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
-            NotificationCompat.Builder builder = NotificationUtils.createNotification();
-            Notification build = builder.build();
-            build.flags = Notification.FLAG_AUTO_CANCEL;
-            manager.notify(id, build);
+
         }
 
         //收到提前的客户回馈
         if (message.getContent() instanceof OrderResponseMessage) {
+            LogUtils.d("message","order message");
             OrderResponseMessage content = (OrderResponseMessage) message.getContent();
             String response = content.getResponse();
             String uid = content.getUid();
@@ -79,6 +106,54 @@ public class MessageReceiverListener implements RongIMClient.OnReceiveMessageLis
             intent.putExtra(IntentConstant.INTENT_ORDER_SEND_ID, sendId);
             AccompanyApplication.getContext().sendBroadcast(intent);
         }
+
+        if (message.getContent() instanceof TextMessage) {
+            TextMessage txtMessage = (TextMessage) message.getContent();
+            String content = txtMessage.getContent();
+
+            LogUtils.d("message", "receive text message content is text");
+            LogUtils.d("message", "tostring:" + message.toString());
+            LogUtils.d("message", "content:" + content);
+        }
+
         return false;
+    }
+
+    private void createNotification(int type, String text) {
+        LogUtils.d("message", "notify start");
+        NotificationManager manager = (NotificationManager) AccompanyApplication.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+        if (manager != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                NotificationChannel channel = new NotificationChannel(OtherConstant.NOTIFY_CHANNEL, "新消息通知", NotificationManager.IMPORTANCE_HIGH);
+                channel.enableLights(true);
+                channel.enableVibration(true);
+
+                manager.createNotificationChannel(channel);
+            }
+            NotificationCompat.Builder builder = NotificationUtils.createNotification(type, text);
+            Notification build = builder.build();
+            build.flags = Notification.FLAG_AUTO_CANCEL;
+            int id = (int) System.currentTimeMillis();
+
+            LogUtils.d("message","notify end");
+
+            manager.notify(id, build);
+        }
+    }
+
+    private void insertMessage(String id, String text) {
+        Message.ReceivedStatus status = new Message.ReceivedStatus(1);
+        InformationNotificationMessage notificationContent = InformationNotificationMessage.obtain(text);
+        RongIM.getInstance().insertIncomingMessage(Conversation.ConversationType.PRIVATE, id, id, status, notificationContent, new RongIMClient.ResultCallback<Message>() {
+            @Override
+            public void onSuccess(Message message) {
+
+            }
+
+            @Override
+            public void onError(RongIMClient.ErrorCode errorCode) {
+
+            }
+        });
     }
 }

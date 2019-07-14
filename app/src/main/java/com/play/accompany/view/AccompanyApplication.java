@@ -3,31 +3,37 @@ package com.play.accompany.view;
 import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
-import android.os.Looper;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
 import com.google.gson.reflect.TypeToken;
 import com.play.accompany.bean.TopGameBean;
-import com.play.accompany.bean.UserInfo;
 import com.play.accompany.bean.WeChatInfo;
 import com.play.accompany.chat.ChatClickListener;
 import com.play.accompany.chat.ChatConnectListener;
+import com.play.accompany.chat.ChatListClickListener;
 import com.play.accompany.chat.MessageReceiverListener;
 import com.play.accompany.chat.OrderMessage;
 import com.play.accompany.chat.OrderProvider;
 import com.play.accompany.chat.OrderResponseMessage;
 import com.play.accompany.constant.AppConstant;
 import com.play.accompany.constant.OtherConstant;
+import com.play.accompany.present.ApplicationListener;
+import com.play.accompany.present.CommonListener;
 import com.play.accompany.utils.FileSaveUtils;
 import com.play.accompany.utils.GsonUtils;
 import com.play.accompany.utils.ThreadPool;
+import com.play.accompany.utils.ToastUtils;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
 
+import java.util.HashSet;
 import java.util.List;
 
 import io.rong.imkit.RongIM;
-
-import static io.rong.imkit.utils.SystemUtils.getCurProcessName;
+import io.rong.imlib.RongIMClient;
+import io.rong.imlib.model.Conversation;
 
 public class AccompanyApplication extends Application {
     private static Context mContext;
@@ -39,6 +45,7 @@ public class AccompanyApplication extends Application {
     }
     private static List<TopGameBean> mGameList;
     private static List<String> mAttentionList;
+    private static HashSet mHashSet = new HashSet<String>();
 
 
     @Override
@@ -75,7 +82,8 @@ public class AccompanyApplication extends Application {
             RongIM.setOnReceiveMessageListener(new MessageReceiverListener());
             //会话点击
             RongIM.setConversationClickListener(new ChatClickListener());
-
+            //会话列表点击
+            RongIM.setConversationListBehaviorListener(new ChatListClickListener());
             //自定义
             RongIM.registerMessageType(OrderMessage.class);
             RongIM.registerMessageTemplate(new OrderProvider());
@@ -159,6 +167,44 @@ public class AccompanyApplication extends Application {
         return mAttentionList;
     }
 
+    public static void getGameList(@NonNull final ApplicationListener.GameListListener listener) {
+        if (mGameList == null || mGameList.isEmpty()) {
+            FileSaveUtils.getInstance().getData(OtherConstant.FILE_GAME, new CommonListener.StringListener() {
+                @Override
+                public void onListener(String data) {
+                    if (data == null || TextUtils.isEmpty(data)) {
+                        listener.onGameListener(null);
+                    } else {
+                        mGameList = GsonUtils.fromJson(data, new TypeToken<List<TopGameBean>>() {
+                         }.getType());
+                        listener.onGameListener(mGameList);
+                    }
+                }
+            });
+        } else {
+            listener.onGameListener(mGameList);
+        }
+    }
+
+    public static void getAttentionList(@NonNull final ApplicationListener.AttentionListListener listener) {
+        if (mAttentionList == null || mAttentionList.isEmpty()) {
+            FileSaveUtils.getInstance().getData(OtherConstant.FILE_ATTENTION, new CommonListener.StringListener() {
+                @Override
+                public void onListener(String data) {
+                    if (data == null || TextUtils.isEmpty(data)) {
+                         listener.onAttentionListener(null);
+                         }else {
+                        mAttentionList =  GsonUtils.fromJson(data, new TypeToken<List<String>>() {
+                        }.getType());
+                        listener.onAttentionListener(mAttentionList);
+                    }
+                }
+            });
+        } else {
+            listener.onAttentionListener(mAttentionList);
+        }
+    }
+
     public static String getGameString(int type) {
         if (mGameList == null || mGameList.isEmpty()) {
             return "";
@@ -172,5 +218,4 @@ public class AccompanyApplication extends Application {
         }
         return game;
     }
-
 }

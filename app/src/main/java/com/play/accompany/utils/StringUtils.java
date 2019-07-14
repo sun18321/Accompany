@@ -138,7 +138,7 @@ public class StringUtils {
      * 402: 用户不存在
      * 403: 密码错误
      * 404: token错误
-     * 405: 主播玩家不能下订单
+     * 405: 不是主播
      * 406: 金币不够
      * 407: 订单重复
      * 408: 订单不存在
@@ -147,7 +147,7 @@ public class StringUtils {
      * 411: 验证码过期
      * 412: 验证码发送过于频繁
      * 413: 邀请码无效
-     * 414: 邀请码 已经使用
+     * 414: 已经邀请过 无法使用
      * 415: 订单状态 不对
      * 416: 订单完成的过早
      * 417: 无法取消 关注
@@ -155,11 +155,28 @@ public class StringUtils {
      * 419：头像过大
      * 420：提现金额过小
      * 421：提现金额过大
+     * 422：微信支付下单失败
+     * 423：支付金额，超过一定的范围
+     * 424：果币操作 异常
+     * 425：订单已经无法取消
+     * 426: 今天提现的次数已满
+     * 427: 提现数值不是倍数
+     * 428: 今天提现的次数已满
+     * 429: 订单无法 申请 提前完成
+     * 430: 订单服务开始后，一段时间才能后才能申请提前结束
+     * 431: 大神游戏类型申请中，无法申请
+     * 432: 没有大神申请的数据
+     * 433: 名称已经存在
+     * 434: 名称过长
+     * 435: 名称格式不对
+     * 436: 名称已经修改了
+     * 437: 字符过长
+     *
      *
      * 600：融云用户注册 无效
      * 601：融云用户更新 无效
      * 700: 微信登录错误
-     * <p>
+     *
      * 998：非管理员权限，无法修改
      * 999: 服务器其他错误
      */
@@ -243,10 +260,37 @@ public class StringUtils {
                 errorInfo = "今天提现的次数已满";
                 break;
             case 427:
-                errorInfo = "订单无法申请提前完成";
+                errorInfo = "提现数值不是倍数";
                 break;
             case 428:
-                errorInfo = "未到提前结束时间";
+                errorInfo = "今天提现的次数已满";
+                break;
+            case 429:
+                errorInfo = "订单无法申请提前完成";
+                break;
+            case 430:
+                errorInfo = "订单服务开始后，一段时间才能后才能申请提前结束";
+                break;
+            case 431:
+                errorInfo = "大神游戏类型申请中，无法申请";
+                break;
+            case 432:
+                errorInfo = "没有大神申请的数据";
+                break;
+            case 433:
+                errorInfo = "名称已经存在";
+                break;
+            case 434:
+                errorInfo = "名称过长";
+                break;
+            case 435:
+                errorInfo = "名称格式不对";
+                break;
+            case 436:
+                errorInfo = "名称已经修改了";
+                break;
+            case 437:
+                errorInfo = "字符过长";
                 break;
             case 600:
                 errorInfo = "聊天系统注册错误";
@@ -258,7 +302,7 @@ public class StringUtils {
                 errorInfo = "微信登录错误";
                 break;
             default:
-                errorInfo = "未知错误";
+                errorInfo = "服务器繁忙";
         }
         return errorInfo;
     }
@@ -433,5 +477,18 @@ public class StringUtils {
             cursor.close();
         }
         return path;
+    }
+
+    public static String unReadCount(int i) {
+        String count = "";
+        if (i < 0) {
+            return count;
+        }
+        if (i > 0 && i <= 99) {
+            count += i;
+        } else {
+            count = "99+";
+        }
+        return count;
     }
 }

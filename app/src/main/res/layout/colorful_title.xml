@@ -2,24 +2,23 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="5dp"
+    android:padding="@dimen/dp_5"
     >
 
     <View
         android:id="@+id/view_line"
         android:layout_centerInParent="true"
         android:background="@color/red"
-        android:layout_width="150dp"
-        android:layout_height="1dp"/>
+        android:layout_width="@dimen/dp_150"
+        android:layout_height="@dimen/dp_1"/>
 
     <TextView
         android:id="@+id/tv_title"
         android:layout_centerInParent="true"
-        android:textSize="12sp"
-        android:paddingTop="2dp"
-        android:paddingBottom="2dp"
-        android:paddingLeft="12dp"
-        android:paddingRight="12dp"
+        android:gravity="center"
+        android:textSize="@dimen/sp_12"
+        android:paddingLeft="@dimen/dp_8"
+        android:paddingRight="@dimen/dp_8"
         android:background="@drawable/colorful_frame"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />

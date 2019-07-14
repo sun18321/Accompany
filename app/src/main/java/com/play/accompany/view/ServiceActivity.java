@@ -50,6 +50,8 @@ public class ServiceActivity extends BaseActivity {
     @Override
     protected void initViews() {
 
+        LogUtils.d("size", "size:" + AccompanyApplication.getGameList().size());
+
         initToolbar(getResources().getString(R.string.service));
 
         mTvService = findViewById(R.id.tv_service);
@@ -58,7 +60,7 @@ public class ServiceActivity extends BaseActivity {
 //        mTvService.setText(sequence);
 //        mTvService.setMovementMethod(LinkMovementMethod.getInstance());
 
-        showDialog();
+//        showDialog();
         Token token = new Token(SPUtils.getInstance().getString(SpConstant.APP_TOKEN));
         String json = GsonUtils.toJson(token);
         RequestBody body = EncodeUtils.encodeInBody(json);
@@ -67,7 +69,6 @@ public class ServiceActivity extends BaseActivity {
         }.getType(), new NetListener<List<ServiceBean>>() {
             @Override
             public void onSuccess(List<ServiceBean> list) {
-                dismissDialog();
                 if (list.isEmpty()) {
                     return;
                 }

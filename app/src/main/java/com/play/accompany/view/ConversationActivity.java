@@ -15,11 +15,13 @@ import com.google.gson.reflect.TypeToken;
 import com.play.accompany.R;
 import com.play.accompany.base.BaseActivity;
 import com.play.accompany.bean.BaseDecodeBean;
+import com.play.accompany.bean.BaseResponse;
 import com.play.accompany.bean.OnlyCodeBean;
 import com.play.accompany.bean.StateBean;
 import com.play.accompany.bean.StateResponseBean;
 import com.play.accompany.bean.UserInfo;
 import com.play.accompany.chat.OrderMessage;
+import com.play.accompany.chat.OrderProvider;
 import com.play.accompany.constant.IntentConstant;
 import com.play.accompany.constant.OrderConstant;
 import com.play.accompany.constant.OtherConstant;
@@ -36,6 +38,7 @@ import com.play.accompany.utils.ToastUtils;
 import java.util.List;
 import java.util.Locale;
 
+import io.reactivex.Observable;
 import io.rong.imkit.RongIM;
 import io.rong.imkit.fragment.ConversationFragment;
 import io.rong.imlib.IRongCallback;
@@ -72,7 +75,7 @@ public class ConversationActivity extends BaseActivity {
     @Override
     protected void initViews() {
         mTvRight = findViewById(R.id.tv_right);
-        initToolbar(mTitle);
+        setTitle(mTitle);
     }
 
     @Override
@@ -109,14 +112,23 @@ public class ConversationActivity extends BaseActivity {
                 });
     }
 
+    private void setTitle(String title) {
+        if (title.length() > 5) {
+            String s = title.substring(0, 5) + "...";
+            initToolbar(s);
+        } else {
+            initToolbar(title);
+        }
+    }
+
     private void sendOrderAdvance() {
 //        ToastUtils.showCommonToast("发送");
         OrderMessage orderMessage;
         String s = mTvRight.getText().toString();
         if (TextUtils.equals(s, getResources().getString(R.string.advance_start))) {
-            orderMessage = new OrderMessage(SPUtils.getInstance().getString(SpConstant.MY_USER_ID), mTargetId, OrderMessage.ORDER_EARLY_START);
+            orderMessage = new OrderMessage(SPUtils.getInstance().getString(SpConstant.MY_USER_ID), mTargetId, OrderMessage.ORDER_EARLY_START, System.currentTimeMillis());
         } else {
-            orderMessage = new OrderMessage(SPUtils.getInstance().getString(SpConstant.MY_USER_ID), mTargetId, OrderMessage.ORDER_EARLY_END);
+            orderMessage = new OrderMessage(SPUtils.getInstance().getString(SpConstant.MY_USER_ID), mTargetId, OrderMessage.ORDER_EARLY_END, System.currentTimeMillis());
         }
         Message message = Message.obtain(mTargetId, Conversation.ConversationType.PRIVATE, orderMessage);
         RongIM.getInstance().sendMessage(message,"提前",null, new IRongCallback.ISendMessageCallback() {
@@ -234,7 +246,9 @@ public class ConversationActivity extends BaseActivity {
 
             }
         });
-        rightTitleNext();
+        if (TextUtils.equals(response, OrderProvider.mStateAccept)) {
+            rightTitleNext();
+        }
     }
 
     private void rightTitleNext() {
@@ -260,28 +274,37 @@ public class ConversationActivity extends BaseActivity {
 
     private void requestAdvance() {
         AccompanyRequest request = new AccompanyRequest();
-        request.beginRequest(NetFactory.getNetRequest().getNetService().orderApplyEarly(getMasterBody()), new TypeToken<BaseDecodeBean<List<OnlyCodeBean>>>() {
-                }.getType(), new NetListener<List<OnlyCodeBean>>() {
-                    @Override
-                    public void onSuccess(List<OnlyCodeBean> list){
-                        sendOrderAdvance();
-                    }
+        String s = mTvRight.getText().toString();
+        Observable<BaseResponse> advanceObservable;
+        if (TextUtils.equals(s, getResources().getString(R.string.advance_start))) {
+            advanceObservable = NetFactory.getNetRequest().getNetService().orderApplyEarlyStart(getMasterBody());
+        } else if (TextUtils.equals(s, getResources().getString(R.string.advance_finish))) {
+            advanceObservable = NetFactory.getNetRequest().getNetService().orderApplyEarlyEnd(getMasterBody());
+        } else {
+            return;
+        }
+        request.beginRequest(advanceObservable, new TypeToken<BaseDecodeBean<List<OnlyCodeBean>>>() {
+        }.getType(), new NetListener<List<OnlyCodeBean>>() {
+            @Override
+            public void onSuccess(List<OnlyCodeBean> list) {
+                sendOrderAdvance();
+            }
 
-                    @Override
-                    public void onFailed(int errCode) {
+            @Override
+            public void onFailed(int errCode) {
 
-                    }
+            }
 
-                    @Override
-                    public void onError() {
+            @Override
+            public void onError() {
 
-                    }
+            }
 
-                    @Override
-                    public void onComplete() {
+            @Override
+            public void onComplete() {
 
-                    }
-                });
+            }
+        });
     }
 
     private void requestState() {
@@ -368,6 +391,9 @@ public class ConversationActivity extends BaseActivity {
                 } else if (extra == OtherConstant.CONVERSATION_GO_USER) {
                     String id = intent.getStringExtra(IntentConstant.INTENT_USER_ID);
                     goUserCenter(id);
+                } else if (extra == OtherConstant.CONVERSATION_UPDATE_NAME) {
+                    String name = intent.getStringExtra(IntentConstant.INTENT_USER_NAME);
+                    setTitle(name);
                 }
             }
         }

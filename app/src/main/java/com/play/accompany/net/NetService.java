@@ -99,8 +99,11 @@ public interface NetService {
     @POST("orderCancel")
     Observable<BaseResponse> cancelOrder(@Body RequestBody body);
 
-    @POST("orderApplyForward")
-    Observable<BaseResponse> orderApplyEarly(@Body RequestBody body);
+    @POST("orderApplyForwardStart")
+    Observable<BaseResponse> orderApplyEarlyStart(@Body RequestBody body);
+
+    @POST("orderApplyForwardEnd")
+    Observable<BaseResponse> orderApplyEarlyEnd(@Body RequestBody body);
 
     @POST("orderForwardAgree")
     Observable<BaseResponse> orderAgreeEarly(@Body RequestBody body);
@@ -126,5 +129,13 @@ public interface NetService {
     @POST("addAnchorGameType")
     Observable<BaseResponse> addMasterItem(@Body RequestBody body);
 
+    @POST("getOrderState")
+    Observable<BaseResponse> getRedPointCount(@Body RequestBody body);
+
+    @POST("setOrderState")
+    Observable<BaseResponse> clearRedPoint(@Body RequestBody body);
+
+    @POST("getVersion")
+    Observable<BaseResponse> getVersion();
 }
 

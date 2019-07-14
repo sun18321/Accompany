@@ -87,4 +87,6 @@ public class ChatClickListener implements RongIM.ConversationClickListener {
     public boolean onMessageLongClick(Context context, View view, Message message) {
         return false;
     }
+
+
 }

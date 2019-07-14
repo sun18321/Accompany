@@ -25,13 +25,13 @@ public class OtherConstant {
 
     public static final long MIN_DAY = -2209017943000L;
 
-    public static final long MAX_DAY = 1262275200000L;
+    public static final long MAX_DAY = 1262361540000L;
 
     public static final int ATTENTION_FLAG = 1;
 
     public static final int ATTEMTION_FLAG_CANCEL = 0;
 
-    public static final String ORDER_CHANNEL = "accompany.order.notify";
+    public static final String NOTIFY_CHANNEL = "accompany.notify";
 
     public static final int NOTIFY_CODE = 999;
 
@@ -52,6 +52,8 @@ public class OtherConstant {
 
     public static final int CONVERSATION_GO_USER = 777;
 
+    public static final int CONVERSATION_UPDATE_NAME = 666;
+
     public static final String OFFICE_NUMBER = "1000";
 
     public static final String FILE_GAME = "file_game";
@@ -70,6 +72,21 @@ public class OtherConstant {
     public static final int MASTER_CHECKING = 0;
 
     //申请完成
-    public static final int MATSER_CHECKED = 1;
+    public static final int MASTER_CHECKED = 1;
 
+    public static final String DEFAULT_UNIT = "小时";
+
+    public static final String MAIN_RECEIVER = "main_receiver";
+
+    public static final String FILTER_MAIN_RECEIVER = "filter_main_receiver";
+
+    public static final String MAIN_INTNET = "main_intent";
+
+    public static final int GO_MESSAGE = 1;
+
+    public static final int MUST_UPDATE = 101;
+
+    public static final int COMMON_UPDATE = 102;
+
+    public static final int NOT_UPDATE = 103;
 }

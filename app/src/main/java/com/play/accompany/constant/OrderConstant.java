@@ -93,6 +93,7 @@ public class OrderConstant {
             case SERVICE_COMPLETE:
                 if (isHost) {
                     orderState.setStateText(AccompanyApplication.getContext().getResources().getString(R.string.order_state_complete));
+                    orderState.setTip(AccompanyApplication.getContext().getString(R.string.order_tip_to_comment));
                     orderState.setStateBackground(R.drawable.gray_background);
                 } else {
                     orderState.setStateText(AccompanyApplication.getContext().getResources().getString(R.string.order_state_comment));
@@ -101,6 +102,9 @@ public class OrderConstant {
                 }
                 break;
             case COMMENT_COMPLETE:
+                if (isHost) {
+                    orderState.setTip(AccompanyApplication.getContext().getString(R.string.order_tip_comment_finish));
+                }
                 orderState.setStateText(AccompanyApplication.getContext().getResources().getString(R.string.order_state_complete));
                 orderState.setStateBackground(R.drawable.gray_background);
                 orderState.setStateAction(CLICK_JUMP_COMPLETE);

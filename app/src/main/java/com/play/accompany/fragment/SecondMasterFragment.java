@@ -1,7 +1,6 @@
 package com.play.accompany.fragment;
 
 import android.content.Intent;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -24,6 +23,7 @@ import com.play.accompany.design.TypeDialog;
 import com.play.accompany.net.AccompanyRequest;
 import com.play.accompany.net.NetFactory;
 import com.play.accompany.net.NetListener;
+import com.play.accompany.present.ApplicationListener;
 import com.play.accompany.utils.EncodeUtils;
 import com.play.accompany.utils.GlideUtils;
 import com.play.accompany.utils.GsonUtils;
@@ -35,6 +35,7 @@ import com.play.accompany.view.AccompanyApplication;
 import com.play.accompany.view.MasterActivity;
 import com.play.accompany.view.MasterDetailActivity;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -53,7 +54,7 @@ public class SecondMasterFragment extends BaseFragment implements View.OnClickLi
     private MasterActivity mMasterActivity;
     private String mMasterPicture = null;
     private TopGameBean mBean = null;
-    private List<TopGameBean> mAllList;
+    private List<TopGameBean> mAllList = new ArrayList<>();
     private MasterLayout mLastLayout;
 
 
@@ -123,7 +124,7 @@ public class SecondMasterFragment extends BaseFragment implements View.OnClickLi
 
                 }
             });
-        } else if (lastState == OtherConstant.MATSER_CHECKED) {
+        } else if (lastState == OtherConstant.MASTER_CHECKED) {
             MasterLayout commonLayout = new MasterLayout(mContext);
             commonLayout.setCommon(bean);
             mLinSkill.addView(commonLayout);
@@ -177,22 +178,30 @@ public class SecondMasterFragment extends BaseFragment implements View.OnClickLi
         });
     }
 
-    private void setRemainList(List<MasterCheckBean> list) {
-        mAllList = AccompanyApplication.getGameList();
-        if (mAllList == null || mAllList.isEmpty()) {
-            return;
-        }
-        for (MasterCheckBean masterCheckBean : list) {
-            Iterator<TopGameBean> iterator = mAllList.iterator();
-            while (iterator.hasNext()) {
-                if (iterator.next().getTypeId() == masterCheckBean.getTypeId()) {
-                    iterator.remove();
+    private void setRemainList(final List<MasterCheckBean> checkList) {
+        if (mAllList.size() == 0) {
+            AccompanyApplication.getGameList(new ApplicationListener.GameListListener() {
+                @Override
+                public void onGameListener(List<TopGameBean> list) {
+                    mAllList.addAll(list);
+                    for (MasterCheckBean masterCheckBean : checkList) {
+                        for (TopGameBean bean : mAllList) {
+                            if (bean.getTypeId() == masterCheckBean.getTypeId()) {
+                                mAllList.remove(bean);
+                                break;
+                            }
+                        }
+                     }
                 }
-            }
+            });
         }
     }
 
     private void showGameDialog() {
+        TopGameBean bean = mAllList.get(mAllList.size() - 1);
+        if (bean.getTypeId() == OtherConstant.TYPE_OTHER) {
+            mAllList.remove(mAllList.size() - 1);
+        }
         if (mAllList.isEmpty()) {
             ToastUtils.showCommonToast("您已经申请全部大神");
             return;

@@ -2,8 +2,10 @@ package com.play.accompany.utils;
 
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import com.play.accompany.present.CommonListener;
 import com.play.accompany.view.AccompanyApplication;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -67,7 +69,7 @@ public class FileSaveUtils {
         try {
             FileInputStream inputStream = AccompanyApplication.getContext().openFileInput(name);
             bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-            String line = "";
+            String line;
             while ((line = bufferedReader.readLine()) != null) {
                 data.append(line);
             }
@@ -84,5 +86,35 @@ public class FileSaveUtils {
             }
         }
         return data.toString();
+    }
+
+    public void getData(@NonNull final String name, @NonNull final CommonListener.StringListener listener) {
+        ThreadPool.newInstance().add(new Runnable() {
+            @Override
+            public void run() {
+                BufferedReader bufferedReader = null;
+                StringBuilder data = new StringBuilder();
+                try {
+                    FileInputStream inputStream = AccompanyApplication.getContext().openFileInput(name);
+                    bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                    String line;
+                    while ((line = bufferedReader.readLine()) != null) {
+                        data.append(line);
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    if (bufferedReader != null) {
+                        try {
+                            bufferedReader.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                listener.onListener(data.toString());
+            }
+        });
     }
 }

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:oneshot="true">
+    <item android:drawable="@mipmap/home01" android:duration="25"/>
+    <item android:drawable="@mipmap/home02" android:duration="25"/>
+    <item android:drawable="@mipmap/home03" android:duration="25"/>
+    <item android:drawable="@mipmap/home04" android:duration="25"/>
+    <item android:drawable="@mipmap/home05" android:duration="25"/>
+    <item android:drawable="@mipmap/home06" android:duration="25"/>
+    <item android:drawable="@mipmap/home07" android:duration="25"/>
+    <item android:drawable="@mipmap/home08" android:duration="25"/>
+    <item android:drawable="@mipmap/home09" android:duration="25"/>
+    <item android:drawable="@mipmap/home10" android:duration="25"/>
+    <item android:drawable="@mipmap/home11" android:duration="25"/>
+    <item android:drawable="@mipmap/home12" android:duration="25"/>
+    <item android:drawable="@mipmap/home13" android:duration="25"/>
+    <item android:drawable="@mipmap/home14" android:duration="25"/>
+    <item android:drawable="@mipmap/home15" android:duration="25"/>
+    <item android:drawable="@mipmap/home16" android:duration="25"/>
+    <item android:drawable="@mipmap/home17" android:duration="25"/>
+    <item android:drawable="@mipmap/home18" android:duration="25"/>
+    <item android:drawable="@mipmap/home19" android:duration="25"/>
+    <item android:drawable="@mipmap/home20" android:duration="25"/>
+    <item android:drawable="@mipmap/home21" android:duration="25"/>
+    <item android:drawable="@mipmap/home22" android:duration="25"/>
+    <item android:drawable="@mipmap/home23" android:duration="25"/>
+    <item android:drawable="@mipmap/home24" android:duration="25"/>
+    <item android:drawable="@mipmap/home25" android:duration="25"/>
+    <item android:drawable="@mipmap/home26" android:duration="25"/>
+    <item android:drawable="@mipmap/home27" android:duration="25"/>
+    <item android:drawable="@mipmap/home28" android:duration="25"/>
+    <item android:drawable="@mipmap/home29" android:duration="25"/>
+    <item android:drawable="@mipmap/home30" android:duration="25"/>
+
+</animation-list>

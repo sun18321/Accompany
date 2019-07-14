@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:oneshot="true">
+
+    <item android:drawable="@mipmap/message01" android:duration="25"/>
+    <item android:drawable="@mipmap/message02" android:duration="25"/>
+    <item android:drawable="@mipmap/message03" android:duration="25"/>
+    <item android:drawable="@mipmap/message04" android:duration="25"/>
+    <item android:drawable="@mipmap/message05" android:duration="25"/>
+    <item android:drawable="@mipmap/message06" android:duration="25"/>
+    <item android:drawable="@mipmap/message07" android:duration="25"/>
+    <item android:drawable="@mipmap/message08" android:duration="25"/>
+    <item android:drawable="@mipmap/message09" android:duration="25"/>
+    <item android:drawable="@mipmap/message10" android:duration="25"/>
+    <item android:drawable="@mipmap/message11" android:duration="25"/>
+    <item android:drawable="@mipmap/message12" android:duration="25"/>
+    <item android:drawable="@mipmap/message13" android:duration="25"/>
+    <item android:drawable="@mipmap/message14" android:duration="25"/>
+    <item android:drawable="@mipmap/message15" android:duration="25"/>
+    <item android:drawable="@mipmap/message16" android:duration="25"/>
+    <item android:drawable="@mipmap/message17" android:duration="25"/>
+    <item android:drawable="@mipmap/message18" android:duration="25"/>
+    <item android:drawable="@mipmap/message19" android:duration="25"/>
+    <item android:drawable="@mipmap/message20" android:duration="25"/>
+    <item android:drawable="@mipmap/message21" android:duration="25"/>
+    <item android:drawable="@mipmap/message22" android:duration="25"/>
+    <item android:drawable="@mipmap/message23" android:duration="25"/>
+    <item android:drawable="@mipmap/message24" android:duration="25"/>
+    <item android:drawable="@mipmap/message25" android:duration="25"/>
+    <item android:drawable="@mipmap/message26" android:duration="25"/>
+    <item android:drawable="@mipmap/message27" android:duration="25"/>
+    <item android:drawable="@mipmap/message28" android:duration="25"/>
+    <item android:drawable="@mipmap/message29" android:duration="25"/>
+    <item android:drawable="@mipmap/message30" android:duration="25"/>
+
+</animation-list>

@@ -3,8 +3,8 @@ package com.play.accompany.constant;
 public class AppConstant {
 
     //online
-//    public static String BASE_URL = "http://39.100.96.9:7070/peipei/";
-    public static String BASE_URL = "http://47.92.255.86:7070/peipei/";
+    public static String BASE_URL = "http://39.100.96.9:7070/peipei/";
+//    public static String BASE_URL = "http://47.92.255.86:7070/peipei/";
 //    public static String BASE_URL = "http://192.168.43.53:7070/peipei/";
     public static int RESPONSE_SUCCESS = 1;
 

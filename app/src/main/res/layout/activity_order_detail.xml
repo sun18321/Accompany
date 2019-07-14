@@ -49,6 +49,9 @@
 
                         <TextView
                             android:id="@+id/tv_name"
+                            android:maxLines="1"
+                            android:maxEms="5"
+                            android:ellipsize="end"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"/>
 
@@ -393,7 +396,7 @@
                     android:id="@+id/btn_positive"
                     android:textSize="20sp"
                     android:textColor="@color/white"
-                    android:background="@drawable/gradient_blue_button"
+                    android:background="@drawable/ripple_blue_button"
                     android:layout_centerInParent="true"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>

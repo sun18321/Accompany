@@ -1,10 +1,8 @@
 package com.play.accompany.view;
 
 import android.content.Intent;
-import android.support.design.widget.BottomSheetDialog;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -22,7 +20,6 @@ import com.play.accompany.bean.IntentPayInfo;
 import com.play.accompany.bean.OrderBean;
 import com.play.accompany.bean.ResponseCreateOrder;
 import com.play.accompany.bean.UserInfo;
-import com.play.accompany.constant.AppConstant;
 import com.play.accompany.constant.IntentConstant;
 import com.play.accompany.constant.SpConstant;
 import com.play.accompany.design.BottomDialog;
@@ -35,6 +32,7 @@ import com.play.accompany.utils.EncodeUtils;
 import com.play.accompany.utils.GsonUtils;
 import com.play.accompany.utils.LogUtils;
 import com.play.accompany.utils.SPUtils;
+import com.play.accompany.utils.ToastUtils;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -55,9 +53,10 @@ public class OrderActivity extends BaseActivity implements View.OnClickListener 
     private TextView mTvAmount;
     private EditText mEditMarks;
     private TextView mTvAll;
-    private UserInfo mHome;
+    private UserInfo mUserInfo;
     private BottomDialog mTimeDialog;
     private int mCount = 1;
+    //单价
     private int mPrice;
     private BottomDialog mTypeDialog;
     private String[] mDateArray;
@@ -65,7 +64,7 @@ public class OrderActivity extends BaseActivity implements View.OnClickListener 
     private String[] mMinuteArray;
     private long mServiceTime = 0;
     private String mTargetId;
-    private int mgameType = 0;
+    private int mGameType = 0;
     private String mGameName = null;
 
 
@@ -99,7 +98,7 @@ public class OrderActivity extends BaseActivity implements View.OnClickListener 
         findViewById(R.id.img_reduce).setOnClickListener(this);
         findViewById(R.id.img_add).setOnClickListener(this);
 
-        if (mHome != null) {
+        if (mUserInfo != null) {
             setViews();
         } else {
             Toast.makeText(this, getResources().getString(R.string.data_error), Toast.LENGTH_SHORT).show();
@@ -112,16 +111,12 @@ public class OrderActivity extends BaseActivity implements View.OnClickListener 
     }
 
     private void setViews() {
-        int price = mHome.getPrice();
-        mPrice = price;
-        mTargetId = mHome.getUserId();
-        mTvName.setText(mHome.getName());
-        mTvPrice.setText(price + getResources().getString(R.string.price));
-        String url = mHome.getUrl();
+        mTargetId = mUserInfo.getUserId();
+        mTvName.setText(mUserInfo.getName());
+        String url = mUserInfo.getUrl();
         if (!TextUtils.isEmpty(url)) {
             Glide.with(this).load(url).into(mHeadView);
         }
-        mTvAll.setText(price + "");
     }
 
     @Override
@@ -130,9 +125,9 @@ public class OrderActivity extends BaseActivity implements View.OnClickListener 
         Intent intent = getIntent();
         if (intent != null) {
             UserInfo bean = (UserInfo) intent.getSerializableExtra(IntentConstant.INTENT_USER);
-            mHome = bean;
+            mUserInfo = bean;
         }
-        if (mHome == null) {
+        if (mUserInfo == null) {
             Toast.makeText(this, getResources().getString(R.string.data_error), Toast.LENGTH_SHORT).show();
             this.finish();
         }
@@ -177,8 +172,12 @@ public class OrderActivity extends BaseActivity implements View.OnClickListener 
             View view = LayoutInflater.from(this).inflate(R.layout.type_pick, null);
             final WheelView wheelView = view.findViewById(R.id.wheel);
             TextView tvConfirm = view.findViewById(R.id.tv_confirm);
-            final List<String> listGame = mHome.getGameTypeName();
-            final List<GameProperty> gameType = mHome.getGameType();
+            final List<GameProperty> gameType = mUserInfo.getGameType();
+            final List<String> listGame = new ArrayList<>();
+            for (GameProperty property : gameType) {
+                listGame.add(property.getName());
+            }
+
             if (listGame.size() > 2) {
                 wheelView.setOffset(1);
             } else {
@@ -195,8 +194,11 @@ public class OrderActivity extends BaseActivity implements View.OnClickListener 
                     }
                     mGameName = listGame.get(index);
                     mTvType.setText(mGameName);
-                    mgameType = gameType.get(index).getType();
+                    mGameType = gameType.get(index).getType();
                     mTypeDialog.dismiss();
+                    mTvPrice.setText(mUserInfo.getGameType().get(index).toString());
+                    mPrice = gameType.get(index).getPrice();
+                    mTvAll.setText(mCount * mPrice + "");
                 }
             });
 
@@ -255,7 +257,7 @@ public class OrderActivity extends BaseActivity implements View.OnClickListener 
     }
 
     private void submitOrder() {
-        if (mgameType == 0) {
+        if (mGameType == 0) {
             Toast.makeText(this, getResources().getString(R.string.skill_please), Toast.LENGTH_SHORT).show();
             return;
         }
@@ -276,8 +278,11 @@ public class OrderActivity extends BaseActivity implements View.OnClickListener 
         bean.setPrice(mPrice);
         bean.setTargetId(mTargetId);
         String marks = mEditMarks.getText().toString();
+        if (!TextUtils.isEmpty(marks) && marks.length() > 50) {
+            ToastUtils.showCommonToast("备注过长");
+        }
         bean.setComment(marks);
-        bean.setgameType(mgameType);
+        bean.setgameType(mGameType);
         bean.setStartTime(mServiceTime);
         String json = GsonUtils.toJson(bean);
         LogUtils.d(getTag(), "json:" + json);
@@ -293,7 +298,7 @@ public class OrderActivity extends BaseActivity implements View.OnClickListener 
                 String detail = mPrice + getResources().getString(R.string.price) + "*" + mCount;
                 int all = mPrice * mCount;
                 Intent intent = new Intent(OrderActivity.this, OrderPayActivity.class);
-                IntentPayInfo info = new IntentPayInfo(mHome.getUrl(), mHome.getName(), mGameName, detail,
+                IntentPayInfo info = new IntentPayInfo(mUserInfo.getUrl(), mUserInfo.getName(), mGameName, detail,
                         all, orderId);
                 intent.putExtra(IntentConstant.INTENT_PAY_INFO, info);
                 startActivity(intent);

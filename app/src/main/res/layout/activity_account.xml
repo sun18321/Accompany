@@ -2,7 +2,6 @@
 <RelativeLayout android:layout_height="match_parent"
     android:layout_width="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:fitsSystemWindows="true"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".view.AccountActivity"
@@ -13,13 +12,13 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <include layout="@layout/toolbar_title"/>
+        <include layout="@layout/blue_toolbar"/>
 
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="30dp"
             android:background="@drawable/round_background">
 
             <ImageView
@@ -113,7 +112,7 @@
         android:id="@+id/lin_wechat"
         android:orientation="vertical"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="30dp"
         android:layout_above="@id/tv_rule"
         android:gravity="center_horizontal"
         android:layout_width="wrap_content"
@@ -121,10 +120,11 @@
 
         <ImageView
             android:src="@mipmap/wechat"
-            android:layout_width="50dp"
-            android:layout_height="50dp"/>
+            android:layout_width="@dimen/dp_30"
+            android:layout_height="@dimen/dp_30"/>
         <TextView
             android:text="微信登录"
+            android:textSize="@dimen/sp_10"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </LinearLayout>

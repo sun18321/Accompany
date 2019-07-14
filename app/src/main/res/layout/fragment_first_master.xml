@@ -172,11 +172,12 @@
             android:id="@+id/btn_submit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
+            android:layout_marginTop="20dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginBottom="20dp"
-            android:background="@drawable/gradient_blue_button"
+            android:background="@drawable/ripple_blue_button"
+            android:textSize="@dimen/sp_18"
             android:text="@string/submit_only"
             android:textColor="@color/color_white"/>
 

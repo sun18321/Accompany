@@ -76,7 +76,7 @@ public class RankActivity extends BaseActivity {
     }
 
     private void requestData() {
-        showDialog();
+//        showDialog();
         OtherGameBean bean = new OtherGameBean();
         bean.setToken(SPUtils.getInstance().getString(SpConstant.APP_TOKEN));
         bean.setParent(mOtherGame);
@@ -87,7 +87,6 @@ public class RankActivity extends BaseActivity {
         }.getType(), new NetListener<List<TopGameBean>>() {
             @Override
             public void onSuccess(List<TopGameBean> list) {
-                dismissDialog();
                 if (list.isEmpty()) {
                     return;
                 }
@@ -106,7 +105,6 @@ public class RankActivity extends BaseActivity {
 
             @Override
             public void onComplete() {
-                dismissDialog();
             }
         });
     }

@@ -80,7 +80,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderHolder>
         }
 
         void bindItem(final AllOrderBean bean) {
-            boolean isHost;
+            final boolean isHost;
             String targetId = bean.getTargetId();
             String id = SPUtils.getInstance().getString(SpConstant.MY_USER_ID);
             if (TextUtils.equals(id, targetId)) {
@@ -95,7 +95,11 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderHolder>
                     @Override
                     public void onClick(View v) {
                         if (mListener != null) {
-                            mListener.onHeadClick(bean.getTargetId());
+                            if (isHost) {
+                                mListener.onHeadClick(bean.getUserId());
+                            } else {
+                                mListener.onHeadClick(bean.getTargetId());
+                            }
                         }
                     }
                 });

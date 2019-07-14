@@ -26,6 +26,7 @@
 
 
        <ImageView
+           android:id="@+id/splash_log"
            android:src="@mipmap/splash_log"
            android:layout_centerInParent="true"
            android:layout_width="150dp"

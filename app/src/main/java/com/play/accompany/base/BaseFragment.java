@@ -1,6 +1,7 @@
 package com.play.accompany.base;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.play.accompany.R;
+import com.play.accompany.utils.LogUtils;
 import com.umeng.analytics.MobclickAgent;
 
 public abstract class BaseFragment extends Fragment {
@@ -31,6 +33,8 @@ public abstract class BaseFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        LogUtils.d("fragment","on create");
+
         View view = inflater.inflate(getLayout(), container, false);
         initViews(view);
         return view;
@@ -39,11 +43,14 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        LogUtils.d("fragment","on resume");
+
         MobclickAgent.onPageStart(getFragmentName());
     }
 
     @Override
     public void onPause() {
+        LogUtils.d("fragment","on pause");
         super.onPause();
         MobclickAgent.onPageEnd(getFragmentName());
     }
@@ -52,6 +59,7 @@ public abstract class BaseFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
 
+        LogUtils.d("fragment","on destroy");
         mActivity = null;
         mContext = null;
     }

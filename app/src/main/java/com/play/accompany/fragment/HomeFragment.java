@@ -65,6 +65,7 @@ public class HomeFragment extends BaseFragment {
     private boolean isRequsting = false;
     private List<String> mAttentionList = new ArrayList<>();
     private List<FavoriteInfo> mInfoList = new ArrayList<>();
+    private int mCurrentType = -1;
 //    private AttentionReceiver mReceiver;
 
     public static HomeFragment newInstance() {
@@ -111,7 +112,11 @@ public class HomeFragment extends BaseFragment {
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshLayout) {
-                requestData(getToken());
+                if (mCurrentType == -1) {
+                    requestData(getToken());
+                } else {
+                    queryType(mCurrentType,true);
+                }
             }
         });
 
@@ -176,7 +181,7 @@ public class HomeFragment extends BaseFragment {
                     if (typeId == OtherConstant.TYPE_OTHER) {
                         goTopGame();
                     } else {
-                        queryType(typeId);
+                        queryType(typeId, false);
                     }
                 }
             }
@@ -200,10 +205,11 @@ public class HomeFragment extends BaseFragment {
         });
     }
 
-    private void queryType(final int id) {
+    private void queryType(final int id, final boolean isRefresh) {
         if (isRequsting) {
             return;
         }
+        mCurrentType = id;
         isRequsting = true;
         TypeQueryBean bean = new TypeQueryBean();
         bean.setQueryId(id);
@@ -215,6 +221,10 @@ public class HomeFragment extends BaseFragment {
         }.getType(), new NetListener<List<UserInfo>>() {
             @Override
             public void onSuccess(List<UserInfo> list) {
+                if (isRefresh) {
+                    mRefreshLayout.finishRefresh();
+                }
+
                 if (list.isEmpty()) {
                     ToastUtils.showCommonToast(getResources().getString(R.string.no_master));
                     return;
@@ -310,7 +320,7 @@ public class HomeFragment extends BaseFragment {
             if (extra == 0) {
                 return;
             }
-            queryType(extra);
+            queryType(extra,false);
         }
     }
 

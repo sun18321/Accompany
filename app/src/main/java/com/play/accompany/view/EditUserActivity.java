@@ -3,14 +3,9 @@ package com.play.accompany.view;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.content.ContentResolver;
 import android.content.ContentUris;
-import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -19,12 +14,8 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialog;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.FileProvider;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.DatePicker;
@@ -34,7 +25,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.bumptech.glide.Glide;
 import com.google.gson.reflect.TypeToken;
 import com.makeramen.roundedimageview.RoundedImageView;
@@ -43,10 +33,8 @@ import com.play.accompany.base.BaseActivity;
 import com.play.accompany.bean.BaseDecodeBean;
 import com.play.accompany.bean.HeadImageBean;
 import com.play.accompany.bean.ResponseImage;
-import com.play.accompany.bean.UpUser;
 import com.play.accompany.bean.UserInfo;
 import com.play.accompany.bean.WeChatInfo;
-import com.play.accompany.constant.AppConstant;
 import com.play.accompany.constant.IntentConstant;
 import com.play.accompany.constant.OtherConstant;
 import com.play.accompany.constant.SpConstant;
@@ -63,18 +51,9 @@ import com.play.accompany.utils.SPUtils;
 import com.play.accompany.utils.StringUtils;
 import com.play.accompany.utils.ToastUtils;
 import com.play.accompany.utils.UserInfoDatabaseUtils;
-import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.yalantis.ucrop.UCrop;
-
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.Date;
 import java.util.List;
-
 import okhttp3.RequestBody;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnPermissionDenied;
@@ -189,6 +168,11 @@ public class EditUserActivity extends BaseActivity implements View.OnClickListen
             return;
         }
 
+        if (name.length() > 16) {
+            ToastUtils.showCommonToast("昵称过长");
+            return;
+        }
+
         if (mRadioMale.isChecked()) {
             mGender = OtherConstant.GENDER_MALE;
         }
@@ -209,9 +193,25 @@ public class EditUserActivity extends BaseActivity implements View.OnClickListen
         if (TextUtils.isEmpty(sign)) {
             sign = getResources().getString(R.string.default_sign);
         }
+        if (sign.length() > 15) {
+            ToastUtils.showCommonToast("签名过长");
+        }
+
         String interest = mEditInterest.getText().toString();
         String profession = mEditProfession.getText().toString();
         String otherGame = mEditOtherGame.getText().toString();
+
+        if (!TextUtils.isEmpty(interest) && interest.length() > 28) {
+            ToastUtils.showCommonToast("兴趣过长");
+        }
+
+        if (!TextUtils.isEmpty(profession) && profession.length() > 28) {
+            ToastUtils.showCommonToast("格言过长");
+        }
+
+        if (!TextUtils.isEmpty(otherGame) && otherGame.length() > 15) {
+            ToastUtils.showCommonToast("游戏过长");
+        }
 
         final UserInfo userInfo = new UserInfo();
         userInfo.setName(name);

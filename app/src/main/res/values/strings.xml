@@ -70,7 +70,7 @@
     <string name="birthday">生日</string>
     <string name="sign">签名</string>
     <string name="interesting">兴趣</string>
-    <string name="profession">专业</string>
+    <string name="profession">格言</string>
     <string name="gender_male">男</string>
     <string name="gender_female">女</string>
     <string name="permission_request">应用运行需要授予权限，点击确定继续</string>
@@ -117,6 +117,8 @@
     <string name="order_state_cancel">已取消</string>
     <string name="order_state_start_click">开始接单</string>
     <string name="order_state_click_complete">完成订单</string>
+    <string name="order_tip_comment_finish">已评价</string>
+    <string name="order_tip_to_comment">待评价</string>
     <string name="order_tips_pay">订单已支付，等待接单</string>
     <string name="order_tips_click">已接单，等待服务</string>
     <string name="comment_success">评价成功</string>
@@ -154,13 +156,13 @@
     <string name="tips_attention">确定要取消关注吗？</string>
     <string name="attention_success">关注成功</string>
     <string name="attention_cancel_success">取消关注</string>
-    <string name="phone_first">请先填写手机号</string>
+    <string name="phone_first">请先填写正确手机号</string>
     <string name="real_name_first">请先填写真实姓名</string>
-    <string name="id_first">请先填写身份证号</string>
+    <string name="id_first">请填写正确身份证号</string>
     <string name="wechat_first">请先填写微信提现账号</string>
     <string name="game_type_first">至少选择一项陪玩游戏</string>
-    <string name="tips_master">申请大神注意事项：\n 1.请提供真实的身份、段位等信息，否则无法通过审核；\n 2.用户头像需使用美观、清晰、无面部遮挡的真是头像；\n
-    3.微信账号用于大神收入的提现，请确认账号信息正确无误；\n 4.其他需要的注意事项请参阅大神须知</string>
+    <string name="tips_master">申请大神注意事项：\n 1.请提供真实的身份、段位等信息，否则无法通过审核；\n 2.请使用美观、清晰、无面部遮挡的真实头像；\n
+    3.陪玩品类每次限申请一个，审核未通过前无法申请其他品类；\n 4.微信账号用于大神收入的提现，请确认账号信息正确无误；\n 5.其他需要的注意事项请参阅大神须知</string>
     <string name="master_index">大神须知</string>
     <string name="good_comment">好评</string>
     <string name="bad_comment">差评</string>
@@ -174,7 +176,7 @@
     <string name="conversation">会话</string>
     <string name="photo_failed">获取照片失败</string>
     <string name="location_msg">应用需要获取您的位置信息,向您展示附近的大神</string>
-    <string name="new_order">您有新的订单</string>
+    <string name="new_message">您有新的动态</string>
     <string name="cash">提现</string>
     <string name="wallet_now">立即充值</string>
     <string name="cash_rule">提现要求:</string>

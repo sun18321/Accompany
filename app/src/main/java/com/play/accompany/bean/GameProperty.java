@@ -1,9 +1,36 @@
 package com.play.accompany.bean;
 
-public class GameProperty {
+import android.support.annotation.NonNull;
+import android.text.TextUtils;
+
+import com.play.accompany.R;
+import com.play.accompany.constant.OtherConstant;
+import com.play.accompany.view.AccompanyApplication;
+
+import java.io.Serializable;
+
+public class GameProperty implements Serializable {
 
     private int type;
     private int price;
+    private String unit;
+    private String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
 
     public int getType() {
         return type;
@@ -19,5 +46,11 @@ public class GameProperty {
 
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return price + AccompanyApplication.getContext().getResources().getString(R.string.money) + "/" + (TextUtils.isEmpty(unit) ? OtherConstant.DEFAULT_UNIT : unit);
     }
 }

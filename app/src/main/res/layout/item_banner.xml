@@ -6,15 +6,16 @@
 
     <com.youth.banner.Banner
         android:id="@+id/banner"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        app:indicator_height="10dp"
-        app:indicator_width="10dp"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginRight="@dimen/dp_10"
+        app:indicator_height="@dimen/dp_10"
+        app:indicator_width="@dimen/dp_10"
         android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_100"
         app:indicator_drawable_selected="@drawable/indicator_select"
         app:indicator_drawable_unselected="@drawable/indicator_unselect"
-        android:layout_height="100dp"/>
+        />
 
 
 </FrameLayout>

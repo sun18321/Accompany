@@ -21,11 +21,15 @@ public class IntentConstant {
 
     public static final String INTENT_GAME_ID = "intent_game_id";
 
+    public static final String INTENT_USER_NAME = "intent_user_name";
+
     public static final String INTENT_CASH = "intent_cash";
 
     public static final String INTENT_WE_CHAT_CODE = "intent_we_chat_code";
 
     public static final int INTENT_CODE_PAY_SUCCESS = 1001;
+
+    public static final int INTENT_CODE_ACCEPT_SUCESS = 1002;
 
     public static final String INTENT_ALL_ORDER = "intent_all_order";
 

@@ -5,11 +5,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.nfc.Tag;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.SpannableString;
@@ -117,7 +115,7 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     protected void initViews() {
-        initToolbar(getResources().getString(R.string.login));
+        initToolbarNoBack(getResources().getString(R.string.login));
         mInputAccount = findViewById(R.id.input_account);
         mInputCode = findViewById(R.id.input_code);
         mEditAccount = findViewById(R.id.edit_account);
@@ -266,7 +264,7 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
         mAccompanyRequest.beginRequest(NetFactory.getNetRequest().getNetService().loginCode(body), new TypeToken<BaseDecodeBean<List<UserInfo>>>() {
         }.getType(), new NetListener<List<UserInfo>>() {
             @Override
-            public void onSuccess(List<UserInfo> list) throws UnsupportedEncodingException {
+            public void onSuccess(List<UserInfo> list) {
                 if (list.isEmpty()) {
                     Toast.makeText(AccountActivity.this, getResources().getString(R.string.login_failed), Toast.LENGTH_SHORT).show();
                     return;
@@ -441,7 +439,7 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
                         Token token = list.get(0);
                         String s = token.getToken();
                         if (TextUtils.isEmpty(s)) {
-                            initToolbar("绑定手机号");
+                            initToolbarNoBack("绑定手机号");
                             mLinWeChat.setVisibility(View.GONE);
                             mTvRule.setVisibility(View.GONE);
                             mButtonLogin.setText("绑定");
@@ -510,7 +508,7 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
         });
     }
 
-    private UserInfo weChat2UserInfo() throws UnsupportedEncodingException {
+    private UserInfo weChat2UserInfo() {
         UserInfo userInfo = new UserInfo();
         if (mInfo == null) {
             return userInfo;

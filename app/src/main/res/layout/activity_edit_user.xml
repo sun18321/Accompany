@@ -224,7 +224,7 @@
                     <EditText
                         android:id="@+id/edit_profession"
                         style="@style/edit_edit"
-                        android:hint="自己的专业" />
+                        android:hint="自己的格言" />
 
                 </LinearLayout>
 

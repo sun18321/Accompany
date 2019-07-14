@@ -1,12 +1,22 @@
 package com.play.accompany.view;
 
 import android.Manifest;
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,23 +25,26 @@ import com.google.gson.reflect.TypeToken;
 import com.play.accompany.R;
 import com.play.accompany.base.BaseActivity;
 import com.play.accompany.bean.BaseDecodeBean;
-import com.play.accompany.bean.Test;
 import com.play.accompany.bean.Token;
 import com.play.accompany.bean.UserInfo;
+import com.play.accompany.bean.VersionBean;
 import com.play.accompany.constant.AppConstant;
 import com.play.accompany.constant.IntentConstant;
+import com.play.accompany.constant.OtherConstant;
 import com.play.accompany.constant.SpConstant;
-import com.play.accompany.db.AccompanyDatabase;
 import com.play.accompany.net.AccompanyRequest;
 import com.play.accompany.net.NetFactory;
 import com.play.accompany.net.NetListener;
+import com.play.accompany.utils.AppUtils;
+import com.play.accompany.utils.DownloadUtils;
 import com.play.accompany.utils.EncodeUtils;
 import com.play.accompany.utils.GsonUtils;
-import com.play.accompany.utils.LogUtils;
 import com.play.accompany.utils.SPUtils;
-import com.play.accompany.utils.ThreadPool;
 import com.play.accompany.utils.UserInfoDatabaseUtils;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 
+import java.io.File;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -40,7 +53,6 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import okhttp3.RequestBody;
-import okhttp3.internal.http2.ErrorCode;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
 import permissions.dispatcher.OnPermissionDenied;
@@ -54,9 +66,10 @@ public class SplashActivity extends BaseActivity {
     private int mRepeatCount = 3;
     private long mUnitTimes = 1000;
     private Disposable mDisposable;
-    private final int mDelay = 3000;
+    //页面停留总时间,从验证token开始计算
+    private final int mDelay = 2500;
     private long mCurrentTimes;
-
+    private File mInstallPath = null;
 
     private String json = "{\"code\":1,\"msg\":{\"userId\":\"12555999996\",\"token\":\"1c0a4b11e03c42a62c3be2823af08678\",\"time\":1552941667073}}";
 
@@ -64,6 +77,14 @@ public class SplashActivity extends BaseActivity {
     private RelativeLayout mRlLogo;
     private TextView mTvTime;
     private RelativeLayout mRlAdvertise;
+    private ImageView mImgLogo;
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        getWindow().setBackgroundDrawable(null);
+    }
 
     @Override
     protected int getLayout() {
@@ -87,6 +108,36 @@ public class SplashActivity extends BaseActivity {
         mRlLogo = findViewById(R.id.rl_logo);
         mTvTime = findViewById(R.id.time);
         mRlAdvertise = findViewById(R.id.rl_advertise);
+        mImgLogo = findViewById(R.id.splash_log);
+
+        PropertyValuesHolder alpha = PropertyValuesHolder.ofFloat("alpha", 0, 1);
+        PropertyValuesHolder scaleX = PropertyValuesHolder.ofFloat("scaleX", 0, 1);
+        PropertyValuesHolder scaleY = PropertyValuesHolder.ofFloat("scaleY", 0, 1);
+        ObjectAnimator animator = ObjectAnimator.ofPropertyValuesHolder(mImgLogo, alpha, scaleX, scaleY);
+        animator.setDuration(500);
+        animator.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                getNewVersion();
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
+        animator.start();
+
         mTvTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,13 +145,6 @@ public class SplashActivity extends BaseActivity {
             }
         });
 
-        String token = SPUtils.getInstance().getString(SpConstant.APP_TOKEN);
-        if (TextUtils.isEmpty(token)) {
-            startActivity(new Intent(this, AccountActivity.class));
-            this.finish();
-        } else {
-            verifyToken(token);
-        }
     }
 
     @OnShowRationale({Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_PHONE_STATE})
@@ -135,6 +179,145 @@ public class SplashActivity extends BaseActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         SplashActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+    }
+
+    private void getNewVersion() {
+        AccompanyRequest request = new AccompanyRequest();
+        request.beginRequest(NetFactory.getNetRequest().getNetService().getVersion(), new TypeToken<BaseDecodeBean<List<VersionBean>>>() {
+                }.getType(), new NetListener<List<VersionBean>>() {
+                    @Override
+                    public void onSuccess(List<VersionBean> list) {
+                        if (list.isEmpty()) {
+                            checkToken();
+                            return;
+                        }
+                        VersionBean bean = list.get(0);
+                        compareVersion(bean);
+                    }
+
+                    @Override
+                    public void onFailed(int errCode) {
+
+                    }
+
+                    @Override
+                    public void onError() {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    private void compareVersion(VersionBean bean) {
+        int update = AppUtils.shouldUpdate(bean);
+        switch (update) {
+            case OtherConstant.MUST_UPDATE:
+                showMustUpdate(bean.getVerUrl());
+                break;
+            case OtherConstant.COMMON_UPDATE:
+                showCommonUpdate(bean.getVerUrl());
+                break;
+            case OtherConstant.NOT_UPDATE:
+                checkToken();
+                break;
+            default:
+                checkToken();
+                break;
+        }
+    }
+
+    private void showMustUpdate(final String url) {
+        new QMUIDialog.MessageDialogBuilder(this).setTitle("版本更新").setMessage("有新的版本更新，此版本已不可使用，请更新").addAction("取消", new QMUIDialogAction.ActionListener() {
+            @Override
+            public void onClick(QMUIDialog dialog, int index) {
+                dialog.dismiss();
+                SplashActivity.this.finish();
+            }
+        }).addAction("确定", new QMUIDialogAction.ActionListener() {
+            @Override
+            public void onClick(QMUIDialog dialog, int index) {
+                dialog.dismiss();
+                downloadNew(url);
+            }
+        }).setCancelable(false).setCanceledOnTouchOutside(false).create().show();
+    }
+
+
+    private void showCommonUpdate(final String url) {
+        new QMUIDialog.MessageDialogBuilder(this).setTitle("版本更新").setMessage("有新的版本啦，是否选择更新").addAction("取消", new QMUIDialogAction.ActionListener() {
+            @Override
+            public void onClick(QMUIDialog dialog, int index) {
+                dialog.dismiss();
+                checkToken();
+            }
+        }).addAction("确定", new QMUIDialogAction.ActionListener() {
+            @Override
+            public void onClick(QMUIDialog dialog, int index) {
+                dialog.dismiss();
+                downloadNew(url);
+            }
+        }).setCancelable(false).setCanceledOnTouchOutside(false).create().show();
+    }
+
+
+    private void downloadNew(String url) {
+        DownloadUtils.getInstance().downloadFile(url, this, new DownloadUtils.DownloadListener() {
+            @Override
+            public void downloadFailed() {
+
+            }
+
+            @Override
+            public void downloadComplete(File filePath) {
+                willInstall(filePath);
+            }
+        });
+    }
+
+    private void willInstall(File path) {
+        mInstallPath = path;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            if (getPackageManager().canRequestPackageInstalls()) {
+                installApp();
+            } else {
+                Intent intent = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES, Uri.parse("package:" + getPackageName()));
+                startActivityForResult(intent, 1001);
+            }
+        } else {
+            installApp();
+        }
+    }
+
+    private void installApp() {
+        if (mInstallPath == null) {
+            return;
+        }
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Uri uriForFile = FileProvider.getUriForFile(this, getPackageName() + OtherConstant.FILE_PROVIDER_NAME, mInstallPath);
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.setDataAndType(uriForFile, "application/vnd.android.package-archive");
+        } else {
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.setDataAndType(Uri.fromFile(mInstallPath), "application/vnd.android.package-archive");
+        }
+        startActivity(intent);
+    }
+
+
+    private void checkToken() {
+        String token = SPUtils.getInstance().getString(SpConstant.APP_TOKEN);
+        if (TextUtils.isEmpty(token)) {
+            startActivity(new Intent(this, AccountActivity.class));
+            this.finish();
+        } else {
+            verifyToken(token);
+        }
     }
 
     private void verifyToken(String s) {
@@ -244,6 +427,23 @@ public class SplashActivity extends BaseActivity {
             MainActivity.launch(SplashActivity.this);
         }
         this.finish();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK) {
+            installApp();
+        }
+    }
+
+
+    @Override
+    public void finish() {
+        super.finish();
+
+        overridePendingTransition(0, 0);
     }
 
     @Override

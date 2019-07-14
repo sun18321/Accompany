@@ -159,6 +159,7 @@ public class AllOrderActivity extends BaseActivity implements OrderAdapter.Order
         if (mNeting) {
             return;
         }
+        showDialog();
         mNeting = true;
         AcceptOrderBean bean = new AcceptOrderBean();
         bean.setId(id);
@@ -170,6 +171,7 @@ public class AllOrderActivity extends BaseActivity implements OrderAdapter.Order
         }.getType(), new NetListener<List<OnlyCodeBean>>() {
             @Override
             public void onSuccess(List<OnlyCodeBean> list) {
+                dismissDialog();
                 ToastUtils.showCommonToast(success);
                 if (mRefreshLayout != null) {
                     mRefreshLayout.autoRefresh();
@@ -188,6 +190,7 @@ public class AllOrderActivity extends BaseActivity implements OrderAdapter.Order
 
             @Override
             public void onComplete() {
+                dismissDialog();
                 mNeting = false;
             }
         });
@@ -213,7 +216,7 @@ public class AllOrderActivity extends BaseActivity implements OrderAdapter.Order
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == IntentConstant.INTENT_CODE_PAY_SUCCESS) {
+        if (resultCode == IntentConstant.INTENT_CODE_PAY_SUCCESS || resultCode == IntentConstant.INTENT_CODE_ACCEPT_SUCESS) {
             if (mRefreshLayout != null) {
                 mRefreshLayout.autoRefresh();
             }

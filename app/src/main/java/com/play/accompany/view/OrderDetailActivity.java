@@ -108,7 +108,7 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
         } catch (Exception e) {
             e.printStackTrace();
         }
-        tvRating.setText(String.valueOf(mBean.getGrade()/2));
+        tvRating.setText(String.valueOf(mBean.getGrade()));
         tvIntroduction.setText(mBean.getSign());
         tvType.setText(mBean.getGameTypeName());
         tvTime.setText(DateUtils.time2Date(mBean.getStartTime()));
@@ -274,6 +274,7 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
                         mTvState.setVisibility(View.VISIBLE);
                         mTvState.setText("已完成");
                         mTvState.setTextColor(getResources().getColor(R.color.color_order_complete));
+                        setResult(IntentConstant.INTENT_CODE_ACCEPT_SUCESS);
                     }
 
                     @Override
@@ -367,6 +368,7 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
                 mTvState.setVisibility(View.VISIBLE);
                 mTvState.setTextColor(getResources().getColor(R.color.color_order_green));
                 mTvState.setText("已接单");
+                setResult(IntentConstant.INTENT_CODE_ACCEPT_SUCESS);
             }
 
             @Override
@@ -406,6 +408,7 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
                 mTvState.setVisibility(View.VISIBLE);
                 mTvState.setTextColor(getResources().getColor(R.color.red));
                 mTvState.setText("已取消");
+                setResult(IntentConstant.INTENT_CODE_ACCEPT_SUCESS);
             }
 
             @Override
