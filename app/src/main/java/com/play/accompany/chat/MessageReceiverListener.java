@@ -51,9 +51,8 @@ public class MessageReceiverListener implements RongIMClient.OnReceiveMessageLis
 //            LogUtils.d("conversation", "content is not text");
 //        }
 
-        if (SPUtils.getInstance().getBoolean(SpConstant.ACCEPT_NEW_NOTICE,true) && message.getConversationType() == Conversation.ConversationType.SYSTEM) {
+        if (SPUtils.getInstance().getBoolean(SpConstant.ACCEPT_NEW_NOTICE, true) && TextUtils.equals(message.getSenderUserId(), OtherConstant.OFFICE_NUMBER)) {
             if (message.getContent() instanceof TextMessage) {
-
                 LogUtils.d("message", "thread:" + Thread.currentThread().getName());
 
                 TextMessage content = (TextMessage) message.getContent();
@@ -64,7 +63,7 @@ public class MessageReceiverListener implements RongIMClient.OnReceiveMessageLis
                     LogUtils.d("message", "bean:" + bean);
                     String push = bean.getPush();
                     LogUtils.d("message", "push:" + push);
-                    if (!TextUtils.isEmpty(push)) {
+                    if (!TextUtils.isEmpty(push)) {          
                         createNotification(bean.getType(), push);
                     }
 

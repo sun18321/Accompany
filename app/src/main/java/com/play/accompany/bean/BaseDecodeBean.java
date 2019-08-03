@@ -12,6 +12,7 @@ public class BaseDecodeBean<T> {
     private int code;
     private T msg;
     private List<T> msgList;
+    private String errMsg;
 
 
     public int getCode() {
@@ -36,5 +37,13 @@ public class BaseDecodeBean<T> {
 
     public void setMsgList(List<T> msgList) {
         this.msgList = msgList;
+    }
+
+    public String getErrMsg() {
+        return errMsg;
+    }
+
+    public void setErrMsg(String errMsg) {
+        this.errMsg = errMsg;
     }
 }

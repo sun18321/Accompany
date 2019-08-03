@@ -65,13 +65,13 @@ public class ChatClickListener implements RongIM.ConversationClickListener {
                 }
 //                RongIM.getInstance().startPrivateChat(AccompanyApplication.getContext(), notifyBean.getId(), notifyBean.getName());
 
-                if (RongContext.getInstance() == null) {
-                    throw new ExceptionInInitializerError("RongCloud SDK not init");
-                } else {
-                    Uri uri = Uri.parse("rong://" + AccompanyApplication.getContext().getApplicationInfo().packageName).buildUpon().appendPath("conversation").appendPath(Conversation.ConversationType.PRIVATE.getName().toLowerCase(Locale.US))
-                            .appendQueryParameter("targetId", notifyBean.getId()).appendQueryParameter("title", notifyBean.getName()).build();
-                    AccompanyApplication.getContext().startActivity(new Intent("android.intent.action.VIEW", uri).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-                }
+//                if (RongContext.getInstance() == null) {
+//                    throw new ExceptionInInitializerError("RongCloud SDK not init");
+//                } else {
+//                    Uri uri = Uri.parse("rong://" + AccompanyApplication.getContext().getApplicationInfo().packageName).buildUpon().appendPath("conversation").appendPath(Conversation.ConversationType.PRIVATE.getName().toLowerCase(Locale.US))
+//                            .appendQueryParameter("targetId", notifyBean.getId()).appendQueryParameter("title", notifyBean.getName()).build();
+//                    AccompanyApplication.getContext().startActivity(new Intent("android.intent.action.VIEW", uri).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+//                }
             }
             return true;
         }

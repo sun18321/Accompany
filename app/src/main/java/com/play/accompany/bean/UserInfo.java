@@ -37,6 +37,9 @@ public class UserInfo implements Serializable {
     @PrimaryKey(autoGenerate = true)
     private Integer databaseId;
 
+    @ColumnInfo(name = "show_id")
+    private String userName;
+
     @ColumnInfo(name = "user_id")
     private String userId;
 
@@ -123,6 +126,17 @@ public class UserInfo implements Serializable {
 
     @Ignore
     private int orderNum;
+
+    @Ignore
+    private int userNameUpset;
+
+    public int getUserNameUpset() {
+        return userNameUpset;
+    }
+
+    public void setUserNameUpset(int userNameUpset) {
+        this.userNameUpset = userNameUpset;
+    }
 
     public int getOrderNum() {
         return orderNum;
@@ -362,6 +376,14 @@ public class UserInfo implements Serializable {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getGamePrice(int type) {

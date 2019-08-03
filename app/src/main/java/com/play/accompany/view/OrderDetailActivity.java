@@ -32,6 +32,7 @@ import com.play.accompany.net.NetFactory;
 import com.play.accompany.net.NetListener;
 import com.play.accompany.utils.DateUtils;
 import com.play.accompany.utils.EncodeUtils;
+import com.play.accompany.utils.EventUtils;
 import com.play.accompany.utils.GlideUtils;
 import com.play.accompany.utils.GsonUtils;
 import com.play.accompany.utils.LogUtils;
@@ -369,6 +370,10 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
                 mTvState.setTextColor(getResources().getColor(R.color.color_order_green));
                 mTvState.setText("已接单");
                 setResult(IntentConstant.INTENT_CODE_ACCEPT_SUCESS);
+
+                int all = mBean.getNum() * mBean.getPrice();
+                EventUtils.getInstance().upAcceptOrder(mBean.getTargetId(), mBean.getId(), mBean.getGameTypeName(), DateUtils.time2Date(mBean.getStartTime()),
+                        String.valueOf(mBean.getNum()), String.valueOf(all));
             }
 
             @Override
@@ -408,6 +413,9 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
                 mTvState.setVisibility(View.VISIBLE);
                 mTvState.setTextColor(getResources().getColor(R.color.red));
                 mTvState.setText("已取消");
+
+                EventUtils.getInstance().upRejectOrder(DateUtils.time2Date(System.currentTimeMillis()), mBean.getId(), mBean.getTargetId(), mBean.getUserId(), mBean.getName());
+
                 setResult(IntentConstant.INTENT_CODE_ACCEPT_SUCESS);
             }
 

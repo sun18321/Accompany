@@ -4,6 +4,7 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 
@@ -64,4 +65,25 @@ public class NotificationUtils {
         }
         return builder;
     }
+
+
+    public static void openPermission() {
+            Intent intent = new Intent();
+            if (Build.VERSION.SDK_INT >= 26) {
+                // android 8.0引导
+                intent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");
+                intent.putExtra("android.provider.extra.APP_PACKAGE", AccompanyApplication.getContext().getPackageName());
+            } else if (Build.VERSION.SDK_INT >= 21) {
+                // android 5.0-7.0
+                intent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");
+                intent.putExtra("app_package", AccompanyApplication.getContext().getPackageName());
+                intent.putExtra("app_uid", AccompanyApplication.getContext().getApplicationInfo().uid);
+            } else {
+                // 其他
+                intent.setAction("android.settings.APPLICATION_DETAILS_SETTINGS");
+                intent.setData(Uri.fromParts("package", AccompanyApplication.getContext().getPackageName(), null));
+            }
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            AccompanyApplication.getContext().startActivity(intent);
+        }
 }

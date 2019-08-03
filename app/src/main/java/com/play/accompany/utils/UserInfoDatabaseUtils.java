@@ -61,6 +61,13 @@ public class UserInfoDatabaseUtils {
             SPUtils.getInstance().put(SpConstant.MY_INVITE_CODE, inviteCode);
         }
 
+        int upset = userInfo.getUserNameUpset();
+        if (upset == OtherConstant.ID_EDITED) {
+            SPUtils.getInstance().put(SpConstant.ID_IS_EDITED, true);
+        } else {
+            SPUtils.getInstance().put(SpConstant.ID_IS_EDITED, false);
+        }
+
         Integer inviteFlag = userInfo.getInviteFlag();
         if (inviteFlag != null) {
             int flag = inviteFlag;
@@ -114,6 +121,7 @@ public class UserInfoDatabaseUtils {
             @Override
             public void run() {
                 UserInfo savedUserInfo = AccompanyDatabase.getInstance(AccompanyApplication.getContext()).getUserDao().getUserInfo(SPUtils.getInstance().getString(SpConstant.MY_USER_ID));
+                savedUserInfo.setUserName(userInfo.getUserName());
                 savedUserInfo.setName(userInfo.getName());
                 savedUserInfo.setGender(userInfo.getGender());
                 savedUserInfo.setDate(userInfo.getDate());
@@ -158,15 +166,15 @@ public class UserInfoDatabaseUtils {
 //        ThreadPool.newInstance().add(new Runnable() {
 //            @Override
 //            public void run() {
-//                List<FavoriteInfo> saveList = AccompanyDatabase.getInstance(AccompanyApplication.getContext()).getFavriteDao().getAllFavoriteByUserId(SPUtils.getInstance().getString(SpConstant.MY_USER_ID));
+//                List<FavoriteInfo> saveList = AccompanyDatabase.getInstance(AccompanyApplication.getContext()).getFavoriteDao().getAllFavoriteByUserId(SPUtils.getInstance().getString(SpConstant.MY_USER_ID));
 //                if (saveList.isEmpty()) {
 //                    List<FavoriteInfo> insertList = getFavoriteList(list);
-//                    AccompanyDatabase.getInstance(AccompanyApplication.getContext()).getFavriteDao().insertList(insertList);
+//                    AccompanyDatabase.getInstance(AccompanyApplication.getContext()).getFavoriteDao().insertList(insertList);
 //                } else {
 //                    if (saveList.size() > list.size()) {
 //                        List<FavoriteInfo> updateList = getFavoriteList(list);
-//                        AccompanyDatabase.getInstance(AccompanyApplication.getContext()).getFavriteDao().deleteAll(saveList);
-//                        AccompanyDatabase.getInstance(AccompanyApplication.getContext()).getFavriteDao().insertList(updateList);
+//                        AccompanyDatabase.getInstance(AccompanyApplication.getContext()).getFavoriteDao().deleteAll(saveList);
+//                        AccompanyDatabase.getInstance(AccompanyApplication.getContext()).getFavoriteDao().insertList(updateList);
 //                    }
 //                }
 //            }

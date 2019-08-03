@@ -233,13 +233,22 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
-                android:maxLines="1"
                 android:background="@null"
                 android:hint="@string/edit_hint"
                 android:gravity="right"
                 />
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_word_count"
+            android:layout_marginTop="@dimen/dp_5"
+            android:layout_gravity="end"
+            android:layout_marginEnd="@dimen/dp_10"
+            android:textColor="@color/gray"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
     </LinearLayout>
 
     <LinearLayout

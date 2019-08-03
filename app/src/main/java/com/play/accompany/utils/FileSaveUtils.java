@@ -2,6 +2,7 @@ package com.play.accompany.utils;
 
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
@@ -9,6 +10,7 @@ import com.play.accompany.present.CommonListener;
 import com.play.accompany.view.AccompanyApplication;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -30,7 +32,7 @@ public class FileSaveUtils {
     }
 
     public void saveData(String name, String data){
-        if (data == null || TextUtils.isEmpty(data)) {
+        if (data == null) {
             return;
         }
 
@@ -55,7 +57,7 @@ public class FileSaveUtils {
     }
 
     public void saveData(String name, List list) {
-        if (list == null || list.isEmpty()) {
+        if (list == null) {
             return;
         }
         String json = GsonUtils.toJson(list);
@@ -96,6 +98,10 @@ public class FileSaveUtils {
                 StringBuilder data = new StringBuilder();
                 try {
                     FileInputStream inputStream = AccompanyApplication.getContext().openFileInput(name);
+                    if (inputStream.available() == 0) {
+                        listener.onListener(null);
+                        return;
+                    }
                     bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
                     String line;
                     while ((line = bufferedReader.readLine()) != null) {

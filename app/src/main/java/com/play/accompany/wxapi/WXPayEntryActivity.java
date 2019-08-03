@@ -37,6 +37,7 @@ public class WXPayEntryActivity extends AppCompatActivity implements IWXAPIEvent
     private final String WE_CHAT_PAY = "wx_pay";
     private IWXAPI api;
     private ProgressDialog mDialog;
+    private int mMoney;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

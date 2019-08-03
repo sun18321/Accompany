@@ -25,7 +25,6 @@
 
     </RelativeLayout>
 
-
     <fragment
         android:id="@+id/conversationlist"
         android:name="com.play.accompany.chat.AccompanyListFragment"

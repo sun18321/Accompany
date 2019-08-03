@@ -1,6 +1,7 @@
 package com.play.accompany.constant;
 
 import com.play.accompany.R;
+import com.play.accompany.bean.AllOrderBean;
 import com.play.accompany.bean.OrderState;
 import com.play.accompany.view.AccompanyApplication;
 
@@ -27,7 +28,7 @@ public class OrderConstant {
     public static final int CLICK_JUMP_ERROR = 9999;
 
 
-    public static OrderState getOrderState(long startTime, int orderCode, boolean isHost) {
+    public static OrderState getOrderState(AllOrderBean bean, int orderCode, boolean isHost) {
         OrderState orderState = new OrderState();
         switch (orderCode) {
             case NO_PAY:
@@ -117,6 +118,16 @@ public class OrderConstant {
                 orderState.setStateText(AccompanyApplication.getContext().getResources().getString(R.string.order_state_error));
                 orderState.setStateBackground(R.drawable.gray_background);
                 orderState.setStateAction(CLICK_JUMP_ERROR);
+        }
+        int all = bean.getNum() * bean.getPrice();
+        if (orderCode == MASTER_NO_ACCEPT) {
+            orderState.setSpend("0");
+        } else {
+            if (isHost) {
+                orderState.setSpend("+" + all);
+            } else {
+                orderState.setSpend("-" + all);
+            }
         }
         return orderState;
     }

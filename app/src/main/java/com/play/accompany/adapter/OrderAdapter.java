@@ -2,12 +2,14 @@ package com.play.accompany.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,9 +20,12 @@ import com.play.accompany.bean.AllOrderBean;
 import com.play.accompany.bean.CommentBean;
 import com.play.accompany.bean.IntentPayInfo;
 import com.play.accompany.bean.OrderState;
+import com.play.accompany.bean.TopGameBean;
 import com.play.accompany.constant.OrderConstant;
 import com.play.accompany.constant.SpConstant;
+import com.play.accompany.design.ColorText;
 import com.play.accompany.design.CommentDialog;
+import com.play.accompany.present.ApplicationListener;
 import com.play.accompany.utils.DateUtils;
 import com.play.accompany.utils.SPUtils;
 import com.play.accompany.view.AccompanyApplication;
@@ -31,6 +36,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderHolder>
     private Context mContext;
     private List<AllOrderBean> mList;
     private OrderListener mListener;
+    private List<TopGameBean> mAllList;
 
     public OrderAdapter(Context context, List<AllOrderBean> list) {
         mContext = context;
@@ -61,13 +67,15 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderHolder>
     class OrderHolder extends RecyclerView.ViewHolder {
         RoundedImageView imgHead;
         TextView tvName;
-        TextView tvType;
+        ColorText tvType;
         TextView tvTime;
         TextView tvPrice;
         TextView tvState;
         TextView tvTips;
+        ImageView imgGet;
+        TextView tvSpend;
 
-        public OrderHolder(@NonNull View itemView) {
+         OrderHolder(@NonNull View itemView) {
             super(itemView);
 
             imgHead = itemView.findViewById(R.id.img_head);
@@ -77,6 +85,8 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderHolder>
             tvPrice = itemView.findViewById(R.id.tv_price);
             tvState = itemView.findViewById(R.id.tv_state);
             tvTips = itemView.findViewById(R.id.tv_tips);
+            imgGet = itemView.findViewById(R.id.img_get);
+            tvSpend = itemView.findViewById(R.id.tv_spend);
         }
 
         void bindItem(final AllOrderBean bean) {
@@ -105,23 +115,27 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderHolder>
                 });
             }
             tvName.setText(bean.getName());
-            tvType.setText(bean.getGameTypeName());
+            if (mAllList == null || mAllList.isEmpty()) {
+                checkList(tvType, bean.getgameType());
+            } else {
+                setType(tvType, bean.getgameType());
+            }
             tvTime.setText(DateUtils.time2Date(bean.getTime()));
             int price = bean.getPrice();
             final int num = bean.getNum();
             int all = price * num;
-            String content = "(" + price + itemView.getContext().getResources().getString(R.string.price) + " * " + num + ")";
-            String detail = itemView.getContext().getResources().getString(R.string.price_detail_place);
-            String format = String.format(detail, content);
-            String text = itemView.getContext().getResources().getString(R.string.all_money) + all + itemView.getContext().getResources().getString(R.string.money) + format;
-
-            tvPrice.setText(Html.fromHtml(text));
+            tvPrice.setText("【" + all + AccompanyApplication.getContext().getResources().getString(R.string.money) + "】");
             int state = bean.getState();
-            OrderState orderState = OrderConstant.getOrderState(bean.getStartTime(),state, isHost);
+            OrderState orderState = OrderConstant.getOrderState(bean,state, isHost);
             if (orderState != null) {
                 final int stateAction = orderState.getStateAction();
                 String tip = orderState.getTip();
-                tvTips.setText(tip);
+                if (!TextUtils.isEmpty(tip)) {
+                    tvTips.setVisibility(View.VISIBLE);
+                    tvTips.setText(tip);
+                } else {
+                    tvTips.setVisibility(View.GONE);
+                }
                 tvState.setBackgroundResource(orderState.getStateBackground());
                 tvState.setText(orderState.getStateText());
                 tvState.setOnClickListener(new View.OnClickListener() {
@@ -138,6 +152,12 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderHolder>
                         }
                     }
                 });
+                tvSpend.setText(orderState.getSpend());
+            }
+            if (TextUtils.equals(SPUtils.getInstance().getString(SpConstant.MY_USER_ID), bean.getUserId())) {
+                imgGet.setVisibility(View.GONE);
+            } else {
+                imgGet.setVisibility(View.VISIBLE);
             }
         }
 
@@ -160,11 +180,11 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderHolder>
                     showCommentDialog(context, bean);
                     break;
                 case OrderConstant.CLICK_JUMP_ACCEPT:
-                    orderNext(bean.getId(),AccompanyApplication.getContext().getResources()
+                    orderNext(bean,AccompanyApplication.getContext().getResources()
                             .getString(R.string.accept_success),AccompanyApplication.getContext().getResources().getString(R.string.accept_failed));
                     break;
                 case OrderConstant.CLICK_JUMP_SUBMIT:
-                    orderNext(bean.getId(), AccompanyApplication.getContext().getResources()
+                    orderNext(bean, AccompanyApplication.getContext().getResources()
                             .getString(R.string.submit_success), AccompanyApplication.getContext().getResources().getString(R.string.submit_failed));
                     break;
                 case OrderConstant.CLICK_JUMP_ERROR:
@@ -210,10 +230,31 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderHolder>
             });
         }
 
-        void orderNext(String id,String success,String failed) {
+        void orderNext(AllOrderBean bean,String success,String failed) {
             if (mListener != null) {
-                mListener.onOrderNext(id, success, failed);
+                mListener.onOrderNext(bean, success, failed);
             }
+        }
+    }
+
+    private void setType(ColorText textView, int type) {
+        for (TopGameBean bean : mAllList) {
+            if (type == bean.getTypeId()) {
+                textView.setColor(bean.getTagFront(), bean.getTagBg(), bean.getName());
+                break;
+            }
+        }
+    }
+
+    private void checkList(final ColorText text, final int type) {
+        if (mAllList == null || mAllList.isEmpty()) {
+            AccompanyApplication.getGameList(new ApplicationListener.GameListListener() {
+                @Override
+                public void onGameListener(List<TopGameBean> list) {
+                    mAllList = list;
+                    setType(text, type);
+                }
+            });
         }
     }
 
@@ -222,7 +263,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderHolder>
 
         void onCommentClick(CommentBean bean);
 
-        void onOrderNext(String id, String success, String failed);
+        void onOrderNext(AllOrderBean bean, String success, String failed);
 
         void onPayClick(IntentPayInfo info);
 

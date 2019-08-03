@@ -1,10 +1,8 @@
 package com.play.accompany.fragment;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,7 +22,6 @@ import com.play.accompany.bean.Token;
 import com.play.accompany.bean.TopGameBean;
 import com.play.accompany.bean.TypeQueryBean;
 import com.play.accompany.bean.UserInfo;
-import com.play.accompany.constant.AppConstant;
 import com.play.accompany.constant.IntentConstant;
 import com.play.accompany.constant.OtherConstant;
 import com.play.accompany.constant.SpConstant;
@@ -33,12 +30,13 @@ import com.play.accompany.net.AccompanyRequest;
 import com.play.accompany.net.NetFactory;
 import com.play.accompany.net.NetListener;
 import com.play.accompany.net.StringListener;
+import com.play.accompany.utils.DateUtils;
 import com.play.accompany.utils.EncodeUtils;
+import com.play.accompany.utils.EventUtils;
 import com.play.accompany.utils.GsonUtils;
 import com.play.accompany.utils.SPUtils;
 import com.play.accompany.utils.ThreadPool;
 import com.play.accompany.utils.ToastUtils;
-import com.play.accompany.view.AccompanyApplication;
 import com.play.accompany.view.AccountActivity;
 import com.play.accompany.view.RankActivity;
 import com.play.accompany.view.UserCenterActivity;
@@ -47,7 +45,6 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,26 +60,16 @@ public class HomeFragment extends BaseFragment {
     private View mLoadingView;
     private SmartRefreshLayout mRefreshLayout;
     private boolean isRequsting = false;
-    private List<String> mAttentionList = new ArrayList<>();
-    private List<FavoriteInfo> mInfoList = new ArrayList<>();
     private int mCurrentType = -1;
-//    private AttentionReceiver mReceiver;
+    private static ScrollListener mListener;
 
-    public static HomeFragment newInstance() {
+    public static HomeFragment newInstance(ScrollListener listener) {
         if (sHomeFragment == null) {
+            mListener = listener;
             sHomeFragment = new HomeFragment();
             return sHomeFragment;
         }
         return sHomeFragment;
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-//        IntentFilter filter = new IntentFilter(AppConstant.BROADCAST_ATTENTION);
-//        mReceiver = new AttentionReceiver();
-//        mContext.registerReceiver(mReceiver, filter);
     }
 
     @Override
@@ -92,19 +79,6 @@ public class HomeFragment extends BaseFragment {
 
     @Override
     protected void initViews(View view) {
-//        ThreadPool.newInstance().add(new Runnable() {
-//            @Override
-//            public void run() {
-//                mInfoList = AccompanyDatabase.getInstance(mContext).getFavriteDao().getAllFavoriteByUserId(SPUtils.getInstance().getString(SpConstant.MY_USER_ID));
-//                if (!mInfoList.isEmpty()) {
-//                    for (FavoriteInfo favoriteInfo : mInfoList) {
-//                        mAttentionList.add(favoriteInfo.getFavoriteId());
-//                    }
-//                }
-//                mLoad = true;
-//            }
-//        });
-
         mRecyclerView = view.findViewById(R.id.recycler);
         mLoadingView = view.findViewById(R.id.loading_view);
         mRefreshLayout = view.findViewById(R.id.refresh_layout);
@@ -116,6 +90,27 @@ public class HomeFragment extends BaseFragment {
                     requestData(getToken());
                 } else {
                     queryType(mCurrentType,true);
+                }
+            }
+        });
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                if (mRecyclerView.getScrollState() == RecyclerView.SCROLL_STATE_SETTLING && dy > 0) {
+                    if (mListener != null) {
+                        mListener.onHide();
+                    }
+                }else if (mRecyclerView.getScrollState() == RecyclerView.SCROLL_STATE_SETTLING && dy < 0) {
+                    if (mListener != null) {
+                        mListener.onShow();
+                    }
                 }
             }
         });
@@ -187,8 +182,9 @@ public class HomeFragment extends BaseFragment {
             }
 
             @Override
-            public void onItemClick(UserInfo info) {
-//                boolean attention = mAttentionList.contains(info.getUserId());
+            public void onItemClick(UserInfo info,int index) {
+                EventUtils.getInstance().upMasterClick(String.valueOf(index), info.getUserId(), String.valueOf(mCurrentType), DateUtils.time2Date(System.currentTimeMillis()));
+
                 info.setFromChat(false);
                 Intent intent = new Intent(mContext, UserCenterActivity.class);
                 intent.putExtra(IntentConstant.INTENT_USER, info);
@@ -197,6 +193,8 @@ public class HomeFragment extends BaseFragment {
 
             @Override
             public void onBannerClick(String url) {
+                EventUtils.getInstance().upOpenActivity(DateUtils.time2Date(System.currentTimeMillis()));
+
                 Intent intent = new Intent(mContext, WebViewActivity.class);
                 intent.putExtra(IntentConstant.INTENT_URL, url);
                 intent.putExtra(IntentConstant.INTENT_TITLE, mContext.getResources().getString(R.string.webview_title_activity));
@@ -209,6 +207,10 @@ public class HomeFragment extends BaseFragment {
         if (isRequsting) {
             return;
         }
+        if (!isRefresh && mCurrentType == id) {
+            return;
+        }
+
         mCurrentType = id;
         isRequsting = true;
         TypeQueryBean bean = new TypeQueryBean();
@@ -224,6 +226,8 @@ public class HomeFragment extends BaseFragment {
                 if (isRefresh) {
                     mRefreshLayout.finishRefresh();
                 }
+
+                EventUtils.getInstance().upClickGameType(String.valueOf(id), DateUtils.time2Date(System.currentTimeMillis()));
 
                 if (list.isEmpty()) {
                     ToastUtils.showCommonToast(getResources().getString(R.string.no_master));
@@ -269,48 +273,6 @@ public class HomeFragment extends BaseFragment {
         }
     }
 
-    private void attentionChange(String id) {
-        if (TextUtils.isEmpty(id)) {
-            return;
-        }
-
-        if (mAttentionList.contains(id)) {
-            mAttentionList.remove(id);
-            SPUtils.getInstance().put(SpConstant.ATTENTION_COUNT, mAttentionList.size());
-            FavoriteInfo info = null;
-            for (FavoriteInfo favoriteInfo : mInfoList) {
-                if (TextUtils.equals(favoriteInfo.getFavoriteId(), id)) {
-                    info = favoriteInfo;
-                    break;
-                }
-            }
-            if (info != null) {
-                mInfoList.remove(info);
-                final FavoriteInfo finalInfo = info;
-                ThreadPool.newInstance().add(new Runnable() {
-                    @Override
-                    public void run() {
-                        AccompanyDatabase.getInstance(mContext).getFavriteDao().delete(finalInfo);
-                    }
-                });
-            }
-        } else {
-            mAttentionList.add(id);
-            SPUtils.getInstance().put(SpConstant.ATTENTION_COUNT, mAttentionList.size());
-            final FavoriteInfo info = new FavoriteInfo();
-            info.setUserId(SPUtils.getInstance().getString(SpConstant.MY_USER_ID));
-            info.setFavoriteId(id);
-            ThreadPool.newInstance().add(new Runnable() {
-                @Override
-                public void run() {
-                    long row = AccompanyDatabase.getInstance(mContext).getFavriteDao().insertSingle(info);
-                    info.setId(row);
-                    mInfoList.add(info);
-                }
-            });
-        }
-    }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -320,6 +282,7 @@ public class HomeFragment extends BaseFragment {
             if (extra == 0) {
                 return;
             }
+
             queryType(extra,false);
         }
     }
@@ -327,21 +290,12 @@ public class HomeFragment extends BaseFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-
-//        if (getActivity() != null) {
-//            getActivity().unregisterReceiver(mReceiver);
-//        }
     }
 
-//    class AttentionReceiver extends BroadcastReceiver {
-//
-//        @Override
-//        public void onReceive(Context context, Intent intent) {
-//            if (intent != null) {
-//                String id = intent.getStringExtra(IntentConstant.INTENT_USER_ID);
-//                attentionChange(id);
-//            }
-//        }
-//    }
+    public interface ScrollListener{
+        void onShow();
+
+        void onHide();
+    }
 
 }

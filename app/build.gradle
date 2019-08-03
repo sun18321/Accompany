@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 28
@@ -6,8 +8,8 @@ android {
         applicationId "com.play.accompany"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 3
-        versionName "1.0.2"
+        versionCode 6
+        versionName "1.1.0"
     }
 
     signingConfigs {
@@ -76,4 +78,8 @@ dependencies {
     }
     implementation 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'
     implementation(name: 'alipaySdk-15.6.2-20190416165036', ext: 'aar')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'androidx.core:core-ktx:1.0.2'
+
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.0-beta-1'
 }

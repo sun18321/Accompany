@@ -5,12 +5,14 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 import com.play.accompany.R;
 import com.play.accompany.base.BaseActivity;
 import com.play.accompany.constant.SpConstant;
 import com.play.accompany.db.AccompanyDatabase;
 import com.play.accompany.design.ColorfulTitle;
+import com.play.accompany.utils.AppUtils;
 import com.play.accompany.utils.SPUtils;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
@@ -34,6 +36,8 @@ public class SettingActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
+        TextView tvVersion = findViewById(R.id.tv_version);
+        tvVersion.setText(AppUtils.getAppVersionName());
         mGroupListView = findViewById(R.id.group_list);
         initToolbar(getResources().getString(R.string.setting));
 

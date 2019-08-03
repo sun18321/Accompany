@@ -7,6 +7,9 @@ public class CodeLogin {
 
     private String token;
 
+    //1正常 2绑定
+    private int type;
+
     public String getUserId() {
         return userId;
     }
@@ -29,5 +32,13 @@ public class CodeLogin {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 }

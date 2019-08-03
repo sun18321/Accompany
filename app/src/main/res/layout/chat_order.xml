@@ -34,6 +34,18 @@
         android:layout_alignParentBottom="true"
         android:background="@color/rc_conversation_list_divider_color" />
 
+    <TextView
+        android:id="@+id/tv_unread"
+        android:gravity="center"
+        android:visibility="invisible"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_10"
+        android:background="@mipmap/rc_unread_count_bg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
     </RelativeLayout>
 
 </RelativeLayout>

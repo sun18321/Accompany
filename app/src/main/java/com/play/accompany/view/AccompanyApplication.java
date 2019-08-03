@@ -14,15 +14,19 @@ import com.play.accompany.chat.ChatClickListener;
 import com.play.accompany.chat.ChatConnectListener;
 import com.play.accompany.chat.ChatListClickListener;
 import com.play.accompany.chat.MessageReceiverListener;
+import com.play.accompany.chat.MessageSendReceiverListener;
 import com.play.accompany.chat.OrderMessage;
 import com.play.accompany.chat.OrderProvider;
 import com.play.accompany.chat.OrderResponseMessage;
 import com.play.accompany.constant.AppConstant;
 import com.play.accompany.constant.OtherConstant;
+import com.play.accompany.constant.SpConstant;
 import com.play.accompany.present.ApplicationListener;
 import com.play.accompany.present.CommonListener;
 import com.play.accompany.utils.FileSaveUtils;
 import com.play.accompany.utils.GsonUtils;
+import com.play.accompany.utils.LogUtils;
+import com.play.accompany.utils.SPUtils;
 import com.play.accompany.utils.ThreadPool;
 import com.play.accompany.utils.ToastUtils;
 import com.umeng.analytics.MobclickAgent;
@@ -34,6 +38,7 @@ import java.util.List;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
+import leakcanary.LeakCanary;
 
 public class AccompanyApplication extends Application {
     private static Context mContext;
@@ -46,6 +51,8 @@ public class AccompanyApplication extends Application {
     private static List<TopGameBean> mGameList;
     private static List<String> mAttentionList;
     private static HashSet mHashSet = new HashSet<String>();
+    //订单未读
+    private static int mMessageUnread = 0;
 
 
     @Override
@@ -56,6 +63,7 @@ public class AccompanyApplication extends Application {
         //umeng
         UMConfigure.setLogEnabled(true);
         MobclickAgent.setPageCollectionMode(MobclickAgent.PageMode.MANUAL);
+        UMConfigure.setProcessEvent(true);
         UMConfigure.init(this, AppConstant.UMENG_KEY, "default", UMConfigure.DEVICE_TYPE_PHONE, null);
 
         //rong
@@ -89,6 +97,10 @@ public class AccompanyApplication extends Application {
             RongIM.registerMessageTemplate(new OrderProvider());
 
             RongIM.registerMessageType(OrderResponseMessage.class);
+
+            //发出消息
+            RongIM.getInstance().setSendMessageListener(new MessageSendReceiverListener());
+
         }
     }
 
@@ -154,7 +166,7 @@ public class AccompanyApplication extends Application {
 
     public static void setAttentionList(final List<String> list) {
         mAttentionList = list;
-
+        SPUtils.getInstance().put(SpConstant.ATTENTION_COUNT, mAttentionList.size());
         ThreadPool.newInstance().add(new Runnable() {
             @Override
             public void run() {
@@ -205,17 +217,12 @@ public class AccompanyApplication extends Application {
         }
     }
 
-    public static String getGameString(int type) {
-        if (mGameList == null || mGameList.isEmpty()) {
-            return "";
-        }
-        String game = "";
-        for (TopGameBean topGameBean : mGameList) {
-            if (topGameBean.getTypeId() == type) {
-                game = topGameBean.getName();
-                break;
-            }
-        }
-        return game;
+    public static void setMessageUnread(int count) {
+        mMessageUnread = count;
+        LogUtils.d("order", "set count:" + count);
+    }
+
+    public static int getMessageUnread() {
+        return mMessageUnread;
     }
 }

@@ -244,6 +244,7 @@ public class HomeAdapter extends RecyclerView.Adapter {
         }
 
         void bindItem(final UserInfo info, int position) {
+            final int index = position;
             if (position == 0) {
                 ViewGroup.MarginLayoutParams marginLayoutParams;
                 ViewGroup.LayoutParams params = itemView.getLayoutParams();
@@ -262,7 +263,7 @@ public class HomeAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View v) {
                     if (mListener != null) {
-                        mListener.onItemClick(info);
+                        mListener.onItemClick(info, index);
                     }
                 }
             });
@@ -287,7 +288,7 @@ public class HomeAdapter extends RecyclerView.Adapter {
     public interface HomeListener {
         void onTopCLick(TopGameBean bean);
 
-        void onItemClick(UserInfo info);
+        void onItemClick(UserInfo info, int index);
 
         void onBannerClick(String url);
     }

@@ -69,6 +69,7 @@
     <string name="age">年龄</string>
     <string name="birthday">生日</string>
     <string name="sign">签名</string>
+    <string name="more">更多</string>
     <string name="interesting">兴趣</string>
     <string name="profession">格言</string>
     <string name="gender_male">男</string>
@@ -203,6 +204,8 @@
     <string name="tip_add">上传充分说明技能水平的截图，jpg，png均可</string>
     <string name="edit_success">修改成功</string>
     <string name="master_wait">等待审核</string>
+    <string name="tip_id">ID是账号的唯一凭证，只可修改一次\n支持大小写字母数字和下划线\n且长度不可大于16位</string>
+    <string name="tip_nick_name">好的昵称可以让你的朋友更容易记住你</string>
 
     <string name="price_detail_place"><![CDATA[<font color="#000000"><small>%1$s</small></font>]]></string>
 

@@ -29,4 +29,6 @@ public class SpConstant {
 
   public static String ACCEPT_NEW_NOTICE = "accept_new_notice";
 
+  public static String ID_IS_EDITED = "id_is_edited";
+
 }

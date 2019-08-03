@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.play.accompany.constant.OtherConstant;
+import com.play.accompany.utils.LogUtils;
 
 import io.rong.imkit.RongIM;
 import io.rong.imkit.model.UIConversation;
@@ -25,6 +26,13 @@ public class ChatListClickListener implements RongIM.ConversationListBehaviorLis
     public boolean onConversationLongClick(Context context, View view, UIConversation uiConversation) {
         Conversation.ConversationType type = uiConversation.getConversationType();
         String senderId = uiConversation.getConversationSenderId();
+
+        LogUtils.d("rong", "id:" + senderId);
+
+        boolean top = uiConversation.isTop();
+        if (top && TextUtils.isEmpty(senderId)) {
+            return true;
+        }
         if (type == Conversation.ConversationType.SYSTEM || TextUtils.equals(senderId, OtherConstant.OFFICE_NUMBER)) {
             return true;
         }

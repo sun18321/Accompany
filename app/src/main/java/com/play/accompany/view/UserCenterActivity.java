@@ -35,6 +35,7 @@ import com.play.accompany.net.NetFactory;
 import com.play.accompany.net.NetListener;
 import com.play.accompany.utils.DateUtils;
 import com.play.accompany.utils.EncodeUtils;
+import com.play.accompany.utils.EventUtils;
 import com.play.accompany.utils.FileSaveUtils;
 import com.play.accompany.utils.GsonUtils;
 import com.play.accompany.utils.LogUtils;
@@ -190,7 +191,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         }
         mTvName.setText(mUserInfo.getName());
         mTvBottomName.setText(mUserInfo.getName());
-        mTvId.setText(mUserInfo.getUserId());
+        mTvId.setText(mUserInfo.getUserName());
         String url = mUserInfo.getUrl();
         if (!TextUtils.isEmpty(url)) {
             Glide.with(this).load(url).into(mImgHead);
@@ -484,6 +485,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
                     Toast.makeText(this, getResources().getString(R.string.data_error), Toast.LENGTH_SHORT).show();
                     this.finish();
                 } else {
+                    EventUtils.getInstance().upClickOrder(mUserInfo.getUserId());
                     Intent intent = new Intent(this, OrderActivity.class);
                     intent.putExtra(IntentConstant.INTENT_USER, mUserInfo);
                     startActivity(intent);
@@ -542,12 +544,12 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         if (mUserInfo == null) {
             return;
         }
-        if (TextUtils.equals((SPUtils.getInstance().getString(SpConstant.MY_USER_ID)),mUserInfo.getUserId())) {
-            return;
-        }
         io.rong.imlib.model.UserInfo chatInfo = new io.rong.imlib.model.UserInfo(mUserInfo.getUserId(), mUserInfo.getName(), Uri.parse(mUserInfo.getUrl()));
         RongIM.getInstance().refreshUserInfoCache(chatInfo);
 
+        if (TextUtils.equals((SPUtils.getInstance().getString(SpConstant.MY_USER_ID)),mUserInfo.getUserId())) {
+            return;
+        }
         Intent intent = new Intent(OtherConstant.CONVERSATION_ACTIVITY_RECEIVER);
         intent.putExtra(IntentConstant.INTENT_CONVERSATION_RECEIVER_TYPE, OtherConstant.CONVERSATION_UPDATE_NAME);
         intent.putExtra(IntentConstant.INTENT_USER_NAME, mUserInfo.getName());

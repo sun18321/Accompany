@@ -4,9 +4,11 @@ import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.gson.reflect.TypeToken;
@@ -19,6 +21,7 @@ import com.play.accompany.bean.BaseDecodeBean;
 import com.play.accompany.bean.CommentBean;
 import com.play.accompany.bean.IntentPayInfo;
 import com.play.accompany.bean.OnlyCodeBean;
+import com.play.accompany.bean.OrderUnreadBean;
 import com.play.accompany.bean.Token;
 import com.play.accompany.bean.UserInfo;
 import com.play.accompany.constant.IntentConstant;
@@ -26,7 +29,9 @@ import com.play.accompany.constant.SpConstant;
 import com.play.accompany.net.AccompanyRequest;
 import com.play.accompany.net.NetFactory;
 import com.play.accompany.net.NetListener;
+import com.play.accompany.utils.DateUtils;
 import com.play.accompany.utils.EncodeUtils;
+import com.play.accompany.utils.EventUtils;
 import com.play.accompany.utils.GsonUtils;
 import com.play.accompany.utils.SPUtils;
 import com.play.accompany.utils.ToastUtils;
@@ -99,6 +104,9 @@ public class AllOrderActivity extends BaseActivity implements OrderAdapter.Order
             @Override
             public void onSuccess(List<AllOrderBean> list) {
                 removeLoading();
+
+                clearRed();
+
                 mList.clear();
                 if (list == null || list.isEmpty()) {
                     mTvNoOrder.setVisibility(View.VISIBLE);
@@ -115,6 +123,7 @@ public class AllOrderActivity extends BaseActivity implements OrderAdapter.Order
                     mAdapter = new OrderAdapter(AllOrderActivity.this, mList);
                     mAdapter.setOrderListener(AllOrderActivity.this);
                     mRecyclerView.setAdapter(mAdapter);
+                    mRecyclerView.addItemDecoration(new DividerItemDecoration(AllOrderActivity.this, LinearLayout.VERTICAL));
                 } else {
                     mAdapter.notifyDataSetChanged();
                 }
@@ -155,14 +164,14 @@ public class AllOrderActivity extends BaseActivity implements OrderAdapter.Order
         request.requestDealToast(NetFactory.getNetRequest().getNetService().sendComment(body), getResources().getString(R.string.comment_success), getResources().getString(R.string.comment_failed));
     }
 
-    private void orderNext(String id, final String success, final String failed) {
+    private void orderNext(final AllOrderBean allOrderBean, final String success, final String failed) {
         if (mNeting) {
             return;
         }
         showDialog();
         mNeting = true;
-        AcceptOrderBean bean = new AcceptOrderBean();
-        bean.setId(id);
+        final AcceptOrderBean bean = new AcceptOrderBean();
+        bean.setId(allOrderBean.getId());
         bean.setToken(SPUtils.getInstance().getString(SpConstant.APP_TOKEN));
         String json = GsonUtils.toJson(bean);
         RequestBody body = EncodeUtils.encodeInBody(json);
@@ -176,6 +185,9 @@ public class AllOrderActivity extends BaseActivity implements OrderAdapter.Order
                 if (mRefreshLayout != null) {
                     mRefreshLayout.autoRefresh();
                 }
+                int all = allOrderBean.getNum() * allOrderBean.getPrice();
+                EventUtils.getInstance().upAcceptOrder(allOrderBean.getTargetId(), allOrderBean.getId(), allOrderBean.getGameTypeName(), DateUtils.time2Date(allOrderBean.getStartTime()
+                ), String.valueOf(allOrderBean.getNum()), String.valueOf(all));
             }
 
             @Override
@@ -196,7 +208,7 @@ public class AllOrderActivity extends BaseActivity implements OrderAdapter.Order
         });
     }
 
-    private void showConfirmDialog(final String id, final String success, final String failed) {
+    private void showConfirmDialog(final AllOrderBean bean, final String success, final String failed) {
         new QMUIDialog.MessageDialogBuilder(this).setMessage("确定要接受此订单吗？").addAction(getResources().getString(R.string.cancel),
                 new QMUIDialogAction.ActionListener() {
                     @Override
@@ -206,10 +218,37 @@ public class AllOrderActivity extends BaseActivity implements OrderAdapter.Order
                 }).addAction(getResources().getString(R.string.confirm), new QMUIDialogAction.ActionListener() {
             @Override
             public void onClick(QMUIDialog dialog, int index) {
-                orderNext(id, success, failed);
+                orderNext(bean, success, failed);
                 dialog.dismiss();
             }
         }).create().show();
+    }
+
+
+    private void clearRed() {
+        AccompanyRequest request = new AccompanyRequest();
+        request.beginRequest(NetFactory.getNetRequest().getNetService().clearRedPoint(EncodeUtils.encodeToken()), new TypeToken<BaseDecodeBean<List<OrderUnreadBean>>>() {
+        }.getType(), new NetListener<List<OrderUnreadBean>>() {
+            @Override
+            public void onSuccess(List<OrderUnreadBean> list) {
+                AccompanyApplication.setMessageUnread(0);
+            }
+
+            @Override
+            public void onFailed(int errCode) {
+
+            }
+
+            @Override
+            public void onError() {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
     }
 
     @Override
@@ -236,8 +275,8 @@ public class AllOrderActivity extends BaseActivity implements OrderAdapter.Order
     }
 
     @Override
-    public void onOrderNext(String id,String success,String failed) {
-        showConfirmDialog(id, success, failed);
+    public void onOrderNext(AllOrderBean bean, String success, String failed) {
+        showConfirmDialog(bean, success, failed);
 //        orderNext(id,success,failed);
     }
 

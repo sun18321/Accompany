@@ -137,5 +137,8 @@ public interface NetService {
 
     @POST("getVersion")
     Observable<BaseResponse> getVersion();
+
+    @POST("setUserName")
+    Observable<BaseResponse> editId(@Body RequestBody body);
 }
 

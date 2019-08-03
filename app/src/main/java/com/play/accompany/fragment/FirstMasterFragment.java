@@ -29,7 +29,9 @@ import com.play.accompany.net.AccompanyRequest;
 import com.play.accompany.net.NetFactory;
 import com.play.accompany.net.NetListener;
 import com.play.accompany.utils.AppUtils;
+import com.play.accompany.utils.DateUtils;
 import com.play.accompany.utils.EncodeUtils;
+import com.play.accompany.utils.EventUtils;
 import com.play.accompany.utils.FileSaveUtils;
 import com.play.accompany.utils.GlideUtils;
 import com.play.accompany.utils.GsonUtils;
@@ -182,7 +184,7 @@ public class FirstMasterFragment extends BaseFragment implements View.OnClickLis
     }
 
     private void upData() {
-        String name = mEditName.getText().toString();
+        final String name = mEditName.getText().toString();
         String phone = mEditPhone.getText().toString();
         String weChat = mEditWeChat.getText().toString();
         String id = mEditId.getText().toString();
@@ -233,6 +235,8 @@ public class FirstMasterFragment extends BaseFragment implements View.OnClickLis
                 new NetListener<List<OnlyCodeBean>>() {
                     @Override
                     public void onSuccess(List<OnlyCodeBean> list) {
+                        EventUtils.getInstance().upApplyMaster(name, DateUtils.time2Date(System.currentTimeMillis()));
+
                         ToastUtils.showCommonToast(AccompanyApplication.getContext().getResources().getString(R.string.submit_success));
                         SPUtils.getInstance().put(SpConstant.USER_TYPE, OtherConstant.USER_TYPE_WAIT);
                         mType = OtherConstant.USER_TYPE_WAIT;

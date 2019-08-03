@@ -292,7 +292,7 @@ public class ConversationActivity extends BaseActivity {
 
             @Override
             public void onFailed(int errCode) {
-
+                requestState();
             }
 
             @Override

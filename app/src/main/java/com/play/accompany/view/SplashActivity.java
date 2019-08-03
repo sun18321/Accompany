@@ -38,8 +38,10 @@ import com.play.accompany.net.NetListener;
 import com.play.accompany.utils.AppUtils;
 import com.play.accompany.utils.DownloadUtils;
 import com.play.accompany.utils.EncodeUtils;
+import com.play.accompany.utils.EventUtils;
 import com.play.accompany.utils.GsonUtils;
 import com.play.accompany.utils.SPUtils;
+import com.play.accompany.utils.ToastUtils;
 import com.play.accompany.utils.UserInfoDatabaseUtils;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
@@ -268,7 +270,12 @@ public class SplashActivity extends BaseActivity {
         DownloadUtils.getInstance().downloadFile(url, this, new DownloadUtils.DownloadListener() {
             @Override
             public void downloadFailed() {
-
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ToastUtils.showCommonToast("下载失败");
+                    }
+                });
             }
 
             @Override
@@ -424,6 +431,8 @@ public class SplashActivity extends BaseActivity {
         if (TextUtils.isEmpty(string)) {
             startActivity(new Intent(this, AccountActivity.class));
         } else {
+            EventUtils.getInstance().upUserType();
+
             MainActivity.launch(SplashActivity.this);
         }
         this.finish();

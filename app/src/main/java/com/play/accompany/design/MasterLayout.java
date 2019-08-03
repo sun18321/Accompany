@@ -24,6 +24,7 @@ import com.play.accompany.net.AccompanyRequest;
 import com.play.accompany.net.NetFactory;
 import com.play.accompany.net.NetListener;
 import com.play.accompany.utils.EncodeUtils;
+import com.play.accompany.utils.EventUtils;
 import com.play.accompany.utils.GsonUtils;
 import com.play.accompany.utils.SPUtils;
 import com.play.accompany.utils.ToastUtils;
@@ -124,7 +125,7 @@ public class MasterLayout extends FrameLayout {
         return price;
     }
 
-    private void editPrice(final int price, int gamType, final String unit) {
+    private void editPrice(final String game, final int oldPrice, final int price, int gamType, final String unit) {
         GameProperty property = new GameProperty();
         property.setType(gamType);
         property.setPrice(price);
@@ -134,28 +135,30 @@ public class MasterLayout extends FrameLayout {
         RequestBody body = EncodeUtils.encodeInBody(GsonUtils.toJson(bean));
         AccompanyRequest request = new AccompanyRequest();
         request.beginRequest(NetFactory.getNetRequest().getNetService().editMasterPrice(body), new TypeToken<BaseDecodeBean<OnlyCodeBean>>() {
-                }.getType(), new NetListener<String>() {
-                    @Override
-                    public void onSuccess(String s) {
-                        mTvPrice.setText(price + AccompanyApplication.getContext().getResources().getString(R.string.money) + "/" + unit);
-                        ToastUtils.showCommonToast(getResources().getString(R.string.edit_success));
-                    }
+        }.getType(), new NetListener<String>() {
+            @Override
+            public void onSuccess(String s) {
+                mTvPrice.setText(price + AccompanyApplication.getContext().getResources().getString(R.string.money) + "/" + unit);
+                ToastUtils.showCommonToast(getResources().getString(R.string.edit_success));
 
-                    @Override
-                    public void onFailed(int errCode) {
+                EventUtils.getInstance().upEditPrice(game, oldPrice, price);
+            }
 
-                    }
+            @Override
+            public void onFailed(int errCode) {
 
-                    @Override
-                    public void onError() {
+            }
 
-                    }
+            @Override
+            public void onError() {
 
-                    @Override
-                    public void onComplete() {
+            }
 
-                    }
-                });
+            @Override
+            public void onComplete() {
+
+            }
+        });
     }
 
     private void showPriceDialog(final MasterCheckBean bean) {
@@ -179,7 +182,7 @@ public class MasterLayout extends FrameLayout {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 int price = priceDialog.getSelect();
-                editPrice(price, typeId, bean.getUnit());
+                editPrice(bean.getName(),bean.getPrice(), price, typeId, bean.getUnit());
                 dialog.dismiss();
             }
         });

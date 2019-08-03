@@ -89,4 +89,11 @@ public class OtherConstant {
     public static final int COMMON_UPDATE = 102;
 
     public static final int NOT_UPDATE = 103;
+
+    public static final String DETAIL_TYPE = "detail_type";
+
+    public static final int ID_EDITED = 1;
+
+    public static final String PAY_MONEY = "pay_money";
+
 }

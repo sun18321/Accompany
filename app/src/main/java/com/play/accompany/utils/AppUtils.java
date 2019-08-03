@@ -1,16 +1,21 @@
 package com.play.accompany.utils;
 
 import android.app.ActivityManager;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Environment;
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
+import android.widget.Toast;
 
 import com.google.gson.reflect.TypeToken;
 import com.play.accompany.R;
@@ -178,5 +183,41 @@ public class AppUtils {
         Resources resources = AccompanyApplication.getContext().getResources();
         int resourceId = resources.getIdentifier("status_bar_height", "dimen", "android");
         return resources.getDimensionPixelSize(resourceId);
+    }
+
+    public static String getImagePath(Uri uri) {
+        String imagePath = null;
+        if (uri == null) {
+            ToastUtils.showCommonToast(AccompanyApplication.getContext().getResources().getString(R.string.data_error));
+            return null;
+        }
+        if (DocumentsContract.isDocumentUri(AccompanyApplication.getContext(),uri)) {
+            String docId = DocumentsContract.getDocumentId(uri);
+            if ("com.android.providers.media.documents".equals(uri.getAuthority())) {
+                String id = docId.split(":")[1];
+                String selection = MediaStore.Images.Media._ID + "=" + id;
+                imagePath = getImagePath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, selection);
+            } else if ("com.android.providers.downloads.documents".equals(uri.getAuthority())) {
+                Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), Long.valueOf(docId));
+                imagePath = getImagePath(contentUri, null);
+            }
+        } else if ("content".equalsIgnoreCase(uri.getScheme())) {
+            imagePath = getImagePath(uri, null);
+        } else if ("file".equalsIgnoreCase(uri.getScheme())) {
+            imagePath = uri.getPath();
+        }
+        return imagePath;
+    }
+
+    private static String getImagePath(Uri uri, String selection) {
+        String path = null;
+        Cursor cursor = AccompanyApplication.getContext().getContentResolver().query(uri, null, selection, null, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+            }
+            cursor.close();
+        }
+        return path;
     }
 }

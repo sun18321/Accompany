@@ -1,7 +1,9 @@
 package com.play.accompany.view;
 
 import android.content.Intent;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -23,15 +25,18 @@ import com.play.accompany.bean.UserInfo;
 import com.play.accompany.constant.IntentConstant;
 import com.play.accompany.constant.SpConstant;
 import com.play.accompany.design.BottomDialog;
+import com.play.accompany.design.TimeDialog;
 import com.play.accompany.design.WheelView;
 import com.play.accompany.net.AccompanyRequest;
 import com.play.accompany.net.NetFactory;
 import com.play.accompany.net.NetListener;
 import com.play.accompany.utils.DateUtils;
 import com.play.accompany.utils.EncodeUtils;
+import com.play.accompany.utils.EventUtils;
 import com.play.accompany.utils.GsonUtils;
 import com.play.accompany.utils.LogUtils;
 import com.play.accompany.utils.SPUtils;
+import com.play.accompany.utils.StringUtils;
 import com.play.accompany.utils.ToastUtils;
 
 import java.text.ParseException;
@@ -54,18 +59,15 @@ public class OrderActivity extends BaseActivity implements View.OnClickListener 
     private EditText mEditMarks;
     private TextView mTvAll;
     private UserInfo mUserInfo;
-    private BottomDialog mTimeDialog;
     private int mCount = 1;
     //单价
     private int mPrice;
     private BottomDialog mTypeDialog;
-    private String[] mDateArray;
-    private String[] mHourArray;
-    private String[] mMinuteArray;
     private long mServiceTime = 0;
     private String mTargetId;
     private int mGameType = 0;
     private String mGameName = null;
+    private TextView mTvWordCount;
 
 
     @Override
@@ -91,6 +93,23 @@ public class OrderActivity extends BaseActivity implements View.OnClickListener 
         mTvAmount = findViewById(R.id.tv_amount);
         mEditMarks = findViewById(R.id.edit_marks);
         mTvAll = findViewById(R.id.tv_all);
+        mTvWordCount = findViewById(R.id.tv_word_count);
+        mEditMarks.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                mTvWordCount.setText(s.length() + "/50");
+            }
+        });
 
         mRlTime.setOnClickListener(this);
         mRlType.setOnClickListener(this);
@@ -104,10 +123,6 @@ public class OrderActivity extends BaseActivity implements View.OnClickListener 
             Toast.makeText(this, getResources().getString(R.string.data_error), Toast.LENGTH_SHORT).show();
             this.finish();
         }
-
-        mDateArray = getResources().getStringArray(R.array.date_array);
-        mHourArray = getResources().getStringArray(R.array.hour_array);
-        mMinuteArray = getResources().getStringArray(R.array.minute_array);
     }
 
     private void setViews() {
@@ -134,37 +149,15 @@ public class OrderActivity extends BaseActivity implements View.OnClickListener 
     }
 
     private void showTimeDialog() {
-        if (mTimeDialog == null) {
-            View view = LayoutInflater.from(this).inflate(R.layout.time_pick, null);
-            final WheelView wheelDay = view.findViewById(R.id.wheel_day);
-            final WheelView wheelHour = view.findViewById(R.id.wheel_hour);
-            final WheelView wheelMinute = view.findViewById(R.id.wheel_minute);
-            wheelDay.setItems(Arrays.asList(mDateArray));
-            wheelHour.setItems(Arrays.asList(mHourArray));
-            wheelMinute.setItems(Arrays.asList(mMinuteArray));
-
-            view.findViewById(R.id.tv_cancel).setOnClickListener(new View.OnClickListener() {
+            new TimeDialog().showDialog(this, new TimeDialog.TimeListener() {
                 @Override
-                public void onClick(View v) {
-                    mTimeDialog.dismiss();
+                public void onTime(String stringTime, long longTime) {
+                    mTvTime.setText(stringTime);
+                    mServiceTime = longTime;
+
+                    LogUtils.d(getTag(), "time:" + mServiceTime);
                 }
             });
-
-            view.findViewById(R.id.tv_confirm).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int dayIndex = wheelDay.getSeletedIndex();
-                    int hourIndex = wheelHour.getSeletedIndex();
-                    int minuteIndex = wheelMinute.getSeletedIndex();
-                    mTvTime.setText(mDateArray[dayIndex] + " " + mHourArray[hourIndex] + ":" + mMinuteArray[minuteIndex]);
-                    convertOrderTime(dayIndex, hourIndex, minuteIndex);
-                    mTimeDialog.dismiss();
-                }
-            });
-            mTimeDialog = new BottomDialog(this);
-            mTimeDialog.setContentView(view);
-        }
-        mTimeDialog.show();
     }
 
     private void showTypeDialog() {
@@ -178,11 +171,12 @@ public class OrderActivity extends BaseActivity implements View.OnClickListener 
                 listGame.add(property.getName());
             }
 
-            if (listGame.size() > 2) {
-                wheelView.setOffset(1);
-            } else {
-                wheelView.setOffset(0);
-            }
+//            if (listGame.size() > 2) {
+//                wheelView.setOffset(1);
+//            } else {
+//                wheelView.setOffset(0);
+//            }
+
             wheelView.setItems(listGame);
 
             tvConfirm.setOnClickListener(new View.OnClickListener() {
@@ -213,30 +207,6 @@ public class OrderActivity extends BaseActivity implements View.OnClickListener 
 
         }
         mTypeDialog.show();
-    }
-
-    private void convertOrderTime(int dayIndex, int hourIndex, int minuteIndex) {
-        String day;
-        switch (dayIndex) {
-            case 0:
-                day = DateUtils.getToday();
-                break;
-            case 1:
-                day = DateUtils.getTomorrow();
-                break;
-            case 2:
-                day = DateUtils.getAfterTomoorrow();
-                break;
-            default:
-                day = "";
-        }
-        String hour = mHourArray[hourIndex] + ":" + mMinuteArray[minuteIndex];
-        String completeTime = day + " " + hour;
-        try {
-            mServiceTime = DateUtils.date2Time(completeTime);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
     }
 
     private void reduceCount() {
@@ -271,16 +241,18 @@ public class OrderActivity extends BaseActivity implements View.OnClickListener 
             Toast.makeText(this, getResources().getString(R.string.time_to_early), Toast.LENGTH_SHORT).show();
             return;
         }
+        String marks = mEditMarks.getText().toString();
+        if (!TextUtils.isEmpty(marks) && marks.length() > 50) {
+            ToastUtils.showCommonToast("备注过长");
+            return;
+        }
+
         showDialog();
         final OrderBean bean = new OrderBean();
         bean.setToken(SPUtils.getInstance().getString(SpConstant.APP_TOKEN));
         bean.setNum(mCount);
         bean.setPrice(mPrice);
         bean.setTargetId(mTargetId);
-        String marks = mEditMarks.getText().toString();
-        if (!TextUtils.isEmpty(marks) && marks.length() > 50) {
-            ToastUtils.showCommonToast("备注过长");
-        }
         bean.setComment(marks);
         bean.setgameType(mGameType);
         bean.setStartTime(mServiceTime);
@@ -297,6 +269,9 @@ public class OrderActivity extends BaseActivity implements View.OnClickListener 
                 String orderId = order.getOrderId();
                 String detail = mPrice + getResources().getString(R.string.price) + "*" + mCount;
                 int all = mPrice * mCount;
+
+                EventUtils.getInstance().upCreateOrder(DateUtils.time2Date(System.currentTimeMillis()), DateUtils.time2Date(mServiceTime), orderId, mTargetId, mGameName, String.valueOf(all), String.valueOf(mCount), mEditMarks.getText().toString());
+
                 Intent intent = new Intent(OrderActivity.this, OrderPayActivity.class);
                 IntentPayInfo info = new IntentPayInfo(mUserInfo.getUrl(), mUserInfo.getName(), mGameName, detail,
                         all, orderId);

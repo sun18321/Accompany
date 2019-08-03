@@ -19,6 +19,7 @@ import com.play.accompany.R;
 import com.play.accompany.bean.AllOrderBean;
 import com.play.accompany.bean.CommentBean;
 import com.play.accompany.constant.SpConstant;
+import com.play.accompany.utils.EventUtils;
 import com.play.accompany.utils.LogUtils;
 import com.play.accompany.utils.SPUtils;
 import com.play.accompany.utils.ToastUtils;
@@ -126,6 +127,9 @@ public class CommentDialog extends Dialog implements View.OnClickListener {
                 String comment = mEditComment.getText().toString();
                 bean.setEvaluate(comment);
                 mListener.onComment(bean);
+
+                EventUtils.getInstance().upOrderComment(SPUtils.getInstance().getString(SpConstant.MY_USER_ID), mBean.getTargetId(), mBean.getId(),
+                        mBean.getName(), comment, String.valueOf(score), String.valueOf((mBean.getPrice() * mBean.getNum())), String.valueOf(mBean.getNum()));
             }
         }
         if (CommentDialog.this.isShowing()) {

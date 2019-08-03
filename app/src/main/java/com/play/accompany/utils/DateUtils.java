@@ -80,4 +80,11 @@ public class DateUtils {
         }
         return ints;
     }
+
+    public static int getCurrentHour() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH");
+        Date date = new Date(System.currentTimeMillis());
+        String format = simpleDateFormat.format(date);
+        return Integer.parseInt(format);
+    }
 }

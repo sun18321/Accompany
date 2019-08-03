@@ -33,6 +33,7 @@ import com.play.accompany.net.AccompanyRequest;
 import com.play.accompany.net.NetFactory;
 import com.play.accompany.net.NetListener;
 import com.play.accompany.utils.EncodeUtils;
+import com.play.accompany.utils.EventUtils;
 import com.play.accompany.utils.GsonUtils;
 import com.play.accompany.utils.LogUtils;
 import com.play.accompany.utils.MD5;
@@ -332,6 +333,8 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
     }
 
     private void checkGold() {
+        EventUtils.getInstance().upPay(mPayMoney, null);
+
         AccompanyRequest request = new AccompanyRequest();
         RequestBody body = EncodeUtils.encodeToken();
         request.beginRequest(NetFactory.getNetRequest().getNetService().getGold(body), new TypeToken<BaseDecodeBean<List<GoldBean>>>() {

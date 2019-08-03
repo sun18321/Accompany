@@ -19,6 +19,8 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.play.accompany.utils.LogUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,6 +66,8 @@ public class WheelView extends ScrollView {
         }
         items.clear();
         items.addAll(list);
+
+        LogUtils.d("wheel", "size:" + items.size());
 
         // 前面和后面补全
         for (int i = 0; i < offset; i++) {
@@ -167,7 +171,7 @@ public class WheelView extends ScrollView {
 
     private void initData() {
         displayItemCount = offset * 2 + 1;
-
+        views.removeAllViews();
         for (String item : items) {
             views.addView(createView(item));
         }

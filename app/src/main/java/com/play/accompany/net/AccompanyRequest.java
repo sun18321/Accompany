@@ -10,7 +10,7 @@ import com.play.accompany.utils.CipherUtil;
 import com.play.accompany.utils.GsonUtils;
 import com.play.accompany.utils.LogUtils;
 import com.play.accompany.utils.NetUtils;
-import com.play.accompany.utils.StringUtils;
+import com.play.accompany.utils.ToastUtils;
 import com.play.accompany.view.AccompanyApplication;
 
 import java.lang.reflect.Type;
@@ -58,7 +58,7 @@ public class AccompanyRequest{
                             mListener.onSuccess(bean.getMsg());
                         } else {
                             if (bean != null) {
-                                Toast.makeText(AccompanyApplication.getContext(), StringUtils.getErrorInfo(bean.getCode()),Toast.LENGTH_SHORT).show();
+                                Toast.makeText(AccompanyApplication.getContext(), bean.getErrMsg(), Toast.LENGTH_SHORT).show();
                                 mListener.onFailed(bean.getCode());
                             } else {
                                 mListener.onError();
@@ -167,7 +167,7 @@ public class AccompanyRequest{
                                 mStringListener.onSuccess(desDecrypt);
                             }
                         } else {
-                            Toast.makeText(AccompanyApplication.getContext(), StringUtils.getErrorInfo(bean.getCode()),Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AccompanyApplication.getContext(), bean.getErrMsg(), Toast.LENGTH_SHORT).show();
                             if (mStringListener != null) {
                                 mStringListener.onFailed(code);
                             }
@@ -222,7 +222,7 @@ public class AccompanyRequest{
                                     listenerOne.onSuccess(desDecrypt);
                                 }
                             } else {
-                                Toast.makeText(AccompanyApplication.getContext(), StringUtils.getErrorInfo(bean.getCode()),Toast.LENGTH_SHORT).show();
+                                ToastUtils.showCommonToast(bean.getErrMsg());
                                 if (listenerOne != null) {
                                     listenerOne.onFailed(code);
                                 }
@@ -260,7 +260,7 @@ public class AccompanyRequest{
                                     listenerTwo.onSuccess(desDecrypt);
                                 }
                             } else {
-                                Toast.makeText(AccompanyApplication.getContext(), StringUtils.getErrorInfo(bean.getCode()),Toast.LENGTH_SHORT).show();
+                                ToastUtils.showCommonToast(bean.getErrMsg());
                                 if (listenerTwo != null) {
                                     listenerTwo.onFailed(code);
                                 }

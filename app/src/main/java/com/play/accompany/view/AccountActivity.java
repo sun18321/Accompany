@@ -258,6 +258,11 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
         CodeLogin codeLogin = new CodeLogin();
         codeLogin.setUserId(account);
         codeLogin.setCode(code);
+        if (mLinWeChat.getVisibility() == View.VISIBLE) {
+            codeLogin.setType(1);
+        } else {
+            codeLogin.setType(2);
+        }
         String json = GsonUtils.toJson(codeLogin);
         RequestBody body = EncodeUtils.encodeInBody(json);
         mAccompanyRequest = new AccompanyRequest();

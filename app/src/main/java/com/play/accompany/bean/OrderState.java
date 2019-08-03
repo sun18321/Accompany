@@ -5,6 +5,7 @@ public class OrderState {
     private String stateText;
     private int stateAction;
     private String tip;
+    private String spend;
 
     public int getStateAction() {
         return stateAction;
@@ -36,5 +37,13 @@ public class OrderState {
 
     public void setTip(String tip) {
         this.tip = tip;
+    }
+
+    public String getSpend() {
+        return spend;
+    }
+
+    public void setSpend(String spend) {
+        this.spend = spend;
     }
 }

@@ -185,7 +185,7 @@ public class StringUtils {
         String errorInfo;
         switch (errorCode) {
             case 401:
-                errorInfo = "用户重复";
+                errorInfo = "手机号已存在";
                 break;
             case 402:
                 errorInfo = "用户不存在";
@@ -266,7 +266,7 @@ public class StringUtils {
                 errorInfo = "今天提现的次数已满";
                 break;
             case 429:
-                errorInfo = "订单无法申请提前完成";
+                errorInfo = "用户繁忙，请稍后再试";
                 break;
             case 430:
                 errorInfo = "订单服务开始后，一段时间才能后才能申请提前结束";

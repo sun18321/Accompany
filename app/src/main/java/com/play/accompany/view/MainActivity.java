@@ -1,6 +1,8 @@
 package com.play.accompany.view;
 
 import android.Manifest;
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -8,22 +10,19 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.google.gson.reflect.TypeToken;
@@ -45,7 +44,6 @@ import com.play.accompany.fragment.MyFragment;
 import com.play.accompany.net.AccompanyRequest;
 import com.play.accompany.net.NetFactory;
 import com.play.accompany.net.NetListener;
-import com.play.accompany.utils.DownloadUtils;
 import com.play.accompany.utils.EncodeUtils;
 import com.play.accompany.utils.GsonUtils;
 import com.play.accompany.utils.LocationUtils;
@@ -54,9 +52,6 @@ import com.play.accompany.utils.SPUtils;
 import com.play.accompany.utils.StringUtils;
 import com.play.accompany.utils.ToastUtils;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
-
-import java.io.File;
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -72,7 +67,7 @@ import permissions.dispatcher.PermissionRequest;
 import permissions.dispatcher.RuntimePermissions;
 
 @RuntimePermissions
-public class MainActivity extends BaseActivity implements View.OnClickListener {
+public class MainActivity extends BaseActivity implements View.OnClickListener, HomeFragment.ScrollListener {
 
     private HomeFragment mHomeFragment;
 //    private ConversationListFragment mConversationListFragment;
@@ -101,6 +96,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private AnimationDrawable mCurrentAnim = null;
     private IUnReadMessageObserver mUnReadListener;
     private long mCLickbbackTime = 0;
+    private Animator mAnimIn;
+    private Animator mAnimOut;
+    private boolean mBottomShow = true;
+    private int mAllUnRead;
+    private int mOrderUnRead = 0;
 
     public static void launch(Context context) {
         context.startActivity(new Intent(context, MainActivity.class));
@@ -110,7 +110,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        registerMessageListener();
+//        registerMessageListener();
         registerReceiver();
     }
 
@@ -143,6 +143,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     protected void onResume() {
         super.onResume();
 
+        LogUtils.d("life", "main activity resume");
+
         Glide.with(this).resumeRequests();
 
         if (getIntent() != null) {
@@ -155,6 +157,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 switchFragment(mHomeFragment, TAG_HOME);
             }
         }
+        int newCount = AccompanyApplication.getMessageUnread();
+        mAllUnRead = mAllUnRead - mOrderUnRead + newCount;
+        mOrderUnRead = newCount;
+        showRedPoint();
+        setUnreadMessageCount();
     }
 
     @Override
@@ -187,11 +194,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 //        testDownload();
     }
 
-    private void setUnreadMessageCount(int i) {
-        if (i <= 0) {
+
+    //传入所有未读消息数
+    private void setUnreadMessageCount() {
+        if (mAllUnRead <= 0) {
             mTvMessageMessage.setVisibility(View.GONE);
         } else {
-            String count = StringUtils.unReadCount(i);
+            String count = StringUtils.unReadCount(mAllUnRead);
             mTvMessageMessage.setVisibility(View.VISIBLE);
             mTvMessageMessage.setText(count);
         }
@@ -202,10 +211,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             @Override
             public void onCountChanged(int i) {
                 LogUtils.d("message", "unread:" + i);
-                setUnreadMessageCount(i);
+                mAllUnRead = mOrderUnRead + i;
+                setUnreadMessageCount();
             }
         };
-        RongIM.getInstance().addUnReadMessageCountChangedObserver(mUnReadListener, Conversation.ConversationType.PRIVATE, Conversation.ConversationType.SYSTEM);
+        RongIM.getInstance().addUnReadMessageCountChangedObserver(mUnReadListener, Conversation.ConversationType.PRIVATE);
     }
 
     private void registerReceiver() {
@@ -232,7 +242,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mAnimMessage = (AnimationDrawable) mImgMessage.getBackground();
         mAnimHome = (AnimationDrawable) mImgHome.getBackground();
 
-        mHomeFragment = HomeFragment.newInstance();
+        mHomeFragment = HomeFragment.newInstance(this);
 //        if (mConversationListFragment == null) {
 //            mConversationListFragment = new ConversationListFragment();
 //            Uri uri = Uri.parse("rong://" + getApplicationInfo().packageName).buildUpon()
@@ -403,12 +413,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             mCurrentAnim.selectDrawable(0);
             mCurrentAnim.stop();
             mCurrentAnim.setVisible(true, true);
-            LogUtils.d("anim", "old anim stop");
         }
         mCurrentAnim = drawable;
         mCurrentAnim.setVisible(true, true);
         mCurrentAnim.start();
-        LogUtils.d("anim", "new anim start");
     }
 
     private void switchFragment(Fragment fragment, String tag) {
@@ -416,7 +424,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             return;
         }
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        if (!fragment.isAdded() && getSupportFragmentManager().findFragmentByTag(tag) == null) {
+        if (getSupportFragmentManager().findFragmentByTag(tag) == null) {
             fragmentTransaction.add(R.id.nav_container,fragment, tag);
         }
         BaseFragment oldFragment = (BaseFragment) getSupportFragmentManager().findFragmentByTag(mCurrentTag);
@@ -523,7 +531,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                         OrderUnreadBean bean = list.get(0);
                         if (bean != null) {
                             int count = bean.getOrderNewNum();
-                            showRedPoint(count);
+                            AccompanyApplication.setMessageUnread(count);
+                            mOrderUnRead = count;
+                            registerMessageListener();
+                            showRedPoint();
                         }
                     }
 
@@ -545,22 +556,76 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     }
 
-    public void showRedPoint(int count) {
-        if (count <= 0) {
-            return;
-        }
-        String unReadCount = StringUtils.unReadCount(count);
+    //传入订单消息的红点数
+    public void showRedPoint() {
+        mMessageFragment.setUnread(mOrderUnRead);
         if (mTvMyMessage != null) {
-            mTvMyMessage.setVisibility(View.VISIBLE);
-            mTvMyMessage.setText(unReadCount);
+            if (mOrderUnRead == 0) {
+                mTvMyMessage.setText("");
+                mTvMyMessage.setVisibility(View.GONE);
+            } else {
+                mTvMyMessage.setVisibility(View.VISIBLE);
+                mTvMyMessage.setText(String.valueOf(mOrderUnRead));
+            }
         }
     }
 
-    public void clearMyPoint() {
-        if (mTvMyMessage != null) {
-            mTvMyMessage.setText("");
-            mTvMyMessage.setVisibility(View.GONE);
-        }
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+
+        initAnim();
+    }
+
+    private void initAnim() {
+        final LinearLayout linBottom = findViewById(R.id.lin_bottom);
+
+        LogUtils.d(getTag(),"height:" + linBottom.getHeight());
+        mAnimIn = ObjectAnimator.ofFloat(linBottom, "translationY", linBottom.getHeight(), 0).setDuration(300);
+        mAnimIn.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+//                linBottom.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                mBottomShow = true;
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
+        mAnimOut = ObjectAnimator.ofFloat(linBottom, "translationY", 0, linBottom.getHeight()).setDuration(300);
+        mAnimOut.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+//                linBottom.setVisibility(View.GONE);
+                mBottomShow = false;
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
     }
 
     @Override
@@ -587,7 +652,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     @Override
     public void onBackPressed() {
 //        super.onBackPressed();
-
+        if (!TextUtils.equals(mCurrentTag, TAG_HOME)) {
+            animHome();
+            switchText(mTvHome);
+            switchFragment(mHomeFragment, TAG_HOME);
+            if (!mBottomShow) {
+                mAnimIn.start();
+            }
+            return;
+        }
         long currentTimeMillis = System.currentTimeMillis();
         long space = currentTimeMillis - mCLickbbackTime;
         if (space > 5000) {
@@ -595,6 +668,32 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             mCLickbbackTime = currentTimeMillis;
         } else {
             super.onBackPressed();
+        }
+    }
+
+    @Override
+    public void onShow() {
+        if (mBottomShow) {
+            return;
+        }
+
+        if (mAnimIn == null) {
+            initAnim();
+        } else {
+            mAnimIn.start();
+        }
+    }
+
+    @Override
+    public void onHide() {
+        if (!mBottomShow) {
+            return;
+        }
+
+        if (mAnimOut == null) {
+            initAnim();
+        } else {
+            mAnimOut.start();
         }
     }
 
@@ -617,8 +716,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             if (message.getMessageType() == MainReceiverMessage.TYPE_ORDER) {
                 goOrder();
             } else if (message.getMessageType() == MainReceiverMessage.TYPE_REMAIN) {
-                int num = message.getRemainMessage();
-                showRedPoint(num);
+                mOrderUnRead = message.getRemainMessage();
+                AccompanyApplication.setMessageUnread(mOrderUnRead);
+                showRedPoint();
             }
         }
     }

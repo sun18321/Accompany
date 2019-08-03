@@ -66,6 +66,13 @@ public abstract class BaseActivity extends AppCompatActivity implements DialogIn
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        LogUtils.d("lifecycle", "activity save instance:" + getTag());
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
 //        if (isFinishing() && isTaskRoot()) {
@@ -260,7 +267,7 @@ public abstract class BaseActivity extends AppCompatActivity implements DialogIn
     protected void showKeyBoard(View view) {
         InputMethodManager imm = ( InputMethodManager ) view.getContext( ).getSystemService( Context.INPUT_METHOD_SERVICE );
         if (imm != null) {
-            imm.showSoftInput(view,InputMethodManager.SHOW_FORCED);
+            imm.showSoftInput(view,0);
         }
     }
 

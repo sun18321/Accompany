@@ -46,7 +46,6 @@ public class PayUtils {
     private final String mPayFailed = "4000";
     private final String mPayCancel = "6001";
 
-
     private Activity mActivity;
 
     public PayUtils(Activity activity) {
