@@ -36,8 +36,14 @@ public abstract class BaseFragment extends Fragment {
         LogUtils.d("fragment","on create");
 
         View view = inflater.inflate(getLayout(), container, false);
-        initViews(view);
+//        initViews(view);
         return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initViews(view);
     }
 
     @Override

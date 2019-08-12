@@ -17,7 +17,6 @@ class KotlinActivity : BaseActivity() {
     override fun initViews() {
         val date = DateUtils.time2Date(System.currentTimeMillis())
         tv_kotlin.text = date
-
     }
 
 }

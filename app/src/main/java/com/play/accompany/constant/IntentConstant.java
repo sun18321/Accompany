@@ -43,5 +43,4 @@ public class IntentConstant {
 
     public static final String INTENT_CONVERSATION_RECEIVER_TYPE = "intent_order_response_type";
 
-
 }

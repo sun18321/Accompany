@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.google.gson.reflect.TypeToken;
 import com.play.accompany.R;
 import com.play.accompany.base.BaseActivity;
+import com.play.accompany.bean.AcceptOrderBean;
 import com.play.accompany.bean.BaseDecodeBean;
 import com.play.accompany.bean.BaseResponse;
 import com.play.accompany.bean.OnlyCodeBean;
@@ -34,6 +35,8 @@ import com.play.accompany.utils.GsonUtils;
 import com.play.accompany.utils.LogUtils;
 import com.play.accompany.utils.SPUtils;
 import com.play.accompany.utils.ToastUtils;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 
 import java.util.List;
 import java.util.Locale;
@@ -54,6 +57,7 @@ public class ConversationActivity extends BaseActivity {
     private OrderResponseReceiver mReceiver;
     private ConversationFragment mFragment;
     private TextView mTvRight;
+    private String mOrderId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -267,7 +271,58 @@ public class ConversationActivity extends BaseActivity {
         mTvRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                requestAdvance();
+                String s = mTvRight.getText().toString();
+                if (TextUtils.equals(s,"接单")) {
+                    showTips();
+                }else {
+                    requestAdvance();
+                }
+            }
+        });
+    }
+
+    private void showTips() {
+        new QMUIDialog.MessageDialogBuilder(this).setMessage("确定接受此订单吗？").addAction("取消", new QMUIDialogAction.ActionListener() {
+            @Override
+            public void onClick(QMUIDialog dialog, int index) {
+                dialog.dismiss();
+            }
+        }).addAction("确定", new QMUIDialogAction.ActionListener() {
+            @Override
+            public void onClick(QMUIDialog dialog, int index) {
+                acceptOrder();
+                dialog.dismiss();
+            }
+        }).create().show();
+    }
+
+    private void acceptOrder() {
+        AcceptOrderBean bean = new AcceptOrderBean();
+        bean.setToken(SPUtils.getInstance().getString(SpConstant.APP_TOKEN));
+        bean.setId(mOrderId);
+        RequestBody body = EncodeUtils.encodeInBody(GsonUtils.toJson(bean));
+        AccompanyRequest request = new AccompanyRequest();
+        request.beginRequest(NetFactory.getNetRequest().getNetService().acceptOrder(body), new TypeToken<BaseDecodeBean<List<OnlyCodeBean>>>() {
+        }.getType(), new NetListener<List<OnlyCodeBean>>() {
+            @Override
+            public void onSuccess(List<OnlyCodeBean> list) {
+                ToastUtils.showCommonToast("接单成功");
+                requestState();
+            }
+
+            @Override
+            public void onFailed(int errCode) {
+
+            }
+
+            @Override
+            public void onError() {
+
+            }
+
+            @Override
+            public void onComplete() {
+
             }
         });
     }
@@ -321,12 +376,15 @@ public class ConversationActivity extends BaseActivity {
                     return;
                 }
                 int state = list.get(0).getState();
+                mOrderId= list.get(0).getOrderId();
                 //提前开始
                 if (state == OrderConstant.ACCEPT_ORDER) {
                     setRightTitle(getResources().getString(R.string.advance_start));
                 } else if (state == OrderConstant.START_SERVICE) {
                     //提前结束
                     setRightTitle(getResources().getString(R.string.advance_finish));
+                } else if (state == OrderConstant.PAY) {
+                    setRightTitle("接单");
                 }
             }
 

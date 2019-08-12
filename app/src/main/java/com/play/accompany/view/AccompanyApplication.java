@@ -34,11 +34,7 @@ import com.umeng.commonsdk.UMConfigure;
 
 import java.util.HashSet;
 import java.util.List;
-
 import io.rong.imkit.RongIM;
-import io.rong.imlib.RongIMClient;
-import io.rong.imlib.model.Conversation;
-import leakcanary.LeakCanary;
 
 public class AccompanyApplication extends Application {
     private static Context mContext;
@@ -50,7 +46,6 @@ public class AccompanyApplication extends Application {
     }
     private static List<TopGameBean> mGameList;
     private static List<String> mAttentionList;
-    private static HashSet mHashSet = new HashSet<String>();
     //订单未读
     private static int mMessageUnread = 0;
 

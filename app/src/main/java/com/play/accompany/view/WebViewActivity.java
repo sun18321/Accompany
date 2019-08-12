@@ -58,9 +58,9 @@ public class WebViewActivity extends BaseActivity {
         //自适应屏幕
         mWebView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         mWebView.getSettings().setLoadWithOverviewMode(true);
+        mWebView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
         mWebView.addJavascriptInterface(this, "accompany");
-
-                mWebView.setWebChromeClient(new WebChromeClient(){
+        mWebView.setWebChromeClient(new WebChromeClient(){
 
             @Override
             public boolean onJsPrompt(WebView view, String url, String message, String defaultValue, JsPromptResult result) {
@@ -71,7 +71,7 @@ public class WebViewActivity extends BaseActivity {
 
             @Override
             public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
-                LogUtils.d(getTag(),"js alert");
+                LogUtils.d(getTag(),"js alert" + "-" + url + "-" + message);
 
                 return super.onJsAlert(view, url, message, result);
             }
