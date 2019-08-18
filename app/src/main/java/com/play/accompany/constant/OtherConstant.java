@@ -96,4 +96,6 @@ public class OtherConstant {
 
     public static final String PAY_MONEY = "pay_money";
 
+    public static final String IS_ATTENTION = "attention";
+
 }

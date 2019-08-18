@@ -30,6 +30,7 @@ public class EncodeUtils {
             String json = GsonUtils.toJson(token);
             String encrypt = desEncrypt(json);
             body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), encrypt);
+            LogUtils.d("request",body.toString());
         } catch (Exception e) {
             e.printStackTrace();
         }

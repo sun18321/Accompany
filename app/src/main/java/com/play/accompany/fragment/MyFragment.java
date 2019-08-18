@@ -32,6 +32,7 @@ import com.play.accompany.view.ServiceActivity;
 import com.play.accompany.view.SettingActivity;
 import com.play.accompany.view.SingleEditActivity;
 import com.play.accompany.view.UserCenterActivity;
+import com.play.accompany.view.ViewPagerActivity;
 import com.play.accompany.view.WalletActivity;
 import java.util.List;
 import io.reactivex.Observable;
@@ -117,6 +118,20 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
             }
         });
 
+        view.findViewById(R.id.lin_attention).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(mContext, ViewPagerActivity.class));
+            }
+        });
+
+        view.findViewById(R.id.lin_fans).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(mContext, ViewPagerActivity.class));
+            }
+        });
+
     }
 
     @Override
@@ -160,6 +175,11 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
             showRedPoint(count);
         }
 
+        int fans = SPUtils.getInstance().getInt(SpConstant.FANS_COUNT,0);
+        if (fans == 0) {
+            return;
+        }
+        mTvFans.setText(String.valueOf(fans));
     }
 
     private void getUserInfo() {

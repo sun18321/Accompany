@@ -5,55 +5,31 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 public class Test {
-    private String s;
-    private Boolean b;
-    private int i;
+    private int age;
+    private String name;
+    private boolean student;
 
-
-    public String getS() {
-        return s;
+    public int getAge() {
+        return age;
     }
 
-    public void setS(String s) {
-        this.s = s;
+    public void setAge(int age) {
+        this.age = age;
     }
 
-    public Boolean getB() {
-        return b;
+    public String getName() {
+        return name;
     }
 
-    public void setB(Boolean b) {
-        this.b = b;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public int getI() {
-        return i;
+    public boolean isStudent() {
+        return student;
     }
 
-    public void setI(int i) {
-        this.i = i;
-    }
-
-    class My extends BaseAdapter {
-
-        @Override
-        public int getCount() {
-            return 0;
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return null;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return 0;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            return null;
-        }
+    public void setStudent(boolean student) {
+        this.student = student;
     }
 }

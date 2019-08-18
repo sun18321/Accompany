@@ -491,4 +491,20 @@ public class StringUtils {
         }
         return count;
     }
+
+    public static String onlineTime(int time) {
+        if (time == 0) {
+            return "在线";
+        } else if (time > 0 && time < 60) {
+            return time + "分钟前";
+        } else {
+            int i = time % 60;
+            if (i < 24) {
+                return i + "小时前";
+            } else {
+                return "一天前";
+            }
+        }
+
+    }
 }

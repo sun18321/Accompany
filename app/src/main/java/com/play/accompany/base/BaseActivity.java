@@ -188,11 +188,15 @@ public abstract class BaseActivity extends AppCompatActivity implements DialogIn
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    BaseActivity.this.finish();
+                   finishMine();
                 }
             });
         }
 
+    }
+
+    protected void finishMine() {
+        BaseActivity.this.finish();
     }
 
     protected void initToolbar(String title, String rightTitle, View.OnClickListener listener) {

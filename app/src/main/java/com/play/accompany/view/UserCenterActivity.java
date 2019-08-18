@@ -152,6 +152,9 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         findViewById(R.id.rl_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.putExtra(OtherConstant.IS_ATTENTION, mAttention);
+                setResult(RESULT_OK,intent);
                 UserCenterActivity.this.finish();
             }
         });
@@ -554,6 +557,14 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         intent.putExtra(IntentConstant.INTENT_CONVERSATION_RECEIVER_TYPE, OtherConstant.CONVERSATION_UPDATE_NAME);
         intent.putExtra(IntentConstant.INTENT_USER_NAME, mUserInfo.getName());
         sendBroadcast(intent);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent();
+        intent.putExtra(OtherConstant.IS_ATTENTION, mAttention);
+        setResult(RESULT_OK,intent);
+        super.onBackPressed();
     }
 
     @Override

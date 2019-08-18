@@ -28,6 +28,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <service
+            android:name=".service.HeartService"
+            android:enabled="true"
+            android:exported="true">
+        </service>
+
         <activity android:name=".view.ViewPagerActivity">
         </activity>
         <activity android:name=".view.KotlinActivity">

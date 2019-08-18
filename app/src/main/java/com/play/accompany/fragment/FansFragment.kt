@@ -1,9 +1,9 @@
 package com.play.accompany.fragment
 
+import android.app.Application
 import android.content.Intent
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.google.gson.reflect.TypeToken
 import com.play.accompany.R
@@ -19,51 +19,48 @@ import com.play.accompany.constant.SpConstant
 import com.play.accompany.net.AccompanyRequest
 import com.play.accompany.net.NetFactory
 import com.play.accompany.net.NetListener
-import com.play.accompany.net.NetService
-import com.play.accompany.utils.*
+import com.play.accompany.utils.EncodeUtils
+import com.play.accompany.utils.GsonUtils
+import com.play.accompany.utils.SPUtils
+import com.play.accompany.utils.ToastUtils
 import com.play.accompany.view.AccompanyApplication
 import com.play.accompany.view.UserCenterActivity
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog
-import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction
-import com.qmuiteam.qmui.widget.dialog.QMUIDialogBuilder
 import kotlinx.android.synthetic.main.refresh_layout.*
 
-class AttentionFragment : BaseFragment() {
-    private val code = 1001
+class FansFragment : BaseFragment() {
+    private lateinit var mList: ArrayList<FansBean>
+    private var mAdapter: AttentionAdapter? = null
+    private val code = 1002
     private var startPosition = -1
 
     companion object{
         private lateinit var mListener: (Int) -> Unit
-        fun newInstance(listener: (Int) -> Unit): AttentionFragment {
+        fun newInstance(listener: (Int) -> Unit): FansFragment {
             mListener = listener
-            return AttentionFragment()
+            return FansFragment()
         }
     }
 
-    private var mAdapter: AttentionAdapter? = null
-    private lateinit var mList: ArrayList<FansBean>
-
     override fun getLayout(): Int = R.layout.refresh_layout
-
-    override fun getFragmentName(): String = "AttentionFragment"
 
     override fun initViews(view: View?) {
         recycler.layoutManager = LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false)
         recycler.addItemDecoration(DividerItemDecoration(mContext, LinearLayoutManager.VERTICAL))
-        requestData()
-
         refresh_layout.setOnRefreshListener {
             requestData()
             it.finishRefresh()
         }
+        requestData()
     }
 
-    fun setRecyclerAdapter(){
+    private fun setRecycler() {
+        getAttentionList()
         if (mAdapter == null) {
             mAdapter = AttentionAdapter(mContext,mList)
             mAdapter!!.setListener(object :AttentionAdapter.AttentionListener{
                 override fun goUser(id: String,position: Int) {
-                    goUserCenter(id,position)
+                    goUserCenter(id, position)
                 }
 
                 override fun goAttention(attention: Boolean, position: Int, id: String) {
@@ -75,6 +72,18 @@ class AttentionFragment : BaseFragment() {
             mAdapter!!.setData(ArrayList(mList))
         }
         mListener!!(mList.size)
+    }
+
+    override fun getFragmentName(): String = "FansFragment"
+
+
+
+    private fun getAttentionList() {
+        AccompanyApplication.getAttentionList { list ->
+            for (fansBean in mList) {
+                fansBean.attention = list.contains(fansBean.userId)
+            }
+        }
     }
 
     private fun dealAttention(attention: Boolean, position: Int, id: String) {
@@ -121,6 +130,17 @@ class AttentionFragment : BaseFragment() {
         })
     }
 
+
+    private fun goUserCenter(id: String, position: Int) {
+        val intent = Intent(mContext, UserCenterActivity::class.java)
+        val info = UserInfo()
+        info.userId = id
+        info.fromChat = true
+        intent.putExtra(IntentConstant.INTENT_USER, info)
+        startPosition = position
+        startActivityForResult(intent, code)
+    }
+
     private fun setDataChange(attention: Boolean) {
         if (startPosition == -1) {
             return
@@ -134,25 +154,12 @@ class AttentionFragment : BaseFragment() {
     }
 
 
-    private fun goUserCenter(id: String, position: Int) {
-        val intent = Intent(mContext, UserCenterActivity::class.java)
-        val info = UserInfo()
-        info.userId = id
-        info.fromChat = true
-        intent.putExtra(IntentConstant.INTENT_USER, info)
-        startPosition = position
-        startActivityForResult(intent, code)
-    }
-
-   private fun requestData(){
-        AccompanyRequest().beginRequest(NetFactory.getNetRequest().netService.getAttentionDetail(EncodeUtils.encodeToken()),
-                object :TypeToken<BaseDecodeBean<List<FansBean>>>(){}.type,object :NetListener<List<FansBean>>{
+    private fun requestData() {
+        AccompanyRequest().beginRequest(NetFactory.getNetRequest().netService.getFansDetail(EncodeUtils.encodeToken()),object :TypeToken<BaseDecodeBean<List<FansBean>>>(){}.type, object : NetListener<List<FansBean>>{
             override fun onSuccess(list: List<FansBean>?) {
-                if (list!!.isEmpty()) {
-                    return
-                }
+                SPUtils.getInstance().put(SpConstant.FANS_COUNT, list!!.size)
                 mList = ArrayList(list)
-                setRecyclerAdapter()
+                setRecycler()
             }
 
             override fun onFailed(errCode: Int) {
@@ -163,6 +170,7 @@ class AttentionFragment : BaseFragment() {
 
             override fun onComplete() {
             }
+
         })
     }
 
@@ -173,4 +181,6 @@ class AttentionFragment : BaseFragment() {
             setDataChange(extra)
         }
     }
+
+
 }

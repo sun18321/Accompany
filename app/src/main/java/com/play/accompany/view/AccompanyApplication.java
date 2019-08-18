@@ -212,6 +212,36 @@ public class AccompanyApplication extends Application {
         }
     }
 
+    public static void setAttentionChange(final String id) {
+        if (mAttentionList == null || mAttentionList.isEmpty()) {
+            FileSaveUtils.getInstance().getData(OtherConstant.FILE_ATTENTION, new CommonListener.StringListener() {
+                @Override
+                public void onListener(String data) {
+                    mAttentionList = GsonUtils.fromJson(data, new TypeToken<List<String>>() {
+                    }.getType());
+                    doAttentionChange(id);
+                }
+            });
+        } else {
+            doAttentionChange(id);
+        }
+    }
+
+    private static void doAttentionChange(String id) {
+        if (mAttentionList.contains(id)) {
+            mAttentionList.remove(id);
+        } else {
+            mAttentionList.add(id);
+        }
+        SPUtils.getInstance().put(SpConstant.ATTENTION_COUNT, mAttentionList.size());
+        ThreadPool.newInstance().add(new Runnable() {
+            @Override
+            public void run() {
+                FileSaveUtils.getInstance().saveData(OtherConstant.FILE_ATTENTION, mAttentionList);
+            }
+        });
+    }
+
     public static void setMessageUnread(int count) {
         mMessageUnread = count;
         LogUtils.d("order", "set count:" + count);

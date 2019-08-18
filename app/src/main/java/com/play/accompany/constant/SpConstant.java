@@ -31,4 +31,6 @@ public class SpConstant {
 
   public static String ID_IS_EDITED = "id_is_edited";
 
+  public static String FANS_COUNT = "fans_count";
+
 }

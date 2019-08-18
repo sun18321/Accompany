@@ -140,5 +140,14 @@ public interface NetService {
 
     @POST("setUserName")
     Observable<BaseResponse> editId(@Body RequestBody body);
+
+    @POST("findFavorList")
+    Observable<BaseResponse> getAttentionDetail(@Body RequestBody body);
+
+    @POST("findFansList")
+    Observable<BaseResponse> getFansDetail(@Body RequestBody body);
+
+    @POST("setUserOnline")
+    Observable<BaseResponse> sendHeart(@Body RequestBody body);
 }
 

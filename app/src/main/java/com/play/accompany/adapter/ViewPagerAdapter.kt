@@ -17,10 +17,4 @@ class ViewPagerAdapter(fm: FragmentManager?,titleList:ArrayList<String>,fragment
 
     override fun getPageTitle(position: Int): CharSequence? = mTitleList[position]
 
-    fun setTitle(title: String, position: Int) {
-        if (position >= 0 && position < mTitleList.size) {
-            mTitleList[position] = title
-        }
-        notifyDataSetChanged()
-    }
 }

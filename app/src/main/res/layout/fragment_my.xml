@@ -98,6 +98,7 @@
                     android:layout_height="match_parent">
 
                     <LinearLayout
+                        android:id="@+id/lin_attention"
                         android:layout_marginStart="@dimen/dp_114"
                         android:gravity="center"
                         android:orientation="vertical"
@@ -130,6 +131,7 @@
                     android:layout_height="match_parent">
 
                     <LinearLayout
+                        android:id="@+id/lin_fans"
                         android:gravity="center"
                         android:layout_alignParentEnd="true"
                         android:layout_marginEnd="@dimen/dp_114"

@@ -4,15 +4,110 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="@dimen/dp_26"
+    android:paddingStart="@dimen/dp_26"
+    android:paddingTop="@dimen/dp_10"
+    android:paddingBottom="@dimen/dp_10"
+    android:paddingEnd="@dimen/dp_26"
     >
-    
+
     <com.makeramen.roundedimageview.RoundedImageView
-        android:id="@+id/img_head"
-        android:layout_width="@dimen/dp_73"
-        android:layout_height="@dimen/dp_73"/>
+        android:id="@+id/head_img"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:riv_corner_radius="@dimen/dp_36"
+        android:layout_width="@dimen/dp_72"
+        android:layout_height="@dimen/dp_72"/>
 
+
+    <TextView
+        android:id="@+id/tv_name"
+        app:layout_constraintVertical_chainStyle="spread_inside"
+        app:layout_constraintVertical_weight="1"
+        app:layout_constraintStart_toEndOf="@id/head_img"
+        app:layout_constraintTop_toTopOf="@id/head_img"
+        app:layout_constraintBottom_toTopOf="@id/lin_gender"
+        android:layout_marginStart="@dimen/dp_14"
+        android:textSize="@dimen/sp_18"
+        android:textColor="#ff11131c"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <LinearLayout
+        android:id="@+id/lin_gender"
+        android:paddingTop="@dimen/dp_2"
+        android:paddingBottom="@dimen/dp_2"
+        android:paddingStart="@dimen/dp_10"
+        android:paddingEnd="@dimen/dp_10"
+        android:orientation="horizontal"
+        android:gravity="center"
+        app:layout_constraintVertical_weight="1"
+        app:layout_constraintStart_toStartOf="@id/tv_name"
+        app:layout_constraintTop_toBottomOf="@id/tv_name"
+        app:layout_constraintBottom_toTopOf="@id/img_sign"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/img_gender"
+            android:layout_width="@dimen/dp_16"
+            android:layout_height="@dimen/dp_16"/>
+
+        <TextView
+            android:id="@+id/tv_age"
+            android:textSize="@dimen/sp_14"
+            android:textColor="@color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+
+    <ImageView
+        android:id="@+id/img_sign"
+        android:src="@mipmap/sign"
+        app:layout_constraintVertical_weight="1"
+        app:layout_constraintStart_toStartOf="@id/tv_name"
+        app:layout_constraintTop_toBottomOf="@id/lin_gender"
+        app:layout_constraintBottom_toBottomOf="@id/head_img"
+        android:layout_width="@dimen/dp_12"
+        android:layout_height="@dimen/dp_12"/>
+
+    <TextView
+        android:id="@+id/tv_sign"
+        android:textSize="@dimen/sp_12"
+        android:textColor="#ff9799ab"
+        android:layout_marginStart="@dimen/dp_5"
+        app:layout_constraintStart_toEndOf="@id/img_sign"
+        app:layout_constraintTop_toTopOf="@id/img_sign"
+        app:layout_constraintBottom_toBottomOf="@id/img_sign"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/tv_online"
+        android:textColor="#ff404248"
+        android:textSize="@dimen/sp_14"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="@dimen/dp_30"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+
+    <TextView
+        android:id="@+id/tv_attention"
+        android:background="@drawable/selector_wallet"
+        android:textColor="@drawable/selector_text_attention"
+        android:paddingLeft="@dimen/dp_10"
+        android:paddingRight="@dimen/dp_10"
+        android:paddingTop="@dimen/dp_2"
+        android:paddingBottom="@dimen/dp_2"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="@id/tv_online"
+        app:layout_constraintLeft_toLeftOf="@id/tv_online"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
     
-
 
 </android.support.constraint.ConstraintLayout>
