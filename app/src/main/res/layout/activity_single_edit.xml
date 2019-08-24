@@ -25,6 +25,13 @@
     </RelativeLayout>
 
     <com.play.accompany.design.DetailLayout
+        android:id="@+id/detail_sound"
+        app:title="声音"
+        android:layout_marginBottom="@dimen/dp_20"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.play.accompany.design.DetailLayout
         android:id="@+id/detail_name"
         app:title="@string/nick_name"
         android:layout_width="match_parent"

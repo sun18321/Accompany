@@ -150,9 +150,9 @@ public class UserInfoDatabaseUtils {
     }
 
     private void saveFavorite(final List<String> list) {
-        if (list == null || list.isEmpty()) {
-            return;
-        }
+//        if (list == null || list.isEmpty()) {
+//            return;
+//        }
         AccompanyApplication.setAttentionList(list);
     }
 

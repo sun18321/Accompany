@@ -5,14 +5,11 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.bumptech.glide.Glide
 import com.play.accompany.R
 import com.play.accompany.bean.FansBean
-import com.play.accompany.bean.UserInfo
 import com.play.accompany.constant.OtherConstant
 import com.play.accompany.utils.DateUtils
 import com.play.accompany.utils.GlideUtils
-import com.play.accompany.utils.StringUtils
 import kotlinx.android.synthetic.main.item_attention.view.*
 import kotlinx.android.synthetic.main.item_attention.view.tv_name
 import kotlinx.android.synthetic.main.item_order.view.*
@@ -43,7 +40,7 @@ class AttentionAdapter(context:Context,dataList:ArrayList<FansBean>):RecyclerVie
             holder.itemView.img_gender.setImageResource(R.drawable.female)
         }
         holder.itemView.tv_age.text = DateUtils.getAge(mDataList[position].date).toString()
-        holder.itemView.tv_online.text = StringUtils.onlineTime(mDataList[position].onlineTime)
+        holder.itemView.tv_online.text = mDataList[position].onlineTime
         if (mDataList[position].attention) {
             holder.itemView.tv_attention.text = "已关注"
             holder.itemView.tv_attention.isSelected = true

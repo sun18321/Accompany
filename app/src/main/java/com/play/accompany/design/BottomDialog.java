@@ -54,7 +54,7 @@ public class BottomDialog extends Dialog {
         // 设置 dialog 的位置
         layoutParams.gravity = Gravity.BOTTOM;
 
-        //傻逼23会有bug，必须加上这一句!
+        //23会有bug，必须加上这一句!
         window.setBackgroundDrawable(null);
         window.setWindowAnimations(R.style.BottomDialog);
         window.setAttributes(layoutParams);

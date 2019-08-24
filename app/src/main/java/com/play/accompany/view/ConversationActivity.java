@@ -452,6 +452,11 @@ public class ConversationActivity extends BaseActivity {
                 } else if (extra == OtherConstant.CONVERSATION_UPDATE_NAME) {
                     String name = intent.getStringExtra(IntentConstant.INTENT_USER_NAME);
                     setTitle(name);
+                } else if (extra == OtherConstant.CONVERSATION_SHOW_ACCEPT) {
+                    String id = intent.getStringExtra(IntentConstant.INTENT_USER_ID);
+                    if (TextUtils.equals(id, mTargetId)) {
+                        requestState();
+                    }
                 }
             }
         }

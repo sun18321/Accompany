@@ -54,6 +54,8 @@ public class OtherConstant {
 
     public static final int CONVERSATION_UPDATE_NAME = 666;
 
+    public static final int CONVERSATION_SHOW_ACCEPT = 555;
+
     public static final String OFFICE_NUMBER = "1000";
 
     public static final String FILE_GAME = "file_game";

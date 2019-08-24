@@ -1,8 +1,6 @@
 package com.play.accompany.utils
 
-import android.media.AudioFormat
-import android.media.AudioRecord
-import android.media.MediaRecorder
+import android.media.*
 import android.os.Environment
 import com.play.accompany.view.AccompanyApplication
 import java.io.BufferedOutputStream
@@ -20,6 +18,8 @@ class SoundManager private constructor(){
     private val mRecordRate = 44100
     private var mProgress = 0
     private lateinit var mTimer: Timer
+    private lateinit var mAudioRecord: AudioRecord
+    private var mPlayer: MediaPlayer? = null
 
     companion object {
         val instance: SoundManager by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED){
@@ -27,26 +27,29 @@ class SoundManager private constructor(){
         }
     }
 
-    public fun startRecord(filePath: File) {
+     fun startRecord(filePath: File, listener: SoundListener) {
+        mListener = listener
         mFile = filePath
         mIsRecord = true
         AccompanyRecord().start()
         mTimer = Timer()
         val task = timerTask {
             mProgress++
-            mListener.onProgress(mProgress)
+            if (mProgress >= mMaxLength) {
+                mListener.onFinish()
+            } else {
+                mListener.onProgress(mProgress)
+            }
         }
-        mTimer.schedule(task, 1000, 1000)
+        mTimer.schedule(task, 0, 1000)
     }
 
-    public fun stopRecord() {
-        mIsRecord = false
-        mListener.onFinish()
-        mTimer.cancel()
-    }
-
-    public fun setListener(listener: SoundListener) {
-        mListener = listener
+     fun stopRecord() {
+         mProgress = 0
+         mIsRecord = false
+         mTimer.cancel()
+         mAudioRecord.stop()
+         mAudioRecord.release()
     }
 
     private fun getWavHeader(totalAudioLen: Long): ByteArray {
@@ -104,21 +107,40 @@ class SoundManager private constructor(){
         return header
     }
 
+    fun playAudio(filePath: File) {
+        if (mPlayer == null) {
+            mPlayer = MediaPlayer()
+        }
+        if (mPlayer!!.isPlaying) {
+            return
+        }
+        mPlayer!!.reset()
+        mPlayer!!.setDataSource(filePath.absolutePath)
+        mPlayer!!.prepareAsync()
+        mPlayer!!.setOnPreparedListener {
+            it.start()
+        }
+    }
+
+    fun destroy() {
+        if (mPlayer!!.isPlaying) {
+            mPlayer!!.stop()
+        }
+        mPlayer!!.release()
+    }
 
     internal inner class AccompanyRecord : Thread() {
-
         override fun run() {
             super.run()
 
             val bufferSize = AudioRecord.getMinBufferSize(mRecordRate, AudioFormat.CHANNEL_IN_STEREO, AudioFormat.ENCODING_PCM_16BIT)
-            val audioRecord = AudioRecord(MediaRecorder.AudioSource.MIC, mRecordRate, AudioFormat.CHANNEL_IN_STEREO, AudioFormat.ENCODING_PCM_16BIT, bufferSize)
-            audioRecord.startRecording()
-
+            mAudioRecord = AudioRecord(MediaRecorder.AudioSource.MIC, mRecordRate, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT, bufferSize)
+            mAudioRecord.startRecording()
             val byteArrayStream = ByteArrayOutputStream()
             val outputStream = FileOutputStream(mFile)
             val byteArray = ByteArray(bufferSize)
             while (mIsRecord) {
-                val read = audioRecord.read(byteArray, 0, bufferSize)
+                val read = mAudioRecord.read(byteArray, 0, bufferSize)
                 if (read > 0) {
                     byteArrayStream.write(byteArray, 0, bufferSize)
                 }
@@ -131,6 +153,7 @@ class SoundManager private constructor(){
             byteArrayStream.close()
             outputStream.flush()
             outputStream.close()
+            mListener.onFinish()
         }
     }
 

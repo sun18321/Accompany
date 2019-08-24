@@ -244,29 +244,6 @@
 
             </LinearLayout>
 
-            <!--<LinearLayout-->
-                <!--android:id="@+id/layout_rate"-->
-                <!--android:visibility="gone"-->
-                <!--android:layout_marginTop="20dp"-->
-                <!--android:orientation="horizontal"-->
-                <!--android:padding="10dp"-->
-                <!--android:background="@color/white"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content">-->
-
-                <!--<TextView-->
-                    <!--android:text="傻逼星星"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"/>-->
-
-                <!--<TextView-->
-                    <!--android:gravity="end"-->
-                    <!--android:maxLength="10"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"/>-->
-
-            <!--</LinearLayout>-->
-
 
             <LinearLayout
                 android:id="@+id/lin_reason"

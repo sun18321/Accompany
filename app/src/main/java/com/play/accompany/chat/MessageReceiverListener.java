@@ -5,6 +5,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
@@ -51,42 +52,54 @@ public class MessageReceiverListener implements RongIMClient.OnReceiveMessageLis
 //            LogUtils.d("conversation", "content is not text");
 //        }
 
-        if (SPUtils.getInstance().getBoolean(SpConstant.ACCEPT_NEW_NOTICE, true) && TextUtils.equals(message.getSenderUserId(), OtherConstant.OFFICE_NUMBER)) {
-            if (message.getContent() instanceof TextMessage) {
-                LogUtils.d("message", "thread:" + Thread.currentThread().getName());
 
-                TextMessage content = (TextMessage) message.getContent();
-                String extra = content.getExtra();
-                LogUtils.d("message", "extra:" + extra);
-                MessageBean bean = GsonUtils.fromJson(extra, MessageBean.class);
-                if (bean != null) {
-                    LogUtils.d("message", "bean:" + bean);
-                    String push = bean.getPush();
-                    LogUtils.d("message", "push:" + push);
-                    if (!TextUtils.isEmpty(push)) {          
-                        createNotification(bean.getType(), push);
-                    }
+        if (TextUtils.equals(message.getSenderUserId(), OtherConstant.OFFICE_NUMBER)) {
+            //开启通知权限
+                if (message.getContent() instanceof TextMessage) {
+                    LogUtils.d("message", "thread:" + Thread.currentThread().getName());
 
-                    String chat = bean.getChat();
-                    if (!TextUtils.isEmpty(chat)) {
-                        insertMessage(bean.getTargetId(), chat);
+                    TextMessage content = (TextMessage) message.getContent();
+                    String extra = content.getExtra();
+                    LogUtils.d("message", "extra:" + extra);
+                    MessageBean bean = GsonUtils.fromJson(extra, MessageBean.class);
+                    if (bean != null) {
+                        LogUtils.d("message", "bean:" + bean);
+                        String push = bean.getPush();
+                        LogUtils.d("message", "push:" + push);
+
+                        //通过push是否为空来弹通知
+                        if (!TextUtils.isEmpty(push)) {
+                            if (SPUtils.getInstance().getBoolean(SpConstant.ACCEPT_NEW_NOTICE)) {
+                                createNotification(bean.getType(), push);
+                            }
+                        }
+                        String chat = bean.getChat();
+                        if (!TextUtils.isEmpty(chat)) {
+                            insertMessage(bean.getTargetId(), chat);
+                        }
+                        int num = bean.getOrderNum();
+                        if (num > 0) {
+                            Intent intent = new Intent(OtherConstant.FILTER_MAIN_RECEIVER);
+                            MainReceiverMessage mainReceiverMessage = new MainReceiverMessage();
+                            mainReceiverMessage.setMessageType(MainReceiverMessage.TYPE_REMAIN);
+                            mainReceiverMessage.setRemainMessage(num);
+                            intent.putExtra(OtherConstant.MAIN_RECEIVER, mainReceiverMessage);
+                            AccompanyApplication.getContext().sendBroadcast(intent);
+                        }
+
+                        //为了满足刷新聊天界面的"接单"按钮，真是个傻逼需求
+                        if (bean.getType() == 6) {
+                            Intent intent = new Intent(OtherConstant.CONVERSATION_ACTIVITY_RECEIVER);
+                            intent.putExtra(IntentConstant.INTENT_CONVERSATION_RECEIVER_TYPE, OtherConstant.CONVERSATION_SHOW_ACCEPT);
+                            intent.putExtra(IntentConstant.INTENT_USER_ID, bean.getTargetId());
+                            AccompanyApplication.getContext().sendBroadcast(intent);
+                        }
+
+                        return true;
+                    } else {
+                        LogUtils.d("message", "bean is null");
                     }
-                    int num = bean.getOrderNum();
-                    if (num > 0) {
-                        Intent intent = new Intent(OtherConstant.FILTER_MAIN_RECEIVER);
-                        MainReceiverMessage mainReceiverMessage = new MainReceiverMessage();
-                        mainReceiverMessage.setMessageType(MainReceiverMessage.TYPE_REMAIN);
-                        mainReceiverMessage.setRemainMessage(num);
-                        intent.putExtra(OtherConstant.MAIN_RECEIVER, mainReceiverMessage);
-                        AccompanyApplication.getContext().sendBroadcast(intent);
-                    }
-                    return true;
-                } else {
-                    LogUtils.d("message", "bean is null");
                 }
-
-            }
-
         }
 
         //收到提前的客户回馈

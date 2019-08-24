@@ -148,9 +148,6 @@ class AttentionFragment : BaseFragment() {
         AccompanyRequest().beginRequest(NetFactory.getNetRequest().netService.getAttentionDetail(EncodeUtils.encodeToken()),
                 object :TypeToken<BaseDecodeBean<List<FansBean>>>(){}.type,object :NetListener<List<FansBean>>{
             override fun onSuccess(list: List<FansBean>?) {
-                if (list!!.isEmpty()) {
-                    return
-                }
                 mList = ArrayList(list)
                 setRecyclerAdapter()
             }

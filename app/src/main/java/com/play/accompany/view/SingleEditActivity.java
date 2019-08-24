@@ -89,6 +89,12 @@ public class SingleEditActivity extends BaseActivity implements View.OnClickList
         mDetailBirthday.setOnClickListener(this);
         mDetailMore.setOnClickListener(this);
         mHeadImg.setOnClickListener(this);
+        findViewById(R.id.detail_sound).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(SingleEditActivity.this,SoundSettingActivity.class));
+            }
+        });
 
         setViews();
     }
