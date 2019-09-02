@@ -185,7 +185,7 @@ public class HomeFragment extends BaseFragment {
             public void onItemClick(UserInfo info,int index) {
                 EventUtils.getInstance().upMasterClick(String.valueOf(index), info.getUserId(), String.valueOf(mCurrentType), DateUtils.time2Date(System.currentTimeMillis()));
 
-                info.setFromChat(false);
+                info.setFromChat(true);
                 Intent intent = new Intent(mContext, UserCenterActivity.class);
                 intent.putExtra(IntentConstant.INTENT_USER, info);
                 mContext.startActivity(intent);

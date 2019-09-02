@@ -100,4 +100,6 @@ public class OtherConstant {
 
     public static final String IS_ATTENTION = "attention";
 
+    public static final String SOUND_HOME = "home";
+
 }

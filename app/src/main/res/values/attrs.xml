@@ -4,4 +4,9 @@
         <attr name="title" format="string"/>
         <attr name="detail" format="string"/>
     </declare-styleable>
+
+    <declare-styleable name="SoundSize">
+        <attr name="image_size" format="dimension"/>
+        <attr name="text_size" format="dimension"/>
+    </declare-styleable>
 </resources>

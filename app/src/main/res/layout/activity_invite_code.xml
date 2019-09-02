@@ -19,7 +19,7 @@
             android:textColor="@color/red"
             android:background="@drawable/invite_text_bg"
             android:layout_gravity="center"
-            android:elevation="10dp"
+            android:elevation="@dimen/dp_3"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:paddingLeft="30dp"

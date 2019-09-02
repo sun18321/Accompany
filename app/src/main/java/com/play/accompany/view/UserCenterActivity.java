@@ -30,6 +30,7 @@ import com.play.accompany.constant.IntentConstant;
 import com.play.accompany.constant.OtherConstant;
 import com.play.accompany.constant.SpConstant;
 import com.play.accompany.db.AccompanyDatabase;
+import com.play.accompany.design.SoundComboView;
 import com.play.accompany.net.AccompanyRequest;
 import com.play.accompany.net.NetFactory;
 import com.play.accompany.net.NetListener;
@@ -92,6 +93,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     private ImageView mImgAttention;
     private List<String> mAttentionList = new ArrayList<>();
     private LinearLayout mLinGame;
+    private SoundComboView mSoundView;
 
     @Override
     protected int getLayout() {
@@ -148,6 +150,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         mTvConstellation = findViewById(R.id.tv_constellation);
         mFlowLayout = findViewById(R.id.flowlayout);
         mLinGame = findViewById(R.id.lin_game);
+        mSoundView = findViewById(R.id.sound_view);
 
         findViewById(R.id.rl_back).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -226,6 +229,12 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         }
         LogUtils.d(getTag(), "date:" + mUserInfo.getDate());
         mTvConstellation.setText(StringUtils.getConstellationByString(mUserInfo.getDate()));
+        String audioUrl = mUserInfo.getAudioUrl();
+        if (!TextUtils.isEmpty(audioUrl)) {
+            mSoundView.setVisibility(View.VISIBLE);
+            mSoundView.setData(mUserInfo.getAudioUrl(), mUserInfo.getAudioLen());
+        }
+
     }
 
     private void displayGame(List<TopGameBean> allList) {
@@ -568,8 +577,21 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+
+        if (mSoundView != null) {
+            mSoundView.stopPlay();
+        }
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
+
+        if (mSoundView != null) {
+            mSoundView.destroy();
+        }
 
         if (mDisposable != null && !mDisposable.isDisposed()) {
             mDisposable.dispose();

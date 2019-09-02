@@ -16,7 +16,7 @@
         android:orientation="horizontal"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:elevation="10dp"
+        android:elevation="@dimen/dp_3"
         >
 
         <ImageView

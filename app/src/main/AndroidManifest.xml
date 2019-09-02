@@ -29,8 +29,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".view.SoundSettingActivity">
-        </activity>
+
+        <activity android:name=".view.SoundSettingActivity"
+                  android:screenOrientation="portrait"
+                  android:theme="@style/NoActionBarStatus"/>
 
         <service
             android:name=".service.HeartService"
@@ -38,10 +40,14 @@
             android:exported="true">
         </service>
 
-        <activity android:name=".view.ViewPagerActivity">
-        </activity>
-        <activity android:name=".view.KotlinActivity">
-        </activity>
+        <activity android:name=".view.ViewPagerActivity"
+                  android:screenOrientation="portrait"
+                  android:theme="@style/NoActionBarStatus"/>
+
+        <activity android:name=".view.KotlinActivity"
+                  android:screenOrientation="portrait"
+                  android:theme="@style/NoActionBarStatus"
+            />
         <activity
             android:name=".view.MoreDetailActivity"
             android:screenOrientation="portrait"

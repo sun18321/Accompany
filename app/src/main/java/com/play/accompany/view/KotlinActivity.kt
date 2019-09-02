@@ -15,6 +15,8 @@ class KotlinActivity : BaseActivity() {
     }
 
     override fun initViews() {
+        initToolbar("彩蛋")
+
         val date = DateUtils.time2Date(System.currentTimeMillis())
         tv_kotlin.text = date
     }

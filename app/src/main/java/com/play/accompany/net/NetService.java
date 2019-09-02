@@ -149,5 +149,14 @@ public interface NetService {
 
     @POST("setUserOnline")
     Observable<BaseResponse> sendHeart(@Body RequestBody body);
+
+    @POST("upAudio")
+    Observable<BaseResponse> setAudio(@Body RequestBody body);
+
+    @POST("getAudio")
+    Observable<BaseResponse> getAudio(@Body RequestBody body);
+
+    @POST("delAudio")
+    Observable<BaseResponse> deleteAudio(@Body RequestBody body);
 }
 

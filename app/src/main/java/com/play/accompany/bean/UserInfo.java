@@ -130,6 +130,28 @@ public class UserInfo implements Serializable {
     @Ignore
     private int userNameUpset;
 
+    @Ignore
+    private String audioUrl;
+
+    @Ignore
+    private int audioLen;
+
+    public String getAudioUrl() {
+        return audioUrl;
+    }
+
+    public void setAudioUrl(String audioUrl) {
+        this.audioUrl = audioUrl;
+    }
+
+    public int getAudioLen() {
+        return audioLen;
+    }
+
+    public void setAudioLen(int audioLen) {
+        this.audioLen = audioLen;
+    }
+
     public int getUserNameUpset() {
         return userNameUpset;
     }

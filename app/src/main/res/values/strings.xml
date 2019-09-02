@@ -211,4 +211,6 @@
 
     <string name="developing">开发中…</string>
 
+    <string name="sound_tip">按住说话，3–15S</string>
+
 </resources>

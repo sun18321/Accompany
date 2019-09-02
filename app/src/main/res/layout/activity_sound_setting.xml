@@ -6,34 +6,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".view.SoundSettingActivity"
-    android:background="@color/color_activity_default"
     >
 
     <include
-        android:id="@+id/toollbar"
+        android:id="@+id/place"
         layout="@layout/blue_toolbar"/>
 
     <LinearLayout
         android:id="@+id/lin_record"
         android:visibility="invisible"
         android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@id/toollbar"
+        app:layout_constraintTop_toBottomOf="@id/place"
         app:layout_constraintLeft_toLeftOf="parent"
         android:background="@color/white"
-        android:gravity="center"
+        android:gravity="center_horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="@dimen/dp_260">
 
         <TextView
             android:id="@+id/tv_time"
-            android:text="按住说话，3-15S"
-            android:layout_marginTop="@dimen/dp_10"
+            android:textSize="@dimen/sp_18"
+            android:layout_marginTop="@dimen/dp_40"
+            android:text="@string/sound_tip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <RelativeLayout
-            android:layout_marginTop="@dimen/dp_20"
-            android:layout_marginBottom="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_10"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
@@ -41,45 +40,43 @@
                 android:id="@+id/img_record"
                 android:layout_centerInParent="true"
                 android:src="@mipmap/audio_record"
-                android:layout_width="@dimen/dp_40"
-                android:layout_height="@dimen/dp_40"/>
+                android:layout_width="@dimen/dp_100"
+                android:layout_height="@dimen/dp_100"/>
 
             <ImageView
                 android:id="@+id/img_side"
                 android:visibility="invisible"
                 android:background="@mipmap/audio_record_side"
-                android:layout_width="@dimen/dp_50"
-                android:layout_height="@dimen/dp_50"/>
+                android:layout_width="@dimen/dp_120"
+                android:layout_height="@dimen/dp_120"/>
 
         </RelativeLayout>
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/lin_play"
-        android:visibility="gone"
-        android:padding="@dimen/dp_10"
-        app:layout_constraintTop_toBottomOf="@id/toollbar"
+        app:layout_constraintTop_toBottomOf="@id/place"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:gravity="center"
         android:background="@color/white"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="@dimen/dp_260">
 
-
-        <ImageView
-            android:id="@+id/img_play"
-            android:src="@mipmap/audio_play"
-            android:layout_width="@dimen/dp_40"
-            android:layout_height="@dimen/dp_40"/>
-
-        <ImageView
-            android:id="@+id/img_delete"
-            android:src="@mipmap/black_cross"
-            android:layout_marginStart="@dimen/dp_50"
+        <com.play.accompany.design.SoundComboView
+            android:layout_marginTop="@dimen/dp_20"
+            android:layout_marginStart="@dimen/dp_10"
+            android:id="@+id/sound_view"
+            app:image_size="@dimen/dp_18"
+            app:text_size="8sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
+        <ImageView
+            android:id="@+id/img_delete"
+            android:layout_marginTop="@dimen/dp_26"
+            android:layout_marginStart="@dimen/dp_10"
+            android:src="@mipmap/black_cross"
+            android:layout_width="@dimen/dp_20"
+            android:layout_height="@dimen/dp_20"/>
+
     </LinearLayout>
-
-
 </android.support.constraint.ConstraintLayout>

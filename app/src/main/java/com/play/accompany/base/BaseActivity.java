@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.play.accompany.R;
 import com.play.accompany.utils.LogUtils;
+import com.play.accompany.utils.ToastUtils;
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
@@ -130,12 +131,6 @@ public abstract class BaseActivity extends AppCompatActivity implements DialogIn
         overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
     }
 
-    @Override
-    public void startActivityForResult(Intent intent, int requestCode) {
-        super.startActivityForResult(intent, requestCode);
-        overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
-    }
-
     //为了8.0.1这个系统bug
     private boolean fixOrientation(){
         try {
@@ -183,14 +178,18 @@ public abstract class BaseActivity extends AppCompatActivity implements DialogIn
         if (supportActionBar != null) {
             supportActionBar.setDisplayHomeAsUpEnabled(true);
             supportActionBar.setDisplayShowTitleEnabled(false);
+        }else {
+            LogUtils.d("toolbar", "support is null");
         }
         if (toolbar != null) {
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                   finishMine();
+                    finishMine();
                 }
             });
+        } else {
+            LogUtils.d("toolbar", "toolbar is null");
         }
 
     }
@@ -250,6 +249,18 @@ public abstract class BaseActivity extends AppCompatActivity implements DialogIn
             mDialog = new ProgressDialog(this);
             mDialog.setCancelable(true);
             mDialog.setMessage(getResources().getString(R.string.loading));
+            mDialog.setOnCancelListener(this);
+        }
+        if (!mDialog.isShowing()) {
+            mDialog.show();
+        }
+    }
+
+    protected void showDialog(String message) {
+        if(mDialog == null) {
+            mDialog = new ProgressDialog(this);
+            mDialog.setCancelable(true);
+            mDialog.setMessage(message);
             mDialog.setOnCancelListener(this);
         }
         if (!mDialog.isShowing()) {

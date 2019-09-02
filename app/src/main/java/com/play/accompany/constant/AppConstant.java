@@ -3,6 +3,7 @@ package com.play.accompany.constant;
 public class AppConstant {
 
     //online
+//    public static String BASE_URL = "http://app.97huyou.com/";
     public static String BASE_URL = "http://39.100.96.9:7070/peipei/";
 //    public static String BASE_URL = "http://47.92.255.86:7070/peipei/";
 //    public static String BASE_URL = "http://192.168.43.53:7070/peipei/";
@@ -26,4 +27,5 @@ public class AppConstant {
 
     public static final String WE_CHAT_SECRET = "7ce06dddd19ef49908892fea02862860";
 
+    public static final String SOUND_FILE = "sound";
 }

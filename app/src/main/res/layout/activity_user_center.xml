@@ -296,6 +296,14 @@
                         style="@style/user_data_text"/>
                 </LinearLayout>
 
+                <com.play.accompany.design.SoundComboView
+                    android:id="@+id/sound_view"
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="10dp"/>
+
 
                 <LinearLayout
                     android:id="@+id/lin_game"

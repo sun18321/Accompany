@@ -27,7 +27,7 @@
     <style name="NoActionBarStatus" parent="AppTheme">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowIsTranslucent">false</item>
     </style>
 
     <style name="FullscreenTheme" parent="AppTheme">
