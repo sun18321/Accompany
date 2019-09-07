@@ -2,15 +2,13 @@ package com.play.accompany.utils;
 
 
 import android.content.Context;
-import android.net.Uri;
-import android.support.annotation.NonNull;
-import android.text.TextUtils;
+
+import androidx.annotation.NonNull;
 
 import com.play.accompany.present.CommonListener;
 import com.play.accompany.view.AccompanyApplication;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;

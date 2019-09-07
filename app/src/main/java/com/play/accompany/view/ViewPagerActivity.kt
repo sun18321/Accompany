@@ -1,6 +1,6 @@
 package com.play.accompany.view
 
-import android.support.v4.view.ViewPager
+import androidx.viewpager.widget.ViewPager
 import android.view.View
 import com.play.accompany.R
 import com.play.accompany.adapter.ViewPagerAdapter
@@ -32,7 +32,7 @@ class ViewPagerActivity : BaseActivity() {
         viewpager.adapter = pagerAdapter
         tablayout.setViewPager(viewpager)
 
-        viewpager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+        viewpager.addOnPageChangeListener(object : androidx.viewpager.widget.ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(p0: Int) {
 
             }

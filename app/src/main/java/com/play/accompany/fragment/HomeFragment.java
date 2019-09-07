@@ -1,11 +1,11 @@
 package com.play.accompany.fragment;
 
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -17,7 +17,6 @@ import com.play.accompany.adapter.HomeAdapter;
 import com.play.accompany.base.BaseFragment;
 import com.play.accompany.bean.BaseDecodeBean;
 import com.play.accompany.bean.BaseResponse;
-import com.play.accompany.bean.FavoriteInfo;
 import com.play.accompany.bean.Token;
 import com.play.accompany.bean.TopGameBean;
 import com.play.accompany.bean.TypeQueryBean;
@@ -25,7 +24,6 @@ import com.play.accompany.bean.UserInfo;
 import com.play.accompany.constant.IntentConstant;
 import com.play.accompany.constant.OtherConstant;
 import com.play.accompany.constant.SpConstant;
-import com.play.accompany.db.AccompanyDatabase;
 import com.play.accompany.net.AccompanyRequest;
 import com.play.accompany.net.NetFactory;
 import com.play.accompany.net.NetListener;
@@ -35,7 +33,6 @@ import com.play.accompany.utils.EncodeUtils;
 import com.play.accompany.utils.EventUtils;
 import com.play.accompany.utils.GsonUtils;
 import com.play.accompany.utils.SPUtils;
-import com.play.accompany.utils.ThreadPool;
 import com.play.accompany.utils.ToastUtils;
 import com.play.accompany.view.AccountActivity;
 import com.play.accompany.view.RankActivity;
@@ -45,7 +42,6 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;

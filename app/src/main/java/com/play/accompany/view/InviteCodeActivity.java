@@ -3,31 +3,26 @@ package com.play.accompany.view;
 import android.animation.Animator;
 import android.animation.AnimatorInflater;
 import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.text.TextUtils;
 import android.view.View;
-import android.view.animation.AnimationUtils;
 import android.view.animation.BounceInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.reflect.TypeToken;
 import com.play.accompany.R;
 import com.play.accompany.base.BaseActivity;
-import com.play.accompany.bean.AllOrderBean;
 import com.play.accompany.bean.BaseDecodeBean;
 import com.play.accompany.bean.InviteCodeBean;
 import com.play.accompany.bean.OnlyCodeBean;
-import com.play.accompany.constant.AppConstant;
 import com.play.accompany.constant.SpConstant;
 import com.play.accompany.net.AccompanyRequest;
 import com.play.accompany.net.NetFactory;
@@ -37,8 +32,6 @@ import com.play.accompany.utils.GsonUtils;
 import com.play.accompany.utils.LogUtils;
 import com.play.accompany.utils.SPUtils;
 import com.play.accompany.utils.ToastUtils;
-
-import java.util.List;
 
 import okhttp3.RequestBody;
 

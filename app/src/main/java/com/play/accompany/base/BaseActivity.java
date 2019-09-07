@@ -10,10 +10,10 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -22,10 +22,8 @@ import android.widget.TextView;
 
 import com.play.accompany.R;
 import com.play.accompany.utils.LogUtils;
-import com.play.accompany.utils.ToastUtils;
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 import com.umeng.analytics.MobclickAgent;
-import com.umeng.commonsdk.UMConfigure;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;

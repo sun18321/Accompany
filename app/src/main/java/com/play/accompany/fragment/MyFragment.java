@@ -24,6 +24,7 @@ import com.play.accompany.utils.SPUtils;
 import com.play.accompany.utils.StringUtils;
 import com.play.accompany.view.AccompanyApplication;
 import com.play.accompany.view.AllOrderActivity;
+import com.play.accompany.view.EggActivity;
 import com.play.accompany.view.InviteCodeActivity;
 import com.play.accompany.view.KotlinActivity;
 import com.play.accompany.view.MainActivity;
@@ -114,7 +115,9 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
         mTvName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(mContext, KotlinActivity.class));
+                if (TextUtils.equals("18555556688", SPUtils.getInstance().getString(SpConstant.MY_USER_ID))) {
+                    startActivity(new Intent(mContext, EggActivity.class));
+                }
             }
         });
 

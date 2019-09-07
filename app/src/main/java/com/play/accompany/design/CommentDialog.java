@@ -2,8 +2,8 @@ package com.play.accompany.design;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.makeramen.roundedimageview.RoundedImageView;
@@ -20,7 +19,6 @@ import com.play.accompany.bean.AllOrderBean;
 import com.play.accompany.bean.CommentBean;
 import com.play.accompany.constant.SpConstant;
 import com.play.accompany.utils.EventUtils;
-import com.play.accompany.utils.LogUtils;
 import com.play.accompany.utils.SPUtils;
 import com.play.accompany.utils.ToastUtils;
 import com.play.accompany.view.AccompanyApplication;

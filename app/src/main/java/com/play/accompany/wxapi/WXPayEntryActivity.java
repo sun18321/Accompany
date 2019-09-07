@@ -2,24 +2,14 @@ package com.play.accompany.wxapi;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.nfc.Tag;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.gson.reflect.TypeToken;
 import com.play.accompany.R;
-import com.play.accompany.bean.BaseDecodeBean;
-import com.play.accompany.bean.GoldBean;
 import com.play.accompany.constant.AppConstant;
 import com.play.accompany.constant.OtherConstant;
-import com.play.accompany.constant.SpConstant;
-import com.play.accompany.net.AccompanyRequest;
-import com.play.accompany.net.NetFactory;
-import com.play.accompany.net.NetListener;
-import com.play.accompany.utils.EncodeUtils;
 import com.play.accompany.utils.LogUtils;
-import com.play.accompany.utils.SPUtils;
 import com.play.accompany.utils.ToastUtils;
 import com.play.accompany.view.AccompanyApplication;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
@@ -28,10 +18,6 @@ import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
-
-import java.util.List;
-
-import okhttp3.RequestBody;
 
 public class WXPayEntryActivity extends AppCompatActivity implements IWXAPIEventHandler {
     private final String WE_CHAT_PAY = "wx_pay";

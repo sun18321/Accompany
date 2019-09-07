@@ -1,9 +1,9 @@
 package com.play.accompany.fragment
 
 import android.content.Intent
-import android.support.v7.widget.DividerItemDecoration
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import com.google.gson.reflect.TypeToken
 import com.play.accompany.R
@@ -48,8 +48,8 @@ class AttentionFragment : BaseFragment() {
     override fun getFragmentName(): String = "AttentionFragment"
 
     override fun initViews(view: View?) {
-        recycler.layoutManager = LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false)
-        recycler.addItemDecoration(DividerItemDecoration(mContext, LinearLayoutManager.VERTICAL))
+        recycler.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(mContext, androidx.recyclerview.widget.LinearLayoutManager.VERTICAL, false)
+        recycler.addItemDecoration(androidx.recyclerview.widget.DividerItemDecoration(mContext, androidx.recyclerview.widget.LinearLayoutManager.VERTICAL))
         requestData()
 
         refresh_layout.setOnRefreshListener {

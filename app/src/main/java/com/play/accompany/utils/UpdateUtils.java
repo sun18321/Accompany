@@ -1,6 +1,6 @@
 package com.play.accompany.utils;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.google.gson.reflect.TypeToken;
 import com.play.accompany.bean.BaseDecodeBean;

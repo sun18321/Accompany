@@ -1,9 +1,8 @@
 package com.play.accompany.view;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.text.Editable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
@@ -14,7 +13,6 @@ import com.play.accompany.R;
 import com.play.accompany.base.BaseActivity;
 import com.play.accompany.bean.BaseDecodeBean;
 import com.play.accompany.bean.CashBean;
-import com.play.accompany.bean.GoldBean;
 import com.play.accompany.bean.RequestCashBean;
 import com.play.accompany.constant.IntentConstant;
 import com.play.accompany.constant.SpConstant;
@@ -28,11 +26,6 @@ import com.play.accompany.utils.ToastUtils;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 
-import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
-import java.util.List;
-
-import okhttp3.Request;
 import okhttp3.RequestBody;
 
 public class CashActivity extends BaseActivity {

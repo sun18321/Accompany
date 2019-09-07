@@ -11,22 +11,13 @@ import android.net.Uri;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.appcompat.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.text.format.DateUtils;
-import android.widget.Toast;
 
-import com.google.gson.reflect.TypeToken;
 import com.play.accompany.R;
-import com.play.accompany.bean.BaseDecodeBean;
-import com.play.accompany.bean.GoldBean;
 import com.play.accompany.bean.VersionBean;
 import com.play.accompany.constant.OtherConstant;
-import com.play.accompany.constant.SpConstant;
-import com.play.accompany.net.AccompanyRequest;
-import com.play.accompany.net.NetFactory;
-import com.play.accompany.net.NetListener;
 import com.play.accompany.view.AccompanyApplication;
 import com.yalantis.ucrop.UCrop;
 
@@ -35,8 +26,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
-
-import okhttp3.RequestBody;
 
 public class AppUtils {
     /**

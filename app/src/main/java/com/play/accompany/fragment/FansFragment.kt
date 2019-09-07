@@ -2,8 +2,8 @@ package com.play.accompany.fragment
 
 import android.app.Application
 import android.content.Intent
-import android.support.v7.widget.DividerItemDecoration
-import android.support.v7.widget.LinearLayoutManager
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.View
 import com.google.gson.reflect.TypeToken
 import com.play.accompany.R
@@ -45,8 +45,8 @@ class FansFragment : BaseFragment() {
     override fun getLayout(): Int = R.layout.refresh_layout
 
     override fun initViews(view: View?) {
-        recycler.layoutManager = LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false)
-        recycler.addItemDecoration(DividerItemDecoration(mContext, LinearLayoutManager.VERTICAL))
+        recycler.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(mContext, androidx.recyclerview.widget.LinearLayoutManager.VERTICAL, false)
+        recycler.addItemDecoration(androidx.recyclerview.widget.DividerItemDecoration(mContext, androidx.recyclerview.widget.LinearLayoutManager.VERTICAL))
         refresh_layout.setOnRefreshListener {
             requestData()
             it.finishRefresh()

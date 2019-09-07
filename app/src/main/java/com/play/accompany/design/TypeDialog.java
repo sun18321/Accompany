@@ -1,16 +1,14 @@
 package com.play.accompany.design;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AlertDialog;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
 import com.play.accompany.R;
-import com.play.accompany.bean.GameProperty;
 import com.play.accompany.bean.TopGameBean;
 import com.play.accompany.view.AccompanyApplication;
 import com.zhy.view.flowlayout.FlowLayout;

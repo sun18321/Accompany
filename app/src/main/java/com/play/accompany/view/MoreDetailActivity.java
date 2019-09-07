@@ -1,9 +1,9 @@
 package com.play.accompany.view;
 
 import android.content.Intent;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.view.View;
 
 import com.play.accompany.R;
@@ -13,8 +13,6 @@ import com.play.accompany.constant.IntentConstant;
 import com.play.accompany.constant.OtherConstant;
 import com.play.accompany.design.DetailLayout;
 import com.play.accompany.utils.ToastUtils;
-
-import java.io.Serializable;
 
 public class MoreDetailActivity extends BaseActivity implements View.OnClickListener {
     private UserInfo mUserInfo;

@@ -1,6 +1,6 @@
 package com.play.accompany.bean;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.play.accompany.R;

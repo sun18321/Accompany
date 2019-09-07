@@ -1,14 +1,10 @@
 package com.play.accompany.fragment;
 
-import android.content.Intent;
 import android.net.Uri;
-import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
-import android.util.Log;
+import androidx.appcompat.widget.Toolbar;
+
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.play.accompany.R;
@@ -19,17 +15,10 @@ import com.play.accompany.constant.SpConstant;
 import com.play.accompany.utils.AppUtils;
 import com.play.accompany.utils.LogUtils;
 import com.play.accompany.utils.SPUtils;
-import com.play.accompany.utils.ToastUtils;
-import com.play.accompany.view.AccompanyApplication;
-import com.play.accompany.view.AccountActivity;
-import com.play.accompany.view.MainActivity;
-import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 
 import io.rong.imkit.RongIM;
-import io.rong.imkit.fragment.ConversationListFragment;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
-import io.rong.imlib.model.UserInfo;
 
 public class MessageFragment extends BaseFragment {
     private static MessageFragment sMessageFragment;

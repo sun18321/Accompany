@@ -2,9 +2,9 @@ package com.play.accompany.design;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -16,7 +16,6 @@ import com.play.accompany.R;
 import com.play.accompany.bean.BaseDecodeBean;
 import com.play.accompany.bean.EditPriceBean;
 import com.play.accompany.bean.GameProperty;
-import com.play.accompany.bean.MasterBean;
 import com.play.accompany.bean.MasterCheckBean;
 import com.play.accompany.bean.OnlyCodeBean;
 import com.play.accompany.constant.SpConstant;
@@ -30,10 +29,8 @@ import com.play.accompany.utils.SPUtils;
 import com.play.accompany.utils.ToastUtils;
 import com.play.accompany.view.AccompanyApplication;
 
-import java.io.UnsupportedEncodingException;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import okhttp3.RequestBody;
 

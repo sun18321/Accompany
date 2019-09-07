@@ -1,15 +1,13 @@
 package com.play.accompany.service;
 
-import android.animation.TimeAnimator;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.play.accompany.net.AccompanyRequest;
 import com.play.accompany.net.NetFactory;
 import com.play.accompany.utils.EncodeUtils;
-import com.play.accompany.utils.LogUtils;
 
 import java.util.Timer;
 import java.util.TimerTask;

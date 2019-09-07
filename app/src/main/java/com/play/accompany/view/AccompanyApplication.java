@@ -3,8 +3,8 @@ package com.play.accompany.view;
 import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.google.gson.reflect.TypeToken;
@@ -28,11 +28,9 @@ import com.play.accompany.utils.GsonUtils;
 import com.play.accompany.utils.LogUtils;
 import com.play.accompany.utils.SPUtils;
 import com.play.accompany.utils.ThreadPool;
-import com.play.accompany.utils.ToastUtils;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
 
-import java.util.HashSet;
 import java.util.List;
 import io.rong.imkit.RongIM;
 

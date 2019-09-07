@@ -2,17 +2,15 @@ package com.play.accompany.design;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.widget.TextView;
 
 import com.play.accompany.R;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 
-public class ColorText extends android.support.v7.widget.AppCompatTextView {
+public class ColorText extends androidx.appcompat.widget.AppCompatTextView {
     private Context mContext;
 
     public ColorText(Context context) {

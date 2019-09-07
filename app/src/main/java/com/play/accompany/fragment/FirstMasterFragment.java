@@ -2,7 +2,7 @@ package com.play.accompany.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
@@ -43,7 +43,6 @@ import com.play.accompany.utils.ToastUtils;
 import com.play.accompany.view.AccompanyApplication;
 import com.play.accompany.view.MasterActivity;
 import com.play.accompany.view.RuleActivity;
-import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 
 import java.util.List;
 import okhttp3.RequestBody;

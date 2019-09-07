@@ -5,15 +5,12 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Build;
-import android.support.v4.app.NotificationCompat;
+import androidx.core.app.NotificationCompat;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.play.accompany.bean.MainReceiverMessage;
 import com.play.accompany.bean.MessageBean;
-import com.play.accompany.bean.OrderNotifyBean;
 import com.play.accompany.constant.IntentConstant;
 import com.play.accompany.constant.OtherConstant;
 import com.play.accompany.constant.SpConstant;

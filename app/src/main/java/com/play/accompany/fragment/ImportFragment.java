@@ -1,6 +1,6 @@
 package com.play.accompany.fragment;
 
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 
 import com.play.accompany.R;

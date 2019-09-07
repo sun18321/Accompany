@@ -5,7 +5,7 @@ import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.content.pm.PackageManager
 import android.media.AudioManager
-import android.support.v4.app.ActivityCompat
+import androidx.core.app.ActivityCompat
 import android.text.TextUtils
 import android.view.MotionEvent
 import android.view.View

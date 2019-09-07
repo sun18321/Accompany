@@ -1,9 +1,9 @@
 package com.play.accompany.adapter;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +21,6 @@ import com.play.accompany.design.ColorfulTitle;
 import com.play.accompany.present.ApplicationListener;
 import com.play.accompany.present.CommonListener;
 import com.play.accompany.utils.GsonUtils;
-import com.play.accompany.utils.LogUtils;
 import com.play.accompany.utils.StringUtils;
 import com.play.accompany.view.AccompanyApplication;
 import com.youth.banner.Banner;
@@ -31,8 +30,6 @@ import com.youth.banner.listener.OnBannerListener;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.umeng.analytics.pro.k.a.s;
 
 
 public class HomeAdapter extends RecyclerView.Adapter {

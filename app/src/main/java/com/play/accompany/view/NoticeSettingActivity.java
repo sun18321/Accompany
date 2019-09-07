@@ -1,15 +1,13 @@
 package com.play.accompany.view;
 
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.Switch;
 
 import com.play.accompany.R;
 import com.play.accompany.base.BaseActivity;
 import com.play.accompany.constant.SpConstant;
-import com.play.accompany.utils.LogUtils;
 import com.play.accompany.utils.SPUtils;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
 import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;

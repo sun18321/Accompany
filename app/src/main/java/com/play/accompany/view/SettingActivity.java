@@ -1,17 +1,14 @@
 package com.play.accompany.view;
 
 import android.content.Intent;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.view.View;
 import android.widget.TextView;
 
 import com.play.accompany.R;
 import com.play.accompany.base.BaseActivity;
-import com.play.accompany.constant.SpConstant;
-import com.play.accompany.db.AccompanyDatabase;
-import com.play.accompany.design.ColorfulTitle;
 import com.play.accompany.utils.AppUtils;
 import com.play.accompany.utils.SPUtils;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;

@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -178,6 +178,7 @@ public class ConversationActivity extends BaseActivity {
      */
     private void enterFragment(Conversation.ConversationType mConversationType, String mTargetId) {
 
+        //升级androidX编译报错，不影响使用
         mFragment = (ConversationFragment) getSupportFragmentManager().findFragmentById(R.id.conversation);
         Uri uri = Uri.parse("rong://" + getApplicationInfo().packageName).buildUpon()
                 .appendPath("conversation").appendPath(mConversationType.getName().toLowerCase())
