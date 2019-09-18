@@ -6,11 +6,6 @@
     android:background="@color/dark_orchid"
     >
 
-    <ImageView
-        android:id="@+id/living_bg"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
     <com.play.accompany.design.LivingSoundView
         android:id="@+id/living_sound"
         app:layout_constraintTop_toTopOf="parent"

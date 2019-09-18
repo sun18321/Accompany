@@ -82,6 +82,7 @@ dependencies {
     implementation 'com.flyco.tablayout:FlycoTabLayout_Lib:2.1.2@aar'
 
     implementation 'androidx.core:core-ktx:1.0.2'
+    implementation 'androidx.viewpager2:viewpager2:1.0.0-beta04'
 
 //    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.0-beta-1'
 }

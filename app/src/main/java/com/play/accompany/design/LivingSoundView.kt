@@ -55,7 +55,7 @@ class LivingSoundView @JvmOverloads constructor(
     private fun initView() {
         val view = View.inflate(mContext, R.layout.view_living_sound, this)
         val mAnimWidth = QMUIDisplayHelper.getScreenWidth(mContext)
-        val parentParams: FrameLayout.LayoutParams = view.anim_parent.layoutParams as FrameLayout.LayoutParams
+        val parentParams: RelativeLayout.LayoutParams = view.anim_parent.layoutParams as LayoutParams
         parentParams.width = mAnimWidth
         parentParams.height = mAnimWidth
         view.anim_parent.layoutParams = parentParams
@@ -148,7 +148,7 @@ class LivingSoundView @JvmOverloads constructor(
             }
 
             override fun onAnimationEnd(animation: Animator?) {
-                LogUtils.d("life","anim end")
+                LogUtils.d("test_life","anim end:${animation.hashCode()}")
 
                 for (bean in mMusicDataList) {
                     bean.img?.visibility = View.INVISIBLE
@@ -320,7 +320,7 @@ class LivingSoundView @JvmOverloads constructor(
         }
     }
 
-    public fun destoryALlAnim() {
+    public fun destroyAllAnim() {
         mRotateAnim?.cancel()
         mSpreadAnimOne?.cancel()
         mSpreadAnimTwo?.cancel()

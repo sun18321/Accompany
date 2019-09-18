@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.item_attention.view.*
 import kotlinx.android.synthetic.main.item_attention.view.tv_name
 import kotlinx.android.synthetic.main.item_order.view.*
 
-class AttentionAdapter(context:Context,dataList:ArrayList<FansBean>): androidx.recyclerview.widget.RecyclerView.Adapter<AttentionAdapter.AttentionHolder>() {
+class AttentionAdapter(context:Context,dataList:ArrayList<FansBean>): RecyclerView.Adapter<AttentionAdapter.AttentionHolder>() {
     private var mContext = context
     private var mDataList = dataList
     private lateinit var mListener: AttentionListener
@@ -73,7 +73,7 @@ class AttentionAdapter(context:Context,dataList:ArrayList<FansBean>): androidx.r
     }
 
 
-    inner class AttentionHolder(itemView: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
+    inner class AttentionHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     }
 

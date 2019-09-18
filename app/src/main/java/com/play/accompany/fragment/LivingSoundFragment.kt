@@ -28,9 +28,7 @@ class LivingSoundFragment : BaseFragment() {
     }
 
     override fun onDestroy() {
-//        dashabi.destoryALlAnim()
-        mView.living_bg.visibility = View.INVISIBLE
-        mView.living_sound.destoryALlAnim()
+        mView.living_sound.destroyAllAnim()
 
         super.onDestroy()
 

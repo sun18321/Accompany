@@ -4,32 +4,34 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-public class Test {
-    private int age;
-    private String name;
-    private boolean student;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.Lifecycle;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-    public int getAge() {
-        return age;
+public class Test extends FragmentStateAdapter {
+    public Test(@NonNull FragmentActivity fragmentActivity) {
+        super(fragmentActivity);
     }
 
-    public void setAge(int age) {
-        this.age = age;
+    public Test(@NonNull Fragment fragment) {
+        super(fragment);
     }
 
-    public String getName() {
-        return name;
+    public Test(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
+        super(fragmentManager, lifecycle);
     }
 
-    public void setName(String name) {
-        this.name = name;
+    @NonNull
+    @Override
+    public Fragment createFragment(int position) {
+        return null;
     }
 
-    public boolean isStudent() {
-        return student;
-    }
-
-    public void setStudent(boolean student) {
-        this.student = student;
+    @Override
+    public int getItemCount() {
+        return 0;
     }
 }

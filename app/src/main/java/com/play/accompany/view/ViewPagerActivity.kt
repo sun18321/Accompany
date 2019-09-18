@@ -32,7 +32,7 @@ class ViewPagerActivity : BaseActivity() {
         viewpager.adapter = pagerAdapter
         tablayout.setViewPager(viewpager)
 
-        viewpager.addOnPageChangeListener(object : androidx.viewpager.widget.ViewPager.OnPageChangeListener {
+        viewpager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(p0: Int) {
 
             }
