@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/color_white"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/dp_10"
+            android:paddingStart="10dp"
+            >
+
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="10dp"-->
+<!--                android:layout_marginTop="16dp"-->
+<!--                android:text="@string/data"-->
+<!--                android:textColor="@color/color_black"-->
+<!--                android:textSize="18sp"-->
+<!--                />-->
+
+            <!--<View-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="1dp"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:background="@color/color_gray"/>-->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:text="@string/nick_name"
+                    android:maxLines="1"
+                    android:maxEms="6"
+                    android:ellipsize="end"
+                    style="@style/user_introduce_text"/>
+
+                <TextView
+                    android:id="@+id/tv_bottom_name"
+                    style="@style/user_data_text"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:text="@string/id"
+                    style="@style/user_introduce_text"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_id"
+                    style="@style/user_data_text"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:text="@string/constellation"
+                    style="@style/user_introduce_text"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_constellation"
+                    style="@style/user_data_text"/>
+            </LinearLayout>
+
+            <com.play.accompany.design.SoundComboView
+                android:id="@+id/sound_view"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="10dp"/>
+
+
+            <LinearLayout
+                android:id="@+id/lin_game"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:text="@string/game"
+                    style="@style/user_introduce_text"
+                    />
+
+                <com.zhy.view.flowlayout.FlowLayout
+                    android:id="@+id/flowlayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:text="@string/interest"
+                    style="@style/user_introduce_text"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_interest"
+                    style="@style/user_data_text"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="@dimen/dp_10"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:text="@string/profession"
+                    style="@style/user_introduce_text"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_profession"
+                    style="@style/user_data_text"/>
+            </LinearLayout>
+        </LinearLayout>
+
+
+
+    </androidx.core.widget.NestedScrollView>
+
+</FrameLayout>

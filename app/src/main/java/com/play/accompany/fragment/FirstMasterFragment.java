@@ -203,7 +203,7 @@ public class FirstMasterFragment extends BaseFragment implements View.OnClickLis
             return;
         }
 
-        if (!AppUtils.isMobileNumber(phone)) {
+        if (!AppUtils.isSinglePhone(phone)) {
             ToastUtils.showCommonToast(getResources().getString(R.string.phone_first));
             return;
         }

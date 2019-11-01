@@ -6,36 +6,26 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
-import com.google.gson.reflect.TypeToken;
 import com.play.accompany.R;
 import com.play.accompany.base.BaseFragment;
-import com.play.accompany.bean.BaseDecodeBean;
-import com.play.accompany.bean.OrderUnreadBean;
 import com.play.accompany.bean.UserInfo;
 import com.play.accompany.constant.IntentConstant;
 import com.play.accompany.constant.SpConstant;
 import com.play.accompany.db.AccompanyDatabase;
-import com.play.accompany.net.AccompanyRequest;
-import com.play.accompany.net.NetFactory;
-import com.play.accompany.net.NetListener;
-import com.play.accompany.utils.EncodeUtils;
 import com.play.accompany.utils.LogUtils;
 import com.play.accompany.utils.SPUtils;
 import com.play.accompany.utils.StringUtils;
 import com.play.accompany.view.AccompanyApplication;
 import com.play.accompany.view.AllOrderActivity;
-import com.play.accompany.view.EggActivity;
+import com.play.accompany.view.CollapseUserCenterActivity;
+import com.play.accompany.view.FilterAudioActivity;
 import com.play.accompany.view.InviteCodeActivity;
-import com.play.accompany.view.KotlinActivity;
-import com.play.accompany.view.MainActivity;
 import com.play.accompany.view.MasterActivity;
 import com.play.accompany.view.ServiceActivity;
 import com.play.accompany.view.SettingActivity;
 import com.play.accompany.view.SingleEditActivity;
-import com.play.accompany.view.UserCenterActivity;
 import com.play.accompany.view.ViewPagerActivity;
 import com.play.accompany.view.WalletActivity;
-import java.util.List;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
@@ -92,10 +82,7 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
             @Override
             public void onClick(View v) {
                 if (mUserInfo != null) {
-                    Intent intent = new Intent(mContext, UserCenterActivity.class);
-                    mUserInfo.setFromChat(true);
-                    intent.putExtra(IntentConstant.INTENT_USER, mUserInfo);
-                    mContext.startActivity(intent);
+                    mContext.startActivity(new Intent(mContext, CollapseUserCenterActivity.class).putExtra(IntentConstant.INTENT_USER_ID,mUserInfo.getUserId()));
                 } else {
                     getUserInfo();
                 }
@@ -116,7 +103,8 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
             @Override
             public void onClick(View v) {
                 if (TextUtils.equals("18555556688", SPUtils.getInstance().getString(SpConstant.MY_USER_ID))) {
-                    startActivity(new Intent(mContext, EggActivity.class));
+//                    startActivity(new Intent(mContext, EggActivity.class));
+                    startActivity(new Intent(mContext, FilterAudioActivity.class));
                 }
             }
         });

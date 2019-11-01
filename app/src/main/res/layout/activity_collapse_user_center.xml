@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    android:fitsSystemWindows="true"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.CollapseUserCenterActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:fitsSystemWindows="true"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_280">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:fitsSystemWindows="true"
+            android:id="@+id/collapse"
+            app:contentScrim="@color/colorPrimary"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:titleEnabled="false"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:fitsSystemWindows="true"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/top_head"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:fitsSystemWindows="true"
+                    android:scaleType="centerCrop"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_280"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                app:layout_collapseMode="pin"
+                app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"/>
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <LinearLayout
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/top_head"
+            android:background="@drawable/shape_top_corner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/collapse_name"
+                android:maxLines="1"
+                android:maxEms="5"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_20"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginStart="@dimen/dp_20"
+                android:layout_marginTop="@dimen/dp_20"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <Button
+                android:id="@+id/button_attention"
+                android:text="关注"
+                android:textColor="@color/white"
+                android:background="@drawable/ripple_blue_button"
+                app:layout_constraintTop_toTopOf="@id/collapse_name"
+                app:layout_constraintBottom_toBottomOf="@id/collapse_name"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_width="@dimen/dp_90"
+                android:layout_height="@dimen/dp_40"
+                android:layout_marginEnd="@dimen/dp_10"
+                />
+
+            <Button
+                android:id="@+id/button_chat"
+                android:text="聊天"
+                android:textColor="@color/white"
+                android:background="@drawable/ripple_red_button"
+                app:layout_constraintTop_toTopOf="@id/collapse_name"
+                app:layout_constraintBottom_toBottomOf="@id/collapse_name"
+                app:layout_constraintRight_toLeftOf="@id/button_attention"
+                android:layout_marginEnd="@dimen/dp_10"
+                android:layout_width="@dimen/dp_90"
+                android:layout_height="@dimen/dp_40"/>
+
+            <LinearLayout
+                app:layout_constraintTop_toBottomOf="@id/collapse_name"
+                app:layout_constraintLeft_toLeftOf="@id/collapse_name"
+                android:layout_marginTop="@dimen/dp_10"
+                android:id="@+id/lin_gender"
+                android:layout_width="@dimen/dp_45"
+                android:layout_height="@dimen/dp_20"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                >
+
+                <ImageView
+                    android:id="@+id/img_gender"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    tools:src="@drawable/male"/>
+
+                <TextView
+                    android:id="@+id/tv_age"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textColor="@color/color_white"
+                    android:textSize="14sp"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lin_rate"
+                app:layout_constraintLeft_toRightOf="@id/lin_gender"
+                app:layout_constraintTop_toTopOf="@id/lin_gender"
+                android:layout_width="@dimen/dp_45"
+                android:layout_height="@dimen/dp_20"
+                android:layout_alignBottom="@id/lin_gender"
+                android:layout_marginStart="10dp"
+                android:layout_toEndOf="@id/lin_gender"
+                android:background="@drawable/star_background_white"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="6dp"
+                android:paddingRight="6dp"
+                android:elevation="@dimen/dp_5"
+                >
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@mipmap/star_full"/>
+
+                <TextView
+                    android:id="@+id/tv_rating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lin_sign"
+                app:layout_constraintLeft_toLeftOf="@id/collapse_name"
+                app:layout_constraintTop_toBottomOf="@id/lin_gender"
+                android:layout_marginTop="@dimen/dp_10"
+                android:orientation="horizontal"
+                android:layout_alignParentBottom="true"
+                android:gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:src="@mipmap/sign"
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"/>
+
+                <TextView
+                    android:id="@+id/tv_sign"
+                    android:layout_marginStart="2dp"
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:textColor="#ffa3a3a3"/>
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <com.flyco.tablayout.SlidingTabLayout
+            android:id="@+id/tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@color/white"
+            app:tl_textSelectColor="#ff323232"
+            app:tl_textUnselectColor="#ff888787"
+            app:tl_indicator_color="@color/colorPrimary"
+            app:tl_textAllCaps="true"
+            app:tl_textBold="BOTH"
+            app:tl_textsize="14sp"
+            app:tl_tab_space_equal="true"
+            app:tl_indicator_width="@dimen/dp_40"
+            />
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

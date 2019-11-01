@@ -136,6 +136,18 @@ public class UserInfo implements Serializable {
     @Ignore
     private int audioLen;
 
+    //选择的游戏位置，用于携带跳转下单界面
+    @Ignore
+    private int selectedPosition;
+
+    public int getSelectedPosition() {
+        return selectedPosition;
+    }
+
+    public void setSelectedPosition(int selectedPosition) {
+        this.selectedPosition = selectedPosition;
+    }
+
     public String getAudioUrl() {
         return audioUrl;
     }

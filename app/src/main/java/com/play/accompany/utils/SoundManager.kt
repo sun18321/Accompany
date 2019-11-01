@@ -15,7 +15,7 @@ import java.util.*
 import kotlin.concurrent.timerTask
 
 class SoundManager private constructor(){
-    private val mMaxLength = 16
+    private var mMaxLength = 16
     private val mMinLength = 4
     private lateinit var mListener: SoundListener
     private lateinit var mFile: File
@@ -32,7 +32,8 @@ class SoundManager private constructor(){
         }
     }
 
-     fun startRecord(filePath: File, listener: SoundListener) {
+    fun startRecord(filePath: File, maxLength: Int, listener: SoundListener) {
+        mMaxLength = maxLength
         mListener = listener
         mFile = filePath
         mIsRecord = true

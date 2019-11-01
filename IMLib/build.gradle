@@ -21,7 +21,7 @@ android {
 
 dependencies {
     api fileTree(dir: 'libs', include: ['*.jar'])
-    api 'androidx.core:core:1.0.0'
+    api 'com.android.support:support-compat:26.0.0'
     api 'com.google.code.gson:gson:2.8.1'
 }
 

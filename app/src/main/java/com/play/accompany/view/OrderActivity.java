@@ -132,6 +132,7 @@ public class OrderActivity extends BaseActivity implements View.OnClickListener 
         if (!TextUtils.isEmpty(url)) {
             Glide.with(this).load(url).into(mHeadView);
         }
+        mTvType.setText(mUserInfo.getGameType().get(mUserInfo.getSelectedPosition()).getName());
     }
 
     @Override

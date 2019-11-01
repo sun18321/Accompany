@@ -53,6 +53,8 @@
     <color name="ripple_blue">#4E71FD</color>
     <color name="ripple_red">#FE222F</color>
     <color name="ripple_origin">#DCDCDC</color>
+    <color name="text_dis_attention">#c0bfbf</color>
+    <color name="frame_bg">#B3B3B3</color>
 
 
 

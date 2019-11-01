@@ -28,6 +28,7 @@ import com.play.accompany.net.AccompanyRequest;
 import com.play.accompany.net.NetFactory;
 import com.play.accompany.net.NetListener;
 import com.play.accompany.net.StringListener;
+import com.play.accompany.present.BottomListener;
 import com.play.accompany.utils.DateUtils;
 import com.play.accompany.utils.EncodeUtils;
 import com.play.accompany.utils.EventUtils;
@@ -35,6 +36,7 @@ import com.play.accompany.utils.GsonUtils;
 import com.play.accompany.utils.SPUtils;
 import com.play.accompany.utils.ToastUtils;
 import com.play.accompany.view.AccountActivity;
+import com.play.accompany.view.CollapseUserCenterActivity;
 import com.play.accompany.view.RankActivity;
 import com.play.accompany.view.UserCenterActivity;
 import com.play.accompany.view.WebViewActivity;
@@ -57,9 +59,9 @@ public class HomeFragment extends BaseFragment {
     private SmartRefreshLayout mRefreshLayout;
     private boolean isRequsting = false;
     private int mCurrentType = -1;
-    private static ScrollListener mListener;
+    private static BottomListener mListener;
 
-    public static HomeFragment newInstance(ScrollListener listener) {
+    public static HomeFragment newInstance(BottomListener listener) {
         if (sHomeFragment == null) {
             mListener = listener;
             sHomeFragment = new HomeFragment();
@@ -162,7 +164,7 @@ public class HomeFragment extends BaseFragment {
 
     private void showHome(String homeJson) {
         mAdapter = new HomeAdapter(mContext, homeJson);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayout.VERTICAL, false));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false));
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setHomeListener(new HomeAdapter.HomeListener() {
             @Override
@@ -179,12 +181,14 @@ public class HomeFragment extends BaseFragment {
 
             @Override
             public void onItemClick(UserInfo info,int index) {
-                EventUtils.getInstance().upMasterClick(String.valueOf(index), info.getUserId(), String.valueOf(mCurrentType), DateUtils.time2Date(System.currentTimeMillis()));
+//                EventUtils.getInstance().upMasterClick(String.valueOf(index), info.getUserId(), String.valueOf(mCurrentType), DateUtils.time2Date(System.currentTimeMillis()));
+//
+//                info.setFromChat(true);
+//                Intent intent = new Intent(mContext, UserCenterActivity.class);
+//                intent.putExtra(IntentConstant.INTENT_USER, info);
+//                mContext.startActivity(intent);
 
-                info.setFromChat(true);
-                Intent intent = new Intent(mContext, UserCenterActivity.class);
-                intent.putExtra(IntentConstant.INTENT_USER, info);
-                mContext.startActivity(intent);
+                mContext.startActivity(new Intent(mContext, CollapseUserCenterActivity.class).putExtra(IntentConstant.INTENT_USER_ID,info.getUserId()));
             }
 
             @Override
@@ -286,12 +290,7 @@ public class HomeFragment extends BaseFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+
+        mListener = null;
     }
-
-    public interface ScrollListener{
-        void onShow();
-
-        void onHide();
-    }
-
 }

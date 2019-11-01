@@ -13,14 +13,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.appcompat.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -41,9 +38,11 @@ import com.play.accompany.constant.SpConstant;
 import com.play.accompany.fragment.HomeFragment;
 import com.play.accompany.fragment.MessageFragment;
 import com.play.accompany.fragment.MyFragment;
+import com.play.accompany.fragment.TopLivingSoundFragment;
 import com.play.accompany.net.AccompanyRequest;
 import com.play.accompany.net.NetFactory;
 import com.play.accompany.net.NetListener;
+import com.play.accompany.present.BottomListener;
 import com.play.accompany.service.HeartService;
 import com.play.accompany.utils.EncodeUtils;
 import com.play.accompany.utils.GsonUtils;
@@ -52,7 +51,6 @@ import com.play.accompany.utils.LogUtils;
 import com.play.accompany.utils.SPUtils;
 import com.play.accompany.utils.StringUtils;
 import com.play.accompany.utils.ToastUtils;
-import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -68,7 +66,7 @@ import permissions.dispatcher.PermissionRequest;
 import permissions.dispatcher.RuntimePermissions;
 
 @RuntimePermissions
-public class MainActivity extends BaseActivity implements View.OnClickListener, HomeFragment.ScrollListener {
+public class MainActivity extends BaseActivity implements View.OnClickListener, BottomListener {
 
     private HomeFragment mHomeFragment;
 //    private ConversationListFragment mConversationListFragment;
@@ -76,6 +74,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private final String TAG_HOME = "home";
     private final String TAG_MESSAGE = "message";
     private final String TAG_MY = "my";
+    private final String TAG_MIC = "mic";
     private String mCurrentTag;
     private final String mChatTag = "white_sign";
     private boolean mTokenRequest = false;
@@ -88,12 +87,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private TextView mTvMessage;
     private TextView mTvMessageMessage;
     private ImageView mImgMy;
+    private ImageView mImgSpeak;
     private TextView mTvMy;
     private TextView mTvMyMessage;
     private TextView mCurrentTextView = null;
     private AnimationDrawable mAnimMy;
     private AnimationDrawable mAnimMessage;
     private AnimationDrawable mAnimHome;
+    private AnimationDrawable mAnimSpeak;
     private AnimationDrawable mCurrentAnim = null;
     private IUnReadMessageObserver mUnReadListener;
     private long mCLickbbackTime = 0;
@@ -102,6 +103,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private boolean mBottomShow = true;
     private int mAllUnRead;
     private int mOrderUnRead = 0;
+    private TextView mTvMic;
+    private TopLivingSoundFragment mLivingFragment;
+    private boolean mIsAnim = false;
 
     public static void launch(Context context) {
         context.startActivity(new Intent(context, MainActivity.class));
@@ -238,6 +242,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         findViewById(R.id.rel_home).setOnClickListener(this);
         findViewById(R.id.rel_message).setOnClickListener(this);
         findViewById(R.id.rel_my).setOnClickListener(this);
+        findViewById(R.id.rel_mic).setOnClickListener(this);
 
         mImgHome = findViewById(R.id.img_home);
         mTvHome = findViewById(R.id.tv_home);
@@ -248,9 +253,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         mImgMy = findViewById(R.id.img_my);
         mTvMy = findViewById(R.id.tv_my);
         mTvMyMessage = findViewById(R.id.tv_my_message);
+        mImgSpeak = findViewById(R.id.img_mic);
         mAnimMy = (AnimationDrawable) mImgMy.getBackground();
         mAnimMessage = (AnimationDrawable) mImgMessage.getBackground();
         mAnimHome = (AnimationDrawable) mImgHome.getBackground();
+        mAnimSpeak = (AnimationDrawable) mImgSpeak.getBackground();
+        mTvMic = findViewById(R.id.tv_mic);
+
 
         mHomeFragment = HomeFragment.newInstance(this);
 //        if (mConversationListFragment == null) {
@@ -267,6 +276,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
         mMessageFragment = MessageFragment.newInstance();
         mMyFragment = MyFragment.newInstance();
+        if (mLivingFragment == null) {
+            mLivingFragment = new TopLivingSoundFragment(this);
+        }
 
         String token = SPUtils.getInstance().getString(SpConstant.CHAT_TOKEN);
         if (TextUtils.isEmpty(token)) {
@@ -388,6 +400,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             });
         }
     }
+
 
     private void animMy() {
         setCurrentAnim(mAnimMy);
@@ -584,12 +597,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         mAnimIn.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
-//                linBottom.setVisibility(View.VISIBLE);
+                mIsAnim = true;
             }
 
             @Override
             public void onAnimationEnd(Animator animation) {
                 mBottomShow = true;
+                mIsAnim = false;
             }
 
             @Override
@@ -606,13 +620,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         mAnimOut.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
-
+                mIsAnim = true;
             }
 
             @Override
             public void onAnimationEnd(Animator animation) {
-//                linBottom.setVisibility(View.GONE);
                 mBottomShow = false;
+                mIsAnim = false;
             }
 
             @Override
@@ -645,6 +659,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 switchText(mTvMy);
                 switchFragment(mMyFragment, TAG_MY);
                 break;
+            case R.id.rel_mic:
+                setCurrentAnim(mAnimSpeak);
+                switchText(mTvMic);
+                switchFragment(mLivingFragment, TAG_MIC);
+                break;
         }
     }
 
@@ -676,6 +695,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             return;
         }
 
+        if (mIsAnim) {
+            return;
+        }
+
         if (mAnimIn == null) {
             initAnim();
         } else {
@@ -689,11 +712,20 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             return;
         }
 
+        if (mIsAnim) {
+            return;
+        }
+
         if (mAnimOut == null) {
             initAnim();
         } else {
             mAnimOut.start();
         }
+    }
+
+    @Override
+    public boolean isShow() {
+        return mBottomShow;
     }
 
 //    @Override

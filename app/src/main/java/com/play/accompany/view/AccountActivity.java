@@ -232,7 +232,7 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
 
     private void checkPhone() {
         String phone = mEditAccount.getText().toString();
-        if (AppUtils.isMobileNumber(phone)) {
+        if (AppUtils.isSinglePhone(phone)) {
             requestCode(phone);
         } else {
             ToastUtils.showCenterToast(getResources().getString(R.string.phone_error));

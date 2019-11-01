@@ -66,7 +66,7 @@ public abstract class BaseActivity extends AppCompatActivity implements DialogIn
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
+//        super.onSaveInstanceState(outState);
 
         LogUtils.d("lifecycle", "activity save instance:" + getTag());
     }

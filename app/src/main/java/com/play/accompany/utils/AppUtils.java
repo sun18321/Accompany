@@ -16,12 +16,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.text.TextUtils;
 
 import com.play.accompany.R;
+import com.play.accompany.bean.FilterAudioBean;
 import com.play.accompany.bean.VersionBean;
 import com.play.accompany.constant.OtherConstant;
+import com.play.accompany.present.FilterOverListener;
+import com.play.accompany.present.FilterProgressListerner;
 import com.play.accompany.view.AccompanyApplication;
 import com.yalantis.ucrop.UCrop;
 
 import java.io.File;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -42,7 +49,7 @@ public class AppUtils {
      * "\\d{8}"代表后面是可以是0～9的数字, 有8位。
      */
     public static boolean isMobileNumber(String mobiles) throws PatternSyntaxException {
-        String telRegex = "^((13[0-9])|(15[^4])|(18[0-9])|(17[0-8])|(147,145))\\d{8}$";
+        String telRegex = "^\\d{11}$";
         return !TextUtils.isEmpty(mobiles) && mobiles.matches(telRegex);
     }
 
@@ -75,12 +82,13 @@ public class AppUtils {
         return versionName;
     }
 
-    public static boolean isAllNumber(String s) {
+    public static boolean isSinglePhone(String s) {
         if (TextUtils.isEmpty(s)) {
             return false;
         }
         Pattern pattern = Pattern.compile("^[-\\+]?[\\d]*$");
-        return pattern.matcher(s).matches();
+        boolean length = s.length() == 11;
+        return pattern.matcher(s).matches() && length;
     }
 
     public static void goCrop(Uri imgUri, AppCompatActivity activity) {
@@ -208,5 +216,75 @@ public class AppUtils {
             cursor.close();
         }
         return path;
+    }
+
+    private static HashSet<FilterAudioBean> mList = new HashSet<>();
+    private static List<String> mAllFormat = Arrays.asList(AccompanyApplication.getContext().getResources().getStringArray(R.array.audio_format));
+
+    public static void getAllAudio(File filePath, FilterProgressListerner progressListener, FilterOverListener overListener) {
+        File[] files = filePath.listFiles();
+
+        for (File file : files) {
+            if (file.isDirectory()) {
+                getAllAudio(file, progressListener,null);
+            } else {
+                String fileName = file.getName();
+                progressListener.onProgress(fileName);
+                if (!TextUtils.isEmpty(fileName)) {
+                    int index = fileName.lastIndexOf(".");
+                    if (index != -1) {
+                        String format = fileName.substring(index);
+                        if (mAllFormat.contains(format)) {
+                            String path = file.getAbsolutePath();
+                            long sizeLong = file.length();
+                            String sizeString = FormatFileSize(sizeLong);
+                            FilterAudioBean bean = new FilterAudioBean(fileName, path, sizeLong, sizeString, 0,"",false);
+                            mList.add(bean);
+                        }
+                    }
+                }
+            }
+        }
+        if (overListener != null) {
+            overListener.onOver(mList);
+        }
+    }
+
+    public static String FormatFileSize(long fileS) {// 转换文件大小
+        DecimalFormat df = new DecimalFormat("#.00");
+        String fileSizeString = "";
+        if (fileS < 1024)
+        {
+            fileSizeString = df.format((double) fileS) + "B";
+        }
+        else if (fileS < 1048576)
+        {
+            fileSizeString = df.format((double) fileS / 1024) + "K";
+        }
+        else if (fileS < 1073741824)
+        {
+            fileSizeString = df.format((double) fileS / 1048576) + "M";
+        }
+        else
+        {
+            fileSizeString = df.format((double) fileS / 1073741824) + "G";
+        }
+        return fileSizeString;
+    }
+
+    public static String timeParse(long duration) {
+        String time = "" ;
+        long minute = duration / 60000 ;
+        long seconds = duration % 60000 ;
+        long second = Math.round((float)seconds/1000) ;
+        if( minute < 10 ){
+            time += "0" ;
+        }
+        time += minute+":" ;
+        if( second < 10 ){
+            time += "0" ;
+        }
+        time += second ;
+        return time ;
     }
 }

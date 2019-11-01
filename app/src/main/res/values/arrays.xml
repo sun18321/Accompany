@@ -45,4 +45,13 @@
         <item>提现记录</item>
     </string-array>
 
+    <string-array name="audio_format">
+        <item>.mp3</item>
+        <item>.mkv</item>
+        <item>.wav</item>
+        <item>.m4a</item>
+        <item>.ogg</item>
+        <item>.acc</item>
+    </string-array>
+
 </resources>

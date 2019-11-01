@@ -158,5 +158,11 @@ public interface NetService {
 
     @POST("delAudio")
     Observable<BaseResponse> deleteAudio(@Body RequestBody body);
+
+    @POST("selVoiceTabs")
+    Observable<BaseResponse> getSpeakTab(@Body RequestBody body);
+
+    @POST("selVoice")
+    Observable<BaseResponse> querySpeak(@Body RequestBody body);
 }
 

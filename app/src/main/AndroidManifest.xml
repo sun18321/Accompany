@@ -12,19 +12,29 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".view.EggActivity"
+        <activity android:name=".view.ReleaseSpeakActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBarStatus" />
+        <activity
+            android:name=".view.FilterAudioActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBarStatus" />
+        <activity
+            android:name=".view.CollapseUserCenterActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".view.EggActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBarStatus" />
         <activity
             android:name=".view.SoundSettingActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBarStatus" />
-
         <activity
             android:name=".view.ViewPagerActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBarStatus" />
-
         <activity
             android:name=".view.KotlinActivity"
             android:screenOrientation="portrait"
@@ -176,9 +186,10 @@
             android:name=".wxapi.WXEntryActivity"
             android:exported="true"
             android:launchMode="singleTop" />
+
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="b041371bc7989e6e9ad3bffa89b8c490"></meta-data>
+            android:value="b041371bc7989e6e9ad3bffa89b8c490" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -192,21 +203,20 @@
         <service
             android:name=".service.HeartService"
             android:enabled="true"
-            android:exported="true"></service>
-
-        <service android:name="com.amap.api.location.APSService"></service>
+            android:exported="true" />
+        <service android:name="com.amap.api.location.APSService" />
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CAMERA" /> <!-- 用于进行网络定位 -->
-    <uses-permission android:name="android.permission.VIBRATE" /> <!-- 用于访问GPS定位 -->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- 获取运营商信息，用于支持提供运营商信息相关的接口 -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- 用于访问wifi网络信息，wifi信息会用于进行网络定位 -->
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- 这个权限用于获取wifi的获取权限，wifi信息会用来进行网络定位 -->
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> <!-- 用于申请调用A-GPS模块 -->
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" /> <!-- 用于申请获取蓝牙信息进行室内定位 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" /> <!-- 用于进行网络定位 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- 用于访问GPS定位 -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> <!-- 获取运营商信息，用于支持提供运营商信息相关的接口 -->
+    <uses-permission android:name="android.permission.CAMERA" /> <!-- 用于访问wifi网络信息，wifi信息会用于进行网络定位 -->
+    <uses-permission android:name="android.permission.VIBRATE" /> <!-- 这个权限用于获取wifi的获取权限，wifi信息会用来进行网络定位 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- 用于申请调用A-GPS模块 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- 用于申请获取蓝牙信息进行室内定位 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />

@@ -32,6 +32,9 @@ import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
 
 import java.util.List;
+
+import io.reactivex.functions.Consumer;
+import io.reactivex.plugins.RxJavaPlugins;
 import io.rong.imkit.RongIM;
 
 public class AccompanyApplication extends Application {
@@ -52,6 +55,13 @@ public class AccompanyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         mContext = this;
+
+        RxJavaPlugins.setErrorHandler(new Consumer<Throwable>() {
+            @Override
+            public void accept(Throwable throwable) throws Exception {
+
+            }
+        });
 
         //umeng
         UMConfigure.setLogEnabled(true);

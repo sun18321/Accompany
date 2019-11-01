@@ -31,5 +31,4 @@
     <item android:drawable="@mipmap/home28" android:duration="25"/>
     <item android:drawable="@mipmap/home29" android:duration="25"/>
     <item android:drawable="@mipmap/home30" android:duration="25"/>
-
 </animation-list>

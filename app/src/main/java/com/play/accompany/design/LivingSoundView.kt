@@ -6,16 +6,18 @@ import android.animation.PropertyValuesHolder
 import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.PointF
+import android.media.MediaPlayer
 import android.util.AttributeSet
 import android.view.View
 import android.view.animation.LinearInterpolator
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.RelativeLayout
-import androidx.core.graphics.plus
 import com.play.accompany.R
 import com.play.accompany.bean.MusicAnimBean
+import com.play.accompany.bean.ResponseSpeakBean
 import com.play.accompany.utils.LogUtils
+import com.play.accompany.utils.ToastUtils
 import com.qmuiteam.qmui.util.QMUIDisplayHelper
 import kotlinx.android.synthetic.main.view_living_sound.view.*
 import java.util.*
@@ -45,11 +47,9 @@ class LivingSoundView @JvmOverloads constructor(
     private var mMusicDataList = ArrayList<MusicAnimBean>()
     private var mMusicAnimCancel = false
 
-
     init {
         initView()
         initAnim()
-        startAllAnim()
     }
 
     private fun initView() {
@@ -76,6 +76,9 @@ class LivingSoundView @JvmOverloads constructor(
         mCenter = PointF(view.anim_parent.x + mDiameter, view.anim_parent.y + mDiameter)
 
         initMusicData()
+
+        img_dish.setOnClickListener {
+        }
     }
 
     private fun initMusicData() {
@@ -287,7 +290,7 @@ class LivingSoundView @JvmOverloads constructor(
     }
 
 
-    public fun pauseAllAnim() {
+    public fun pause() {
         mRotateAnim?.pause()
         mSpreadAnimOne?.pause()
         mSpreadAnimTwo?.pause()
@@ -320,7 +323,7 @@ class LivingSoundView @JvmOverloads constructor(
         }
     }
 
-    public fun destroyAllAnim() {
+     fun destroy() {
         mRotateAnim?.cancel()
         mSpreadAnimOne?.cancel()
         mSpreadAnimTwo?.cancel()

@@ -43,4 +43,14 @@ public class IntentConstant {
 
     public static final String INTENT_CONVERSATION_RECEIVER_TYPE = "intent_order_response_type";
 
+    public static final String INTENT_ALL_GAME = "intent_all_game";
+
+    public static final String INTENT_AUDIO = "intent_audio";
+
+    public static final int INTENT_CODE_ALBUM = 1003;
+
+    public static final int INTENT_CODE_CAMERA = 1004;
+
+    public static final int INTENT_CODE_EDIT_INFO = 1005;
+
 }

@@ -55,6 +55,7 @@
 
     <LinearLayout
         android:id="@+id/lin_play"
+        android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@id/place"
         app:layout_constraintLeft_toLeftOf="parent"
         android:background="@color/white"
@@ -67,6 +68,14 @@
             android:id="@+id/sound_view"
             app:image_size="@dimen/dp_18"
             app:text_size="8sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/tv_size"
+            android:visibility="gone"
+            android:layout_marginStart="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_26"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 

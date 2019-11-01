@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:oneshot="true">
+    <item android:drawable="@mipmap/speak01" android:duration="25"/>
+    <item android:drawable="@mipmap/speak02" android:duration="25"/>
+    <item android:drawable="@mipmap/speak03" android:duration="25"/>
+    <item android:drawable="@mipmap/speak04" android:duration="25"/>
+    <item android:drawable="@mipmap/speak05" android:duration="25"/>
+    <item android:drawable="@mipmap/speak06" android:duration="25"/>
+    <item android:drawable="@mipmap/speak07" android:duration="25"/>
+    <item android:drawable="@mipmap/speak08" android:duration="25"/>
+    <item android:drawable="@mipmap/speak09" android:duration="25"/>
+    <item android:drawable="@mipmap/speak10" android:duration="25"/>
+    <item android:drawable="@mipmap/speak11" android:duration="25"/>
+    <item android:drawable="@mipmap/speak12" android:duration="25"/>
+    <item android:drawable="@mipmap/speak13" android:duration="25"/>
+    <item android:drawable="@mipmap/speak14" android:duration="25"/>
+    <item android:drawable="@mipmap/speak15" android:duration="25"/>
+    <item android:drawable="@mipmap/speak16" android:duration="25"/>
+    <item android:drawable="@mipmap/speak17" android:duration="25"/>
+    <item android:drawable="@mipmap/speak18" android:duration="25"/>
+    <item android:drawable="@mipmap/speak19" android:duration="25"/>
+    <item android:drawable="@mipmap/speak20" android:duration="25"/>
+    <item android:drawable="@mipmap/speak21" android:duration="25"/>
+    <item android:drawable="@mipmap/speak22" android:duration="25"/>
+    <item android:drawable="@mipmap/speak23" android:duration="25"/>
+    <item android:drawable="@mipmap/speak24" android:duration="25"/>
+    <item android:drawable="@mipmap/speak25" android:duration="25"/>
+    <item android:drawable="@mipmap/speak26" android:duration="25"/>
+    <item android:drawable="@mipmap/speak27" android:duration="25"/>
+    <item android:drawable="@mipmap/speak28" android:duration="25"/>
+    <item android:drawable="@mipmap/speak29" android:duration="25"/>
+    <item android:drawable="@mipmap/speak30" android:duration="25"/>
+
+</animation-list>

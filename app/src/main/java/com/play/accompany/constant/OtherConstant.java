@@ -102,4 +102,12 @@ public class OtherConstant {
 
     public static final String SOUND_HOME = "home";
 
+    public static final String SET_SOUND_SPEAK = "sound_for_speak";
+
+    public static final int SET_SOUND_SPEAK_CODE = 104;
+
+    public static final int MAX_AUDIO_SIZE = 3 * 1024 * 1024;
+
+    public static final int MAX_AUDIO_DURATION = 60;
+
 }

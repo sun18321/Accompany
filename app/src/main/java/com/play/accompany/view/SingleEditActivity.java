@@ -48,9 +48,9 @@ import permissions.dispatcher.RuntimePermissions;
 
 @RuntimePermissions
 public class SingleEditActivity extends BaseActivity implements View.OnClickListener {
-    private final int request_code_album = 1001;
-    private final int request_code_camera = 1002;
-    private final int request_code_edit = 1003;
+//    private final int request_code_album = 1001;
+//    private final int request_code_camera = 1002;
+//    private final int request_code_edit = 1003;
 
     private UserInfo mUserInfo;
     private DetailLayout mDetailName;
@@ -163,7 +163,7 @@ public class SingleEditActivity extends BaseActivity implements View.OnClickList
                 intent.putExtra(OtherConstant.DETAIL_TYPE, EditDetailActivity.TYPE_GENDER);
                 break;
         }
-        startActivityForResult(intent, request_code_edit);
+        startActivityForResult(intent, IntentConstant.INTENT_CODE_EDIT_INFO);
     }
 
     private void showImgSelect() {
@@ -209,7 +209,7 @@ public class SingleEditActivity extends BaseActivity implements View.OnClickList
         Intent intent = new Intent("android.intent.action.GET_CONTENT");
         intent.setType("image/*");
         intent.addCategory(Intent.CATEGORY_OPENABLE);
-        startActivityForResult(intent, request_code_album);
+        startActivityForResult(intent, IntentConstant.INTENT_CODE_ALBUM);
     }
 
     @NeedsPermission({Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE})
@@ -245,7 +245,7 @@ public class SingleEditActivity extends BaseActivity implements View.OnClickList
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        startActivityForResult(intent, request_code_camera);
+        startActivityForResult(intent, IntentConstant.INTENT_CODE_CAMERA);
     }
 
     private void goCrop(Uri imgUri) {
@@ -296,10 +296,10 @@ public class SingleEditActivity extends BaseActivity implements View.OnClickList
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == request_code_edit && resultCode == RESULT_OK && data != null) {
+        if (requestCode == IntentConstant.INTENT_CODE_EDIT_INFO && resultCode == RESULT_OK && data != null) {
             mUserInfo = (UserInfo) data.getSerializableExtra(IntentConstant.INTENT_USER);
             setViews();
-        } else if (requestCode == request_code_album && data != null) {
+        } else if (requestCode == IntentConstant.INTENT_CODE_ALBUM && data != null) {
             String imagePath = AppUtils.getImagePath(data.getData());
             LogUtils.d(getTag(),"string2uri:" + Uri.parse(imagePath));
             Uri uriForFile = FileProvider.getUriForFile(this, (getPackageName() + OtherConstant.FILE_PROVIDER_NAME), new File(imagePath));
@@ -318,7 +318,7 @@ public class SingleEditActivity extends BaseActivity implements View.OnClickList
             sb.append(image);
             LogUtils.d("aboutimage", "append:" + sb.toString());
             uploadImage(sb.toString());
-        } else if (requestCode == request_code_camera) {
+        } else if (requestCode == IntentConstant.INTENT_CODE_CAMERA) {
             LogUtils.d(getTag(), "camera result");
 //            LogUtils.d(getTag(),"uri:" + FileProvider.getUriForFile(this, getPackageName() + OtherConstant.FILE_PROVIDER_NAME, mFile));
             LogUtils.d(getTag(), "uri string:" + FileProvider.getUriForFile(this, getPackageName() + OtherConstant.FILE_PROVIDER_NAME, mFile).toString());

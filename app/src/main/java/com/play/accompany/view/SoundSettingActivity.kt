@@ -3,6 +3,7 @@ package com.play.accompany.view
 import android.animation.Animator
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.media.AudioManager
 import androidx.core.app.ActivityCompat
@@ -15,6 +16,7 @@ import com.play.accompany.R
 import com.play.accompany.base.BaseActivity
 import com.play.accompany.bean.*
 import com.play.accompany.constant.AppConstant
+import com.play.accompany.constant.IntentConstant
 import com.play.accompany.constant.OtherConstant
 import com.play.accompany.constant.SpConstant
 import com.play.accompany.net.AccompanyRequest
@@ -34,6 +36,7 @@ class SoundSettingActivity : BaseActivity() {
     private lateinit var mAnimator: ObjectAnimator
     private var mProgress = 0
     private var mUpload = false
+    private var mCode = -1
 
     override fun getLayout(): Int {
         return R.layout.activity_sound_setting
@@ -43,39 +46,85 @@ class SoundSettingActivity : BaseActivity() {
         return "SoundSettingActivity"
     }
 
+    override fun parseIntent() {
+        super.parseIntent()
+
+        mCode = intent.getIntExtra(OtherConstant.SET_SOUND_SPEAK, -1)
+
+    }
+
     override fun initViews() {
         initToolbar("设置声音")
-        requestData()
+
+        if (mCode == -1) {
+            requestData()
+        } else {
+            lin_play.visibility = View.GONE
+            lin_record.visibility = View.VISIBLE
+            tv_time.text = "按住录音，不超过60S"
+            showRecord()
+        }
 
         tv_right.setOnClickListener {
-            if (mFile == null) {
-                showDeleteDialog()
+            if (mCode == -1) {
+                uploadUserSound()
             } else {
-                if (!mUpload) {
-                    mUpload = true
-                    showDialog("正在上传")
-                    SoundManager.instance.uploadSound(mFile!!, OtherConstant.SOUND_HOME, mProgress.toString(),object :SoundManager.UploadListener{
-                        override fun onFailed() {
-                            runOnUiThread {
-                                dismissDialog()
-                                ToastUtils.showCommonToast("上传失败")
-                                mUpload = false
-                            }
-                        }
-
-                        override fun onSuccess() {
-                            runOnUiThread {
-                                dismissDialog()
-                                ToastUtils.showCommonToast("上传成功")
-                                tv_right.visibility = View.INVISIBLE
-                                mUpload = false
-                            }
-                        }
-                    })
-                }
+                backSound()
             }
         }
 
+    }
+
+    private fun backSound() {
+        if (mFile == null) {
+            ToastUtils.showCommonToast("您还没录制音频，请先录制声音")
+            return
+        }
+
+        if (mFile!!.length() > OtherConstant.MAX_AUDIO_SIZE) {
+            ToastUtils.showCommonToast("音频过大，最大可支持3M")
+            return
+        }
+
+        if (mProgress > 60) {
+            ToastUtils.showCommonToast("音频超时，最长可支持60S")
+            return
+        }
+
+        val audioBean = FilterAudioBean(mName, mFile!!.absolutePath, mFile!!.length(), AppUtils.FormatFileSize(mFile!!.length()),
+                mProgress, AppUtils.timeParse(mProgress.toLong()))
+
+        setResult(100, Intent().putExtra(IntentConstant.INTENT_AUDIO, audioBean))
+        this.finish()
+    }
+
+    private fun uploadUserSound() {
+        if (mFile == null) {
+            showDeleteDialog()
+        } else {
+            if (!mUpload) {
+                mUpload = true
+                showDialog("正在上传")
+                SoundManager.instance.uploadSound(mFile!!, OtherConstant.SOUND_HOME, mProgress.toString(),object :SoundManager.UploadListener{
+                    override fun onFailed() {
+                        runOnUiThread {
+                            dismissDialog()
+                            ToastUtils.showCommonToast("上传失败")
+                            mUpload = false
+                        }
+                    }
+
+                    override fun onSuccess() {
+                        runOnUiThread {
+                            dismissDialog()
+                            ToastUtils.showCommonToast("上传成功")
+                            tv_right.visibility = View.INVISIBLE
+                            mUpload = false
+                        }
+                    }
+                })
+            }
+        }
     }
 
     private fun showPlay(bean: SoundBean) {
@@ -84,6 +133,8 @@ class SoundSettingActivity : BaseActivity() {
         sound_view.setData(bean.audioUrl, bean.audioLen)
 
         img_delete.setOnClickListener {
+            tv_size.text = ""
+            tv_size.visibility = View.GONE
             showRecord()
         }
     }
@@ -124,7 +175,12 @@ class SoundSettingActivity : BaseActivity() {
         val dir = getExternalFilesDir(AppConstant.SOUND_FILE)
         mName = SPUtils.getInstance().getString(SpConstant.MY_USER_ID) + "_" + System.currentTimeMillis() + ".wav"
         mFile = File(dir, mName)
-        SoundManager.instance.startRecord(mFile!!,object :SoundManager.SoundListener{
+        var maxLength = 16
+
+        if (mCode == OtherConstant.SET_SOUND_SPEAK_CODE) {
+            maxLength = 61
+        }
+        SoundManager.instance.startRecord(mFile!!,maxLength,object :SoundManager.SoundListener{
             override fun onProgress(progress: Int) {
                 runOnUiThread {
                     mProgress = progress
@@ -142,7 +198,11 @@ class SoundSettingActivity : BaseActivity() {
             override fun onTooShort() {
                 runOnUiThread {
                     ToastUtils.showCommonToast("录制时间过短，请重新录制")
-                    tv_time.text = resources.getString(R.string.sound_tip)
+                    if (mCode == -1) {
+                        tv_time.text = resources.getString(R.string.sound_tip)
+                    } else {
+                        tv_time.text = "按住录音,不超过60S"
+                    }
                 }
             }
         })
@@ -152,6 +212,11 @@ class SoundSettingActivity : BaseActivity() {
         lin_play.visibility = View.VISIBLE
         lin_record.visibility = View.INVISIBLE
         sound_view.setData(mFile, mProgress)
+
+        if (mCode !=-1) {
+            tv_size.text = AppUtils.FormatFileSize(mFile!!.length())
+            tv_size.visibility = View.VISIBLE
+        }
 
         LogUtils.d("sound","length:$mProgress")
         LogUtils.d("sound", "address:${mFile?.absolutePath}")
