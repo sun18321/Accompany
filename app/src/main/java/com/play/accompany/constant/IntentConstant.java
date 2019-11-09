@@ -53,4 +53,12 @@ public class IntentConstant {
 
     public static final int INTENT_CODE_EDIT_INFO = 1005;
 
+    public static final String INTENT_SPEAK_LIST = "intent_speak_list";
+
+    public static final String INTENT_SPEAK_POSITION = "intent_speak_position";
+
+    public static final String INTENT_BUNDLE = "intent_bundle";
+
+    public static final String INTENT_IS_ME = "intent_is_me";
+
 }

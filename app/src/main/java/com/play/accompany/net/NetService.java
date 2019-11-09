@@ -164,5 +164,14 @@ public interface NetService {
 
     @POST("selVoice")
     Observable<BaseResponse> querySpeak(@Body RequestBody body);
+
+    @POST("selRecommendVoice")
+    Observable<BaseResponse> getRecommendSound(@Body RequestBody body);
+
+    @POST("setVoiceLike")
+    Observable<BaseResponse> setVoiceLike(@Body RequestBody body);
+
+    @POST("delVoice")
+    Observable<BaseResponse> deleteVoice(@Body RequestBody body);
 }
 

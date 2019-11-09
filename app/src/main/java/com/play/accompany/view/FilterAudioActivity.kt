@@ -1,9 +1,7 @@
 package com.play.accompany.view
 
-import android.content.ContentProvider
 import android.content.Intent
 import android.provider.MediaStore
-import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,7 +12,6 @@ import com.play.accompany.bean.FilterAudioBean
 import com.play.accompany.constant.IntentConstant
 import com.play.accompany.constant.OtherConstant.MAX_AUDIO_DURATION
 import com.play.accompany.constant.OtherConstant.MAX_AUDIO_SIZE
-import com.play.accompany.design.LivingSoundPLayer
 import com.play.accompany.utils.AppUtils
 import com.play.accompany.utils.LogUtils
 import com.play.accompany.utils.ToastUtils

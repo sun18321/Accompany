@@ -146,8 +146,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
-
-
     }
 
     @Override

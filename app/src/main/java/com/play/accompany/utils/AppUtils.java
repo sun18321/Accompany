@@ -14,6 +14,7 @@ import android.provider.MediaStore;
 import androidx.core.app.ActivityCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.play.accompany.R;
 import com.play.accompany.bean.FilterAudioBean;
@@ -35,6 +36,9 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 public class AppUtils {
+    private static long mCurrentTime = 0;
+    private static long mTimeSpace = 300;
+
     /**
      * 验证手机号码是否合法
      * 176, 177, 178;
@@ -286,5 +290,15 @@ public class AppUtils {
         }
         time += second ;
         return time ;
+    }
+
+    public static boolean isQuickCLick() {
+        long currentTime = System.currentTimeMillis();
+        long timeSpace = currentTime - mCurrentTime;
+        mCurrentTime = currentTime;
+        if (timeSpace > mTimeSpace) {
+            return false;
+        }
+        return true;
     }
 }

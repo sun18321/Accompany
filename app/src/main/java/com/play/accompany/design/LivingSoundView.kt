@@ -13,12 +13,19 @@ import android.view.animation.LinearInterpolator
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.RelativeLayout
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.play.accompany.R
-import com.play.accompany.bean.MusicAnimBean
-import com.play.accompany.bean.ResponseSpeakBean
-import com.play.accompany.utils.LogUtils
-import com.play.accompany.utils.ToastUtils
+import com.play.accompany.bean.*
+import com.play.accompany.constant.SpConstant
+import com.play.accompany.net.AccompanyRequest
+import com.play.accompany.net.NetFactory
+import com.play.accompany.net.NetListener
+import com.play.accompany.utils.*
+import com.play.accompany.view.AccompanyApplication
 import com.qmuiteam.qmui.util.QMUIDisplayHelper
+import io.rong.imkit.RongIM
+import io.rong.imlib.RongIMClient
 import kotlinx.android.synthetic.main.view_living_sound.view.*
 import java.util.*
 import kotlin.collections.ArrayList
@@ -46,6 +53,10 @@ class LivingSoundView @JvmOverloads constructor(
     private val mMusicResourceList = arrayListOf(R.mipmap.music_one, R.mipmap.music_two, R.mipmap.music_three)
     private var mMusicDataList = ArrayList<MusicAnimBean>()
     private var mMusicAnimCancel = false
+    private val mAttentionText = "已关注"
+    private val mDisAttentionText = "+关注"
+    private var mLike = false
+    private var mNet = false
 
     init {
         initView()
@@ -78,6 +89,21 @@ class LivingSoundView @JvmOverloads constructor(
         initMusicData()
 
         img_dish.setOnClickListener {
+            if (!AppUtils.isQuickCLick()) {
+                changePlay()
+            }
+        }
+
+        img_play.setOnClickListener {
+            if (!AppUtils.isQuickCLick()) {
+                changePlay()
+            }
+        }
+    }
+
+    private fun changePlay() {
+        if (img_play.visibility == View.GONE) {
+
         }
     }
 
@@ -151,7 +177,7 @@ class LivingSoundView @JvmOverloads constructor(
             }
 
             override fun onAnimationEnd(animation: Animator?) {
-                LogUtils.d("test_life","anim end:${animation.hashCode()}")
+//                LogUtils.d("test_life","anim end:${animation.hashCode()}")
 
                 for (bean in mMusicDataList) {
                     bean.img?.visibility = View.INVISIBLE
@@ -163,26 +189,156 @@ class LivingSoundView @JvmOverloads constructor(
 
             override fun onAnimationCancel(animation: Animator?) {
                 mMusicAnimCancel = true
-                LogUtils.d("life","anim cancel")
+//                LogUtils.d("life","anim cancel")
             }
 
             override fun onAnimationStart(animation: Animator?) {
                 for (bean in mMusicDataList) {
                     bean.img?.visibility = View.VISIBLE
                 }
-
             }
         })
     }
 
 
-    public fun setData() {
+    fun setData(bean: ResponseSpeakBean, isMe: Boolean) {
+        GlideUtils.commonLoad(context, bean.imgUrl, img_dish)
+        GlideUtils.loadFuzzy(context, bean.imgUrl, img_bg)
+        GlideUtils.commonLoad(context, bean.iconUrl, img_head)
+        tv_name.text = bean.name
+        tv_word.text = bean.content
+
+        if (SPUtils.getInstance().getString(SpConstant.MY_USER_ID) == bean.userId) {
+            button_attention.visibility = View.INVISIBLE
+        } else {
+            AccompanyApplication.getAttentionList {
+                if (it.contains(bean.userId)) {
+                    button_attention.text = mAttentionText
+                } else {
+                    button_attention.text = mDisAttentionText
+                }
+                button_attention.setOnClickListener {
+                    doAttention(bean.userId)
+                }
+            }
+        }
+        if (bean.isLike == 1) {
+            img_heart.setImageResource(R.mipmap.heart_full)
+            mLike = true
+        } else {
+            img_heart.setImageResource(R.mipmap.heart_empty)
+            mLike = false
+        }
+
+        tv_count.text = bean.likeNum.toString()
+        img_chat.setOnClickListener {
+            if (SPUtils.getInstance().getString(SpConstant.MY_USER_ID) == bean.userId) {
+                ToastUtils.showCommonToast("这是你自己哦")
+            } else {
+                RongIM.getInstance().startPrivateChat(context, bean.userId, bean.name)
+            }
+        }
+
+        img_heart.setOnClickListener {
+            setLike(bean)
+        }
+
+        if (isMe) {
+            img_delete.visibility = View.VISIBLE
+        } else {
+            img_delete.visibility = View.GONE
+        }
+    }
+
+
+    private fun doAttention(id: String) {
+        val event: Int = if (button_attention.text == mAttentionText) {
+            0
+        } else {
+            1
+        }
+        RequestUtils.dealAttention(id,event){
+            if (it) {
+                button_attention.text = mAttentionText
+            } else {
+                button_attention.text = mDisAttentionText
+            }
+        }
+
+    }
+
+    private fun setLike(bean:ResponseSpeakBean) {
+        var event: Int
+        if (!mLike) {
+            img_heart.setImageResource(R.mipmap.heart_full)
+            val scaleX = PropertyValuesHolder.ofFloat("scaleX", 0f, 1f)
+            val scaleY = PropertyValuesHolder.ofFloat("scaleY", 0f, 1f)
+            val animator = ObjectAnimator.ofPropertyValuesHolder(img_heart, scaleX, scaleY)
+            animator.duration = 300
+            animator.start()
+            event = 0
+            bean.likeNum += 1
+            tv_count.text = bean.likeNum.toString()
+        } else {
+            img_heart.setImageResource(R.mipmap.heart_empty)
+            event = 1
+            bean.likeNum -= 1
+            tv_count.text = bean.likeNum.toString()
+        }
+        if (mNet) {
+            return
+        }
+        setLikeNet(event, bean.id)
+    }
+
+    fun setProgress(progress: Int, total: Int) {
+        if (total < 0) {
+            tv_progress.text = AppUtils.timeParse(0L)
+            tv_total.text = AppUtils.timeParse(0L)
+            progress_bar.progress = 0
+            return
+        }
+        tv_progress.text = AppUtils.timeParse(progress.toLong())
+        tv_total.text = AppUtils.timeParse(total.toLong())
+        progress_bar.progress = progress * 100 / total
+    }
+
+    private fun setLikeNet(event: Int, id: String) {
+        mNet = true
+        val bean = RequestSpeakLike(SPUtils.getInstance().getString(SpConstant.APP_TOKEN), id, event)
+        val request = AccompanyRequest()
+        val success: String = if (event == 0) {
+            "点赞成功"
+        } else {
+            "取消点赞"
+        }
+        request.beginRequest(NetFactory.getNetRequest().netService.setVoiceLike(EncodeUtils.encodeInBody(GsonUtils.toJson(bean)))
+        ,object :TypeToken<BaseDecodeBean<OnlyCodeBean>>(){}.type,object :NetListener<OnlyCodeBean>{
+            override fun onSuccess(t: OnlyCodeBean?) {
+                ToastUtils.showCommonToast(success)
+                mNet = false
+                mLike = !mLike
+            }
+
+            override fun onFailed(errCode: Int) {
+
+            }
+
+            override fun onError() {
+
+            }
+
+            override fun onComplete() {
+                mNet = false
+            }
+        })
+
 
     }
 
     //kotlin算术运算 不能换行（+ 必须在保留在上一行），这个坑爹货
     private fun updateMusicAnim(fraction: Float, fractionLeft: Float, startValue: PointF, firstPath: PointF, secondPath: PointF, endValue: PointF) :PointF{
-        LogUtils.d("path", "update start:$startValue---first:$firstPath---second:$secondPath---end:$endValue---fraction:$fraction---fraction left:$fractionLeft")
+//        LogUtils.d("path", "update start:$startValue---first:$firstPath---second:$secondPath---end:$endValue---fraction:$fraction---fraction left:$fractionLeft")
 
         val currentPoint = PointF()
         currentPoint.x = (fractionLeft * fractionLeft * fractionLeft * startValue.x + 3 * fractionLeft * fractionLeft * fraction * firstPath.x
@@ -283,22 +439,26 @@ class LivingSoundView @JvmOverloads constructor(
             secondPoint.y = (endPoint.y - diff).toFloat()
         }
 
-        LogUtils.d("path", "create start:$startPoint---firstPath:$firstPoint----secondPath:$secondPoint---end:$endPoint")
+//        LogUtils.d("path", "create start:$startPoint---firstPath:$firstPoint----secondPath:$secondPoint---end:$endPoint")
+//        LogUtils.d("running", "i am running id:${hashCode()}")
 
         return arrayListOf(startPoint, firstPoint, secondPoint, endPoint)
 
     }
 
 
-    public fun pause() {
+     fun pause() {
+        img_play.visibility = View.VISIBLE
         mRotateAnim?.pause()
         mSpreadAnimOne?.pause()
         mSpreadAnimTwo?.pause()
         mMusicAnim?.pause()
     }
 
-    public fun startAllAnim() {
-        if (mRotateAnim?.isPaused!!) {
+     fun startAllAnim() {
+         img_play.visibility = View.GONE
+
+         if (mRotateAnim?.isPaused!!) {
             mRotateAnim?.resume()
         } else {
             mRotateAnim?.start()

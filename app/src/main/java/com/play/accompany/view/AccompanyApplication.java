@@ -236,6 +236,9 @@ public class AccompanyApplication extends Application {
     }
 
     private static void doAttentionChange(String id) {
+        if (mAttentionList == null || mAttentionList.isEmpty()) {
+            return;
+        }
         if (mAttentionList.contains(id)) {
             mAttentionList.remove(id);
         } else {

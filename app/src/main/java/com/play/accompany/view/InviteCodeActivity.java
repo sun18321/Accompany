@@ -6,7 +6,6 @@ import android.animation.ObjectAnimator;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.text.TextUtils;
 import android.view.View;

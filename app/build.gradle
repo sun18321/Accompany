@@ -86,5 +86,5 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.0.2'
     implementation 'androidx.viewpager2:viewpager2:1.0.0-beta04'
 
-//    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.0-beta-1'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.0-beta-1'
 }

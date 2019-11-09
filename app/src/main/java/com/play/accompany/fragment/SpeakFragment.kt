@@ -3,10 +3,10 @@ package com.play.accompany.fragment
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
+import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
-import com.google.android.material.animation.Positioning
 import com.google.gson.reflect.TypeToken
 import com.play.accompany.R
 import com.play.accompany.adapter.SpeakAdapter
@@ -21,6 +21,7 @@ import com.play.accompany.net.AccompanyRequest
 import com.play.accompany.net.NetFactory
 import com.play.accompany.net.NetListener
 import com.play.accompany.utils.*
+import com.play.accompany.view.LivingActivity
 import com.play.accompany.view.MasterActivity
 import com.play.accompany.view.ReleaseSpeakActivity
 import kotlinx.android.synthetic.main.fragment_speak.*
@@ -56,7 +57,9 @@ class SpeakFragment:BaseFragment() {
     override fun onResume() {
         super.onResume()
 
-        if (mIsMe && tv_no_permission.visibility == View.VISIBLE && SPUtils.getInstance().getInt(SpConstant.USER_TYPE) == OtherConstant.USER_TYPE_ACCOMPANY) {
+        mAdapter?.notifyDataSetChanged()
+
+        if (mIsMe && SPUtils.getInstance().getInt(SpConstant.USER_TYPE) == OtherConstant.USER_TYPE_ACCOMPANY) {
             tv_no_permission.visibility = View.GONE
             updateView()
         }
@@ -85,10 +88,22 @@ class SpeakFragment:BaseFragment() {
         mAdapter = SpeakAdapter(mIsMe){
             position ->
             run {
-                if (mIsMe && position == 0) {
-                    startActivityForResult(Intent(mContext, ReleaseSpeakActivity::class.java), 100)
-                } else {
-                    ToastUtils.showCommonToast("去播放")
+                if (mIsMe) {
+                    if (position == 0) {
+                        startActivityForResult(Intent(mContext, ReleaseSpeakActivity::class.java), 100)
+                    }else{
+                        val bundle = Bundle()
+                        bundle.putSerializable(IntentConstant.INTENT_SPEAK_LIST, ArrayList(mList))
+                        bundle.putInt(IntentConstant.INTENT_SPEAK_POSITION, position - 1)
+                        bundle.putBoolean(IntentConstant.INTENT_IS_ME,mIsMe)
+                        mContext.startActivity(Intent(mContext, LivingActivity::class.java).putExtra(IntentConstant.INTENT_BUNDLE, bundle))
+                    }
+                }else{
+                    val bundle = Bundle()
+                    bundle.putSerializable(IntentConstant.INTENT_SPEAK_LIST, ArrayList(mList))
+                    bundle.putInt(IntentConstant.INTENT_SPEAK_POSITION, position)
+                    bundle.putBoolean(IntentConstant.INTENT_IS_ME,mIsMe)
+                    mContext.startActivity(Intent(mContext, LivingActivity::class.java).putExtra(IntentConstant.INTENT_BUNDLE, bundle))
                 }
             }
         }

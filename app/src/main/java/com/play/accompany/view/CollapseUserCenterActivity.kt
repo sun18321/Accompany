@@ -21,8 +21,6 @@ import com.play.accompany.net.NetFactory
 import com.play.accompany.net.NetListener
 import com.play.accompany.utils.*
 import kotlinx.android.synthetic.main.activity_collapse_user_center.*
-import kotlinx.android.synthetic.main.activity_order_detail.*
-import java.util.*
 
 class CollapseUserCenterActivity : BaseActivity() {
     private var mIsMe = false
@@ -148,8 +146,8 @@ class CollapseUserCenterActivity : BaseActivity() {
         val json = GsonUtils.toJson(bean)
         val body = EncodeUtils.encodeInBody(json)
         val request = AccompanyRequest()
-        request.beginRequest(NetFactory.getNetRequest().netService.getUserInfo(body),object :TypeToken<BaseDecodeBean<List<UserInfo>>>(){}.type,
-                object : NetListener<List<UserInfo>>{
+        request.beginRequest(NetFactory.getNetRequest().netService.getUserInfo(body),object : TypeToken<BaseDecodeBean<List<UserInfo>>>(){}.type,
+                object : NetListener<List<UserInfo>> {
                     override fun onSuccess(list: List<UserInfo>?) {
                         if (!list.isNullOrEmpty()) {
                             otherViews(list[0])
