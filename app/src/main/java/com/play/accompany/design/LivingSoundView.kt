@@ -292,7 +292,7 @@ class LivingSoundView @JvmOverloads constructor(
     }
 
     fun setProgress(progress: Int, total: Int) {
-        if (total < 0) {
+        if (total <= 0) {
             tv_progress.text = AppUtils.timeParse(0L)
             tv_total.text = AppUtils.timeParse(0L)
             progress_bar.progress = 0
