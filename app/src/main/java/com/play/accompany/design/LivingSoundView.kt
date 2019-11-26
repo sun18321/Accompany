@@ -9,6 +9,7 @@ import android.graphics.PointF
 import android.media.MediaPlayer
 import android.util.AttributeSet
 import android.view.View
+import android.view.ViewGroup
 import android.view.animation.LinearInterpolator
 import android.widget.FrameLayout
 import android.widget.ImageView
@@ -73,10 +74,17 @@ class LivingSoundView @JvmOverloads constructor(
 
         val dishParams: RelativeLayout.LayoutParams = view.img_dish.layoutParams as LayoutParams
         mDiameter = mAnimWidth / 2
-        dishParams.height = mDiameter
-        dishParams.width = mDiameter
-        view.img_dish.cornerRadius = mDiameter / 2.toFloat()
+        val dishDiameter = (mDiameter * 1.1).toInt()
+
+        dishParams.height = dishDiameter
+        dishParams.width = dishDiameter
+        view.img_dish.cornerRadius = dishDiameter / 2.toFloat()
         view.img_dish.layoutParams = dishParams
+
+        val params = dish_bg.layoutParams as LayoutParams
+        params.height = dishDiameter + QMUIDisplayHelper.dpToPx(8)
+        params.width = dishDiameter + QMUIDisplayHelper.dpToPx(8)
+        dish_bg.layoutParams = params
 
         val spreadParams: RelativeLayout.LayoutParams = view.img_spread_one.layoutParams as LayoutParams
         spreadParams.height = mDiameter - 10
@@ -211,6 +219,7 @@ class LivingSoundView @JvmOverloads constructor(
         if (SPUtils.getInstance().getString(SpConstant.MY_USER_ID) == bean.userId) {
             button_attention.visibility = View.INVISIBLE
         } else {
+            button_attention.visibility = View.VISIBLE
             AccompanyApplication.getAttentionList {
                 if (it.contains(bean.userId)) {
                     button_attention.text = mAttentionText

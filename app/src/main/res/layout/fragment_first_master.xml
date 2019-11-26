@@ -127,12 +127,20 @@
                     android:layout_height="0.5dp"
                     android:background="@color/color_gray"/>
 
+                <TextView
+                    android:text="申请大神前请先完善个人信息，如昵称，id，性别等"
+                    android:layout_marginTop="25dp"
+                    android:layout_gravity="center_horizontal"
+                    android:textColor="#ff0000"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
                 <ImageView
                     android:id="@+id/add_skill"
                     android:layout_width="160dp"
                     android:layout_height="160dp"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="20dp"
                     android:src="@mipmap/place_skill"/>
 
                 <TextView
@@ -148,7 +156,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="40dp"
                     android:padding="10dp"
                     android:textColor="@color/color_gray"
                     android:textSize="14sp"/>

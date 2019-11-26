@@ -133,6 +133,9 @@ public class OrderActivity extends BaseActivity implements View.OnClickListener 
             Glide.with(this).load(url).into(mHeadView);
         }
         mTvType.setText(mUserInfo.getGameType().get(mUserInfo.getSelectedPosition()).getName());
+        mPrice = mUserInfo.getGameType().get(mUserInfo.getSelectedPosition()).getPrice();
+        mGameType = mUserInfo.getGameType().get(mUserInfo.getSelectedPosition()).getType();
+        mTvAll.setText("" + (mPrice * mCount));
     }
 
     @Override

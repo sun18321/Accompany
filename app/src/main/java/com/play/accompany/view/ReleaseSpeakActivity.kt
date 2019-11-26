@@ -120,7 +120,7 @@ class ReleaseSpeakActivity : BaseActivity() {
             return
         }
 
-        if (title.length > 15) {
+        if (title.length > 5) {
             ToastUtils.showCommonToast("标题过长")
             return
         }
@@ -131,7 +131,7 @@ class ReleaseSpeakActivity : BaseActivity() {
             return
         }
 
-        if (word.length > 50) {
+        if (word.length > 25) {
             ToastUtils.showCommonToast("文字泡过长")
             return
         }

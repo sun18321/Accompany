@@ -33,13 +33,17 @@ class SpeakAdapter(private val mIsMe: Boolean, private val mListener: (Int) -> U
                  if (position == 0) {
                      img_play.visibility = View.INVISIBLE
                      img_head.setImageResource(R.mipmap.item_add)
+                     rl_bottom.visibility = View.GONE
                  } else {
                      GlideUtils.commonLoad(context, mList[position - 1].imgUrl, img_head)
+                     tv_title.text = mList[position - 1].title
+                     tv_count.text = mList[position -1].likeNum.toString()
                  }
              } else {
                  GlideUtils.commonLoad(context, mList[position].imgUrl, img_head)
+                 tv_title.text = mList[position].title
+                 tv_count.text = mList[position].likeNum.toString()
              }
-
              setOnClickListener {
                  mListener(position)
              }

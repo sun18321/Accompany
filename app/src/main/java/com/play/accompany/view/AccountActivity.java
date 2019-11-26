@@ -268,24 +268,25 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
                     return;
                 }
                 UserInfo bean = list.get(0);
-                String token = bean.getToken();
-                if (!TextUtils.isEmpty(token)) {
-                    UserInfoDatabaseUtils.getInstance().saveUserInfo(bean);
-                    String name = bean.getName();
-                    if (name == null || TextUtils.isEmpty(name)) {
-                        Intent intent = new Intent(AccountActivity.this, EditUserActivity.class);
-                        intent.putExtra(IntentConstant.INTENT_CODE, EditUserActivity.INTENT_REGISTER);
-                        if (mInfo != null) {
-                            intent.putExtra(IntentConstant.INTENT_USER, weChat2UserInfo());
-                        }
-                        startActivity(intent);
-                    } else {
+                UserInfoDatabaseUtils.getInstance().saveUserInfo(bean);
+//                String token = bean.getToken();
+//                if () {
+//                    UserInfoDatabaseUtils.getInstance().saveUserInfo(bean);
+//                    String name = bean.getName();
+//                    if (name == null || TextUtils.isEmpty(name)) {
+//                        Intent intent = new Intent(AccountActivity.this, EditUserActivity.class);
+//                        intent.putExtra(IntentConstant.INTENT_CODE, EditUserActivity.INTENT_REGISTER);
+//                        if (mInfo != null) {
+//                            intent.putExtra(IntentConstant.INTENT_USER, weChat2UserInfo());
+//                        }
+//                        startActivity(intent);
+//                    } else {
                         MainActivity.launch(AccountActivity.this);
-                    }
+//                    }
                     AccountActivity.this.finish();
-                } else {
-                    Toast.makeText(AccountActivity.this, getResources().getString(R.string.login_failed), Toast.LENGTH_SHORT).show();
-                }
+//                } else {
+//                    Toast.makeText(AccountActivity.this, getResources().getString(R.string.login_failed), Toast.LENGTH_SHORT).show();
+//                }
             }
 
             @Override

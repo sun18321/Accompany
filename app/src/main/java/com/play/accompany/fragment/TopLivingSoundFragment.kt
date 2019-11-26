@@ -1,5 +1,6 @@
 package com.play.accompany.fragment
 
+import android.content.Intent
 import androidx.viewpager2.widget.ViewPager2
 import android.view.View
 import com.google.gson.reflect.TypeToken
@@ -8,17 +9,16 @@ import com.play.accompany.adapter.SoundAdapter
 import com.play.accompany.base.BaseFragment
 import com.play.accompany.bean.*
 import com.play.accompany.constant.*
-import com.play.accompany.design.LivingSoundPLayer
-import com.play.accompany.design.SPEAK_TYPE_CHANGE_PAUSE
-import com.play.accompany.design.SPEAK_TYPE_DELETE
-import com.play.accompany.design.SPEAK_TYPE_SHOW_HIDE
+import com.play.accompany.design.*
 import com.play.accompany.net.AccompanyRequest
 import com.play.accompany.net.NetFactory
 import com.play.accompany.net.NetListener
 import com.play.accompany.present.BottomListener
 import com.play.accompany.present.ClickListener
 import com.play.accompany.utils.*
+import com.play.accompany.view.CollapseUserCenterActivity
 import com.play.accompany.view.LivingActivity
+import com.play.accompany.view.MainActivity
 import kotlinx.android.synthetic.main.top_living_fragment.*
 
 class TopLivingSoundFragment : BaseFragment,ClickListener {
@@ -43,7 +43,7 @@ class TopLivingSoundFragment : BaseFragment,ClickListener {
     override fun initViews(view: View?) {
 
 
-        LogUtils.d("hash_code","fragment:${hashCode()}-----player:${mPlayer.hashCode()}")
+//        LogUtils.d("hash_code","fragment:${hashCode()}-----player:${mPlayer.hashCode()}")
 
         second_viewpager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
@@ -73,6 +73,8 @@ class TopLivingSoundFragment : BaseFragment,ClickListener {
             }
         })
 
+        second_viewpager.offscreenPageLimit = 1
+
         second_viewpager.setOnClickListener {
             LogUtils.d("click", "viewpager click")
         }
@@ -89,6 +91,8 @@ class TopLivingSoundFragment : BaseFragment,ClickListener {
     }
 
     fun setData(list: List<ResponseSpeakBean>) {
+        LogUtils.d("living", "size:${list.size}")
+
         mAdapter = SoundAdapter(list,mIsMe){
             when (it.type) {
                 SPEAK_TYPE_DELETE -> {
@@ -99,6 +103,9 @@ class TopLivingSoundFragment : BaseFragment,ClickListener {
                 }
                 SPEAK_TYPE_SHOW_HIDE ->{
                     onViewClick()
+                }
+                SPEAK_TYPE_HEAD_CLICK ->{
+                    goUserCenter(it.info?.userId)
                 }
             }
         }
@@ -129,6 +136,20 @@ class TopLivingSoundFragment : BaseFragment,ClickListener {
                         ToastUtils.showCommonToast("播放失败")
                     }
                 }
+            }
+        }
+    }
+
+    private fun goUserCenter(id: String?) {
+        if (id.isNullOrEmpty()) {
+            return
+        }
+        if (activity is MainActivity) {
+            mContext.startActivity(Intent(mContext, CollapseUserCenterActivity::class.java).putExtra(IntentConstant.INTENT_USER_ID, id))
+        } else {
+            if (activity is LivingActivity) {
+                val livingActivity = activity as LivingActivity
+                livingActivity.finish()
             }
         }
     }
@@ -204,10 +225,10 @@ class TopLivingSoundFragment : BaseFragment,ClickListener {
 
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
-
+        LogUtils.d("top_live", "hidden:$hidden")
         if (hidden) {
             mPlayer.pause()
-        }else if (!hidden && !mInit) {
+        }else {
             mPlayer.reStart()
         }
     }

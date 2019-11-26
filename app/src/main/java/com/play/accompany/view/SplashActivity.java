@@ -337,22 +337,24 @@ public class SplashActivity extends BaseActivity {
         }.getType(), new NetListener<List<UserInfo>>() {
             @Override
             public void onSuccess(List<UserInfo> list) {
-                if (list.isEmpty()) {
-                    startActivity(new Intent(SplashActivity.this, AccountActivity.class));
-                    SplashActivity.this.finish();
-                } else {
-                    UserInfo userInfo = list.get(0);
-                    String name = userInfo.getName();
-                    if (TextUtils.isEmpty(name)) {
-                        Intent intent = new Intent(SplashActivity.this, EditUserActivity.class);
-                        intent.putExtra(IntentConstant.INTENT_CODE, EditUserActivity.INTENT_REGISTER);
-                        startActivity(intent);
-                        SplashActivity.this.finish();
-                    } else {
-                        UserInfoDatabaseUtils.getInstance().saveUserInfo(list.get(0));
-                        delay();
-                    }
-                }
+//                if (list.isEmpty()) {
+//                    startActivity(new Intent(SplashActivity.this, AccountActivity.class));
+//                    SplashActivity.this.finish();
+//                } else {
+//                    UserInfo userInfo = list.get(0);
+//                    String name = userInfo.getName();
+//                    if (TextUtils.isEmpty(name)) {
+//                        Intent intent = new Intent(SplashActivity.this, EditUserActivity.class);
+//                        intent.putExtra(IntentConstant.INTENT_CODE, EditUserActivity.INTENT_REGISTER);
+//                        startActivity(intent);
+//                        SplashActivity.this.finish();
+//                    } else {
+//                        UserInfoDatabaseUtils.getInstance().saveUserInfo(list.get(0));
+//                        delay();
+//                    }
+//                }
+                UserInfoDatabaseUtils.getInstance().saveUserInfo(list.get(0));
+                delay();
             }
 
             @Override

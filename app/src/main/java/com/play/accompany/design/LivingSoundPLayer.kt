@@ -3,6 +3,7 @@ package com.play.accompany.design
 import android.media.MediaPlayer
 import com.play.accompany.bean.ResponseSpeakBean
 import com.play.accompany.constant.*
+import com.play.accompany.utils.LogUtils
 import java.util.*
 import kotlin.concurrent.timerTask
 
@@ -37,7 +38,9 @@ class  LivingSoundPLayer{
 
     fun pause() {
         mPause = true
-        mPLayer.pause()
+        if (mPLayer.isPlaying) {
+            mPLayer.pause()
+        }
         mCallback?.let { it(PlayerInfo.Builder().type(PLAYER_STATUS_PAUSE).build()) }
         mTimer?.cancel()
         mTimer = null
@@ -56,10 +59,15 @@ class  LivingSoundPLayer{
 
     fun reStart() {
         if (mPause) {
-            mPLayer.start()
+            LogUtils.d("player","playing status:${mPLayer.isPlaying}")
             mPause = false
-            mCallback?.let { it(PlayerInfo.Builder().type(PLAYER_STATUS_START).build()) }
-            startTimer()
+            if (mPLayer.currentPosition > 0) {
+                mPLayer.start()
+                mCallback?.let { it(PlayerInfo.Builder().type(PLAYER_STATUS_START).build()) }
+                startTimer()
+            } else {
+                playAudio()
+            }
         }
     }
 
@@ -74,15 +82,18 @@ class  LivingSoundPLayer{
         mPLayer.setDataSource(mDataSource?.get(mCurrentIndex)?.audioUrl)
         mPLayer.prepareAsync()
         mPLayer.setOnPreparedListener {
-            mCallback?.let { callback -> callback(PlayerInfo.Builder().type(PLAYER_STATUS_START).build()) }
-            it.start()
-            startTimer()
+            LogUtils.d("player", "player ready pause:$mPause")
+            if (!mPause) {
+                it.start()
+                mCallback?.let { callback -> callback(PlayerInfo.Builder().type(PLAYER_STATUS_START).build()) }
+                startTimer()
+            }
         }
         mPLayer.setOnErrorListener { _, _, _ ->
             if (mPLayer.isPlaying) {
                 mCallback?.let {callback -> callback(PlayerInfo.Builder().type(PLAYER_STATUS_ERROR).build()) }
             }
-            false
+            true
         }
     }
 

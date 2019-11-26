@@ -43,6 +43,10 @@ class SoundAdapter(private val mList: List<ResponseSpeakBean>, private val mIsMe
         holder.itemView.img_delete.setOnClickListener {
             mCallback(SpeakCallbackInfo(SPEAK_TYPE_DELETE, mList[position]))
         }
+
+        holder.itemView.img_head.setOnClickListener {
+            mCallback(SpeakCallbackInfo(SPEAK_TYPE_HEAD_CLICK, mList[position]))
+        }
     }
 
     private fun onPause(position: Int) {

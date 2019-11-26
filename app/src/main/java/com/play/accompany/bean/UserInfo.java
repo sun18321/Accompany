@@ -138,7 +138,7 @@ public class UserInfo implements Serializable {
 
     //选择的游戏位置，用于携带跳转下单界面
     @Ignore
-    private int selectedPosition;
+    private Integer selectedPosition;
 
     public int getSelectedPosition() {
         return selectedPosition;

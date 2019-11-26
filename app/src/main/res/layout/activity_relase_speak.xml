@@ -95,7 +95,7 @@
             <EditText
                 android:id="@+id/edit_title"
                 android:maxLines="1"
-                android:hint="请输入标题"
+                android:hint="请输入标题(5个字以内)"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="@dimen/dp_10"
@@ -130,7 +130,7 @@
             <EditText
                 android:id="@+id/edit_detail"
                 android:background="@null"
-                android:hint="文字泡"
+                android:hint="文字泡(25字以内)"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="@dimen/dp_10"
                 android:layout_width="match_parent"
@@ -140,7 +140,7 @@
 
 
         <TextView
-            android:text="标签(至少一个，最多五个):"
+            android:text="标签(至少一个，最多五个)"
             android:layout_marginStart="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
